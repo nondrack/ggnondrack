@@ -24,7 +24,8 @@
 
             <!-- Usuário -->
             <div class="d-flex align-items-center">
-                <span class="text-light me-3">Olá <?=$_SESSION["user"]["nome"]?></span>
+                <span class="text-light me-3">
+                    Olá <?=$_SESSION["user"]["nome"]?></span>
                 <a href="sair.php" class="btn btn-danger btn-sm">
                     <i class="fas fa-power-off"></i> Sair
                 </a>

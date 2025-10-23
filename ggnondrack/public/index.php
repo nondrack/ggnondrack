@@ -7,7 +7,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DualCore Tech</title>
+    <title>Painel de Controle</title>
 
     <base href="http://<?=$_SERVER["SERVER_NAME"] . $_SERVER["SCRIPT_NAME"]?>">
 
@@ -24,12 +24,6 @@ session_start();
     <script src="js/sweetalert2.js"></script>
 
     <script>
-        
-function mostrarSenha() {
-    const senha = document.getElementById('senha');
-    senha.type = senha.type === 'password' ? 'text' : 'password';
-}
-
         //conter os meus script
         function mensagem(titulo, icone, pagina) {
             Swal.fire({
