@@ -14,7 +14,7 @@
         }
 
         public function index() {
-
+            require "../views/index/index.php";
         }
 
         public function verificar($dados) {

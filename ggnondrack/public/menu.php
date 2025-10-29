@@ -12,13 +12,22 @@
                     <a class="nav-link neon-link" href="index">Home</a>
                 </li>
                 <li class="nav-item mx-2">
-                    <a class="nav-link neon-link" href="categoria">Categoria</a>
+                    <a class="nav-link neon-link" href="categoria/listar">Categoria</a>
                 </li>
                 <li class="nav-item mx-2">
-                    <a class="nav-link neon-link" href="produto">Produto</a>
+                    <a class="nav-link neon-link" href="produto/listar">Produto</a>
                 </li>
                 <li class="nav-item mx-2">
                     <a class="nav-link neon-link" href="usuario">Usuários</a>
+                </li>
+                <!-- Botão Carrinho -->
+                <li class="nav-item mx-2">
+                    <a class="nav-link neon-link position-relative" href="carrinho/listar">
+                        <i class="fas fa-shopping-cart"></i> Carrinho
+                        <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            0
+                        </span>
+                    </a>
                 </li>
             </ul>
 
@@ -33,6 +42,8 @@
         </div>
     </div>
 </nav>
+
+
 
 <style>
 /* Neon links */

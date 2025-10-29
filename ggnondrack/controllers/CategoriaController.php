@@ -13,10 +13,16 @@
             $this->categoria = new Categoria($pdo);
         }
 
-        public function index($id) {
-            //editar e adicionar uma categoria
-            require "../views/categoria/index.php";
-        }
+        public function index($id = null) {
+    $dadosCategoria = null;
+
+    if ($id) {
+        $dadosCategoria = $this->categoria->getDados($id);
+    }
+
+    require "../views/categoria/index.php"; // formulário
+}
+
 
         public function listar() {
             //listagem de categorias
@@ -52,4 +58,27 @@
 
             $this->categoria->salvar($_POST);
         }
+        public function editar($id) {
+    $dadosCategoria = $this->categoria->getDados($id); // pega dados pelo ID
+    require "../views/categoria/index.php"; // carrega o formulário preenchido
+}
+public function alterar($id, $acao) {
+        if (!isset($_SESSION['carrinho'][$id])) {
+            header("Location: ../carrinho/index");
+            exit;
+        }
+
+        if ($acao === 'aumentar') {
+            $_SESSION['carrinho'][$id]['quantidade']++;
+        } elseif ($acao === 'diminuir') {
+            $_SESSION['carrinho'][$id]['quantidade']--;
+            if ($_SESSION['carrinho'][$id]['quantidade'] <= 0) {
+                unset($_SESSION['carrinho'][$id]);
+            }
+        }
+
+        header("Location: ../carrinho/index");
     }
+
+
+}

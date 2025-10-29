@@ -57,8 +57,9 @@ session_start();
         require "../views/index/login.php";
     } else if (isset($_SESSION)) {
         //mostra a tela de home
-
+        
         require "menu.php";
+        
 
         //echo $_GET["param"];
 
@@ -88,6 +89,7 @@ session_start();
         //mostra erro
 
     }
+    
     ?>
 </body>
 

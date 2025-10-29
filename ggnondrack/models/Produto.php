@@ -19,6 +19,11 @@ class Produto {
             die("Erro ao listar produtos: " . $e->getMessage());
         }
     }
+     public function listarAtivos() {
+        $stmt = $this->pdo->prepare("SELECT * FROM produto WHERE ativo = 'S' ORDER BY id DESC");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     /**
      * Busca um produto pelo ID
@@ -39,19 +44,26 @@ class Produto {
      * Salva (insere) um novo produto
      */
     public function salvar($dados) {
-        try {
-            $sql = "INSERT INTO produto (nome, valor, imagem, categoria_id)
-                    VALUES (:nome, :valor, :imagem, :categoria_id)";
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->bindValue(":nome", $dados["nome"]);
-            $stmt->bindValue(":valor", $dados["valor"]);
-            $stmt->bindValue(":imagem", $dados["imagem"] ?? null);
-            $stmt->bindValue(":categoria_id", $dados["categoria_id"] ?? null);
-            return $stmt->execute();
-        } catch (PDOException $e) {
-            die("Erro ao salvar produto: " . $e->getMessage());
-        }
+    if (!empty($dados["id"])) {
+        return $this->atualizar($dados["id"], $dados);
     }
+
+    try {
+        $sql = "INSERT INTO produto (nome, valor, imagem, categoria_id, descricao)
+                VALUES (:nome, :valor, :imagem, :categoria_id, :descricao)";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(":nome", $dados["nome"]);
+        $stmt->bindValue(":valor", $dados["valor"]);
+        $stmt->bindValue(":imagem", $dados["imagem"] ?? null);
+        $stmt->bindValue(":categoria_id", $dados["categoria_id"] ?? null);
+        $stmt->bindValue(":descricao", strip_tags($dados["descricao"] ?? null));
+        return $stmt->execute();
+    } catch (PDOException $e) {
+        die("Erro ao salvar produto: " . $e->getMessage());
+    }
+}
+
+
 
     /**
      * Atualiza um produto existente
@@ -86,4 +98,5 @@ class Produto {
             die("Erro ao excluir produto: " . $e->getMessage());
         }
     }
+     
 }

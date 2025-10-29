@@ -16,8 +16,8 @@ class ProdutoController {
     }
 
     public function index() {
-        // formulário de cadastro
-        require "../views/produto/index.php";
+        $produtos = $this->produto->listar();
+        require __DIR__ . '/../views/produto/index.php';
     }
 
     public function listar() {
@@ -90,5 +90,26 @@ class ProdutoController {
         </script>";
     }
 }
+    public function detalhes($id) {
+        $produto = $this->produto->buscarPorId($id);
+        if (!$produto) {
+            die("Produto não encontrado.");
+        }
+        require "../views/produto/detalhes.php";
+    }
+    public function editar($id) {
+    $produto = $this->produto->buscarPorId($id);
+    if (!$produto) {
+        echo "<script>
+            alert('Produto não encontrado!');
+            window.location.href = 'produto/listar';
+        </script>";
+        exit;
+    }
+
+    $categorias = $this->categoria->listar(); // Caso queira mostrar dropdown de categoria
+    require __DIR__ . '/../views/produto/index.php'; // Carrega o formulário preenchido
+}
+
 
 }

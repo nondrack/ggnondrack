@@ -26,9 +26,21 @@
                 </div>
                 <div id="error"></div>
                 <br>
-                <button type="submit" class="btn btn-neon w-100">
+
+                <!-- Botão de login -->
+                <button type="submit" class="btn btn-neon w-100 mb-3">
                     Efetuar Login
                 </button>
+
+                <!-- Botão de cadastro -->
+                <!-- Botão de cadastro funcionando -->
+<a href="?param=usuario/cadastro" class="btn btn-outline-neon w-100 text-center">
+    Cadastrar-se
+</a>
+
+
+
+
             </div>
         </div>
     </div>
@@ -45,13 +57,12 @@ body {
 .neon-input {
     background-color: #1a1f2e;
     border: 1px solid #00eaff60;
-    color: #fff; /* texto digitado branco */
+    color: #fff;
     transition: 0.3s;
 }
 
-/* cor do placeholder */
 .neon-input::placeholder {
-    color: #ffffffb3; /* branco suave */
+    color: #ffffffb3;
     opacity: 1;
 }
 
@@ -77,6 +88,24 @@ body {
     color: #fff;
 }
 
+/* Botão "Cadastrar-se" com borda neon */
+.btn-outline-neon {
+    border: 1px solid #00eaff;
+    color: #00eaff;
+    font-weight: bold;
+    transition: 0.3s;
+    text-decoration: none;
+    display: inline-block;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.btn-outline-neon:hover {
+    background-color: #00eaff;
+    color: #0b0f19;
+    box-shadow: 0 0 20px #00eaff;
+}
+
 .card {
     border-radius: 12px;
 }
@@ -86,4 +115,9 @@ body {
 }
 </style>
 
-
+<script>
+function mostrarSenha() {
+    const input = document.getElementById("senha");
+    input.type = input.type === "password" ? "text" : "password";
+}
+</script>

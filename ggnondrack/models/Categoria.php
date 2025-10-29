@@ -1,4 +1,5 @@
 <?php
+
     class Categoria {
 
         private $pdo;
@@ -55,11 +56,11 @@
         }
 
         public function excluir($id) {
-            $sql = "delete from categoria where id = :id limit 1";
-            $consulta = $this->pdo->prepare($sql);
-            $consulta->bindParam(":id", $id);
-            
-            return $consulta->execute();
-        }
+    $stmt = $this->pdo->prepare("DELETE FROM categoria WHERE id = ?");
+    return $stmt->execute([$id]);
+}
+    
+}
 
-    } //fim da classe
+
+    //fim da classe
