@@ -7,7 +7,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel de Controle</title>
+    <title>DualCore Tech</title>
 
     <base href="http://<?=$_SERVER["SERVER_NAME"] . $_SERVER["SCRIPT_NAME"]?>">
 
