@@ -11,6 +11,7 @@ session_start();
 
     <base href="http://<?=$_SERVER["SERVER_NAME"] . $_SERVER["SCRIPT_NAME"]?>">
 
+    <link rel="shortcut icon" type="image/x-icon" href="images/logo.png">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/all.min.css">
     <link rel="stylesheet" href="css/sweetalert2.min.css">
