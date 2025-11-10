@@ -104,7 +104,13 @@ $categorias = $categoriaModel->listar(); // array de objetos com id e nome
                       <div>
                           <p class="card-text preco-produto">R$ <?= number_format($produto->valor, 2, ',', '.') ?></p>
                           <a href="produto/detalhes/<?= $produto->id ?>" class="btn btn-outline-neon w-100 mb-2">Detalhes</a>
-                          <a href="carrinho/adicionar/<?= $produto->id ?>" class="btn btn-neon w-100">Comprar</a>
+                          <a href="index.php?param=carrinho/adicionar/<?= $produto->id ?>" 
+   class="btn btn-primary">Adicionar ao Carrinho</a>
+
+
+
+
+
                       </div>
                   </div>
               </div>

@@ -28,7 +28,7 @@
 
         <!-- Carrinho -->
         <li class="nav-item mx-2">
-          <a class="nav-link neon-link position-relative" href="carrinho/listar">
+          <a class="nav-link neon-link position-relative" href="carrinho">
             <i class="fas fa-shopping-cart"></i> Carrinho
             <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
               0
