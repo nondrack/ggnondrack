@@ -142,3 +142,10 @@ a:hover {
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(var(--neon-rgb, 0,234,255), 0.8);
 }
+
+/* Garantir que a logo não receba sombra */
+img[src$="logo.png"],
+img[src$="logo.PNG"],
+img[src$="logoFundoBranco.png"] {
+    filter: none !important;
+}

@@ -3,7 +3,7 @@
 
     <!-- Logo -->
     <a class="navbar-brand d-flex align-items-center" href="index">
-  <img src="images/logo.png" alt="DualCore Tech" style="height:70px; width:auto; filter: drop-shadow(0 0 5px var(--color-neon)); margin-right: 10px;">
+  <img src="images/logo.png" alt="DualCore Tech" style="height:70px; width:auto; margin-right: 10px;">
       <span class="fw-bold text-purple-neon d-none d-sm-inline">DualCore Tech</span>
     </a>
 

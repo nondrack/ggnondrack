@@ -131,7 +131,7 @@ unset($_SESSION['sucesso']);
         <div class="login d-flex justify-content-center align-items-center vh-100">
             <div class="card p-4" style="width: 100%; max-width: 450px; background-color: #111827; border: 1px solid #00eaff40; box-shadow: 0 0 15px #00eaff20;">
                 <div class="card-header text-center bg-transparent border-0">
-                    <img src="images/logo.png" alt="DualCore Tech" class="w-50 mb-3" style="filter: drop-shadow(0 0 5px var(--color-neon));">
+                    <img src="images/logo.png" alt="DualCore Tech" class="w-50 mb-3">
                     <h3 class="text-light">Criar Conta</h3>
                     <p class="text-muted small">Preencha os dados abaixo para se cadastrar</p>
                 </div>

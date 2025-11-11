@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center align-items-center vh-100">
     <div class="card p-4" style="width:100%; max-width:450px; background-color:#111827; border:1px solid var(--color-border); box-shadow:0 0 15px rgba(var(--neon-rgb),0.12);">
         <div class="card-header text-center bg-transparent border-0">
-            <img src="images/logo.png" alt="DualCore Tech" style="height: 60px; width: auto; filter: drop-shadow(0 0 5px var(--color-neon));" class="mb-3">
+            <img src="images/logo.png" alt="DualCore Tech" style="height: 60px; width: auto;" class="mb-3">
             <h2 style="color:var(--color-neon);">Criar Conta</h2>
             <p style="color:#999; font-size: 0.9rem;">Preencha os dados abaixo para se cadastrar</p>
         </div>
