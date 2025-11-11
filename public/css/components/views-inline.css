@@ -663,4 +663,28 @@ body {
 .produto-img { max-height:180px; max-width:95%; object-fit:contain; transition: transform 0.4s ease, filter 0.3s ease; filter: brightness(0.95); }
 .produto-card:hover .produto-img { transform: scale(1.1); filter: brightness(1.1) drop-shadow(0 0 10px var(--color-neon-25)); }
 
+/* Botão de mostrar/ocultar senha */
+.input-group .btn-neon {
+    background-color: #00eaff !important;
+    color: #0b0f19 !important;
+    border: 1px solid #00eaff !important;
+    padding: 0.375rem 0.75rem;
+    cursor: pointer;
+    z-index: 5;
+}
+
+.input-group .btn-neon:hover {
+    background-color: #00b8cc !important;
+    color: #fff !important;
+    box-shadow: 0 0 20px #00eaff !important;
+}
+
+.input-group .btn-neon:active,
+.input-group .btn-neon:focus {
+    background-color: #00b8cc !important;
+    box-shadow: 0 0 20px #00eaff !important;
+    outline: none;
+}
+
+
 /* end of combined file */

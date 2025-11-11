@@ -146,6 +146,11 @@ a:hover {
 /* Garantir que a logo não receba sombra */
 img[src$="logo.png"],
 img[src$="logo.PNG"],
-img[src$="logoFundoBranco.png"] {
+img[src$="logoFundoBranco.png"],
+.navbar-brand img,
+.card-header img {
     filter: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    -webkit-filter: none !important;
 }

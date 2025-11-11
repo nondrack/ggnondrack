@@ -112,14 +112,14 @@ unset($_SESSION['sucesso']);
             });
         }
 
-        function mostrarSenha() {
-            const input = document.getElementById("senha");
-            input.type = input.type === "password" ? "text" : "password";
-        }
-
-        function confirmarSenha() {
-            const input = document.getElementById("confirmarSenha");
-            input.type = input.type === "password" ? "text" : "password";
+        function toggleSenha(inputId, event) {
+            if (event) {
+                event.preventDefault();
+            }
+            const input = document.getElementById(inputId);
+            if (input) {
+                input.type = input.type === "password" ? "text" : "password";
+            }
         }
     </script>
 
@@ -181,7 +181,7 @@ unset($_SESSION['sucesso']);
                             data-parsley-required-message="A senha é obrigatória"
                             data-parsley-minlength="6"
                             data-parsley-minlength-message="A senha deve ter pelo menos 6 caracteres">
-                        <button type="button" class="btn btn-neon" onclick="mostrarSenha()">
+                        <button type="button" class="btn btn-neon" onclick="toggleSenha('senha', event); return false;">
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
@@ -197,7 +197,7 @@ unset($_SESSION['sucesso']);
                             data-parsley-required-message="Confirme a senha"
                             data-parsley-equalto="#senha"
                             data-parsley-equalto-message="As senhas não conferem">
-                        <button type="button" class="btn btn-neon" onclick="confirmarSenha()">
+                        <button type="button" class="btn btn-neon" onclick="toggleSenha('confirmarSenha', event); return false;">
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
