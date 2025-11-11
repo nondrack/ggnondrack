@@ -418,6 +418,51 @@ body.produto-listar, body {
 .img-produto { max-width: 100px; max-height: 80px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 255, 255, 0.4); transition: transform 0.3s ease; }
 .img-produto:hover { transform: scale(1.05); box-shadow: 0 0 15px rgba(0, 255, 255, 0.7); }
 
+/* ====== produto listar visual refinements ====== */
+.produto-list-table thead th {
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    color: #cfeefe;
+    font-weight: 700;
+}
+
+.produto-list-table tbody tr:hover {
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(176,0,255,0.01));
+    transform: translateY(-1px);
+}
+
+.produto-list-table td { vertical-align: middle; }
+
+.produto-list-table .img-produto {
+    max-width: 120px;
+    max-height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+/* compact circular action buttons */
+.btn-circle {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-circle i { font-size: 0.9rem; }
+
+/* improve table empty state */
+.produto-list-table tbody tr.empty-state-row td {
+    padding: 60px 20px;
+    color: #9aa7b2;
+}
+
+@media (max-width: 768px) {
+    .produto-list-table .img-produto { max-width: 80px; max-height: 60px; }
+    .btn-circle { width: 34px; height: 34px; }
+}
+
 /* ====== categoria form scoped styles ====== */
 .categoria-form { background-color: #0d1117; color: #c9d1d9; }
 .categoria-form .card { background-color: #161b22; border: 1px solid #1f6feb; border-radius: 10px; box-shadow: 0 0 15px rgba(31,111,235,0.1); margin-top: 30px; }
