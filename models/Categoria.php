@@ -38,9 +38,20 @@
             }
         }
 
-        public function listar() {
-            $sql = "select * from categoria order by nome";
-            $consulta = $this->pdo->prepare($sql);
+        /**
+         * Lista categorias.
+         * @param bool $apenasAtivos Se true, retorna apenas categorias com ativo = 1
+         * @return array
+         */
+        public function listar($apenasAtivos = false) {
+            if ($apenasAtivos) {
+                $sql = "select * from categoria where ativo = 1 order by nome";
+                $consulta = $this->pdo->prepare($sql);
+            } else {
+                $sql = "select * from categoria order by nome";
+                $consulta = $this->pdo->prepare($sql);
+            }
+
             $consulta->execute();
 
             return $consulta->fetchAll(PDO::FETCH_OBJ);

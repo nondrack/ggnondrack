@@ -6,11 +6,16 @@ require_once __DIR__ . '/../../models/Categoria.php';
 // Conexão com o banco
 $pdo = Conexao::conectar();
 $produtoModel = new Produto($pdo);
-$produtos = $produtoModel->listar();
+// obter apenas produtos ativos para exibição pública
+$produtos = $produtoModel->listarAtivos();
 
 // Puxar todas as categorias do banco
 $categoriaModel = new Categoria($pdo);
-$categorias = $categoriaModel->listar(); // array de objetos com id e nome
+// listar apenas categorias ativas para exibição pública
+$categorias = $categoriaModel->listar(true); // array de objetos com id e nome
+
+// construir mapa de categorias ativas para filtrar produtos que pertençam a categorias inativas
+$categoriaIdsAtivas = array_map(function($c){ return $c->id; }, $categorias);
 ?>
 
 <!-- BANNER HERO COM EFEITO NEON -->
@@ -102,8 +107,15 @@ $categorias = $categoriaModel->listar(); // array de objetos com id e nome
 
     <!-- LISTAGEM DE PRODUTOS -->
     <div class="row g-4 justify-content-center" id="produtos-container">
-        <?php if (!empty($produtos)): ?>
-            <?php foreach ($produtos as $produto): ?>
+    <?php if (!empty($produtos)): ?>
+      <?php foreach ($produtos as $produto): ?>
+        <?php
+          // Se o produto pertence a uma categoria inativa, pular (na exibição pública)
+          $categoriaIdDoProduto = $produto->categoria_id ?? null;
+          if (!empty($categoriaIdDoProduto) && !in_array($categoriaIdDoProduto, $categoriaIdsAtivas)) {
+            continue;
+          }
+        ?>
                 <?php
                     $caminhoServidor = __DIR__ . '/../../_arquivos/' . $produto->imagem;
                     $caminhoWeb = '../_arquivos/' . $produto->imagem;

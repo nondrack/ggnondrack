@@ -22,7 +22,7 @@ class Produto {
      public function listarAtivos() {
         $stmt = $this->pdo->prepare("SELECT * FROM produto WHERE ativo = 'S' ORDER BY id DESC");
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
     /**
