@@ -308,14 +308,40 @@ hr {
 .btn-info {
     background-color: #00eaff;
     border-color: #00eaff;
-    color: #000;
+    color: #000000 !important;
+    font-weight: 600;
 }
 
 .btn-info:hover {
     background-color: #00d4ff;
     border-color: #00d4ff;
-    color: #000;
+    color: #0b0f19;
     box-shadow: 0 0 20px rgba(0, 234, 255, 0.6);
+}
+
+/* Botão de adicionar ao carrinho com melhor legibilidade */
+.btn-add-cart {
+    background-color: #00eaff !important;
+    border-color: #00eaff !important;
+    color: #0b0f19 !important;
+    font-weight: 700 !important;
+    text-shadow: none !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-add-cart:hover {
+    background-color: #00d4ff !important;
+    border-color: #00d4ff !important;
+    color: #0b0f19 !important;
+    box-shadow: 0 0 15px rgba(0, 234, 255, 0.8) !important;
+}
+
+.btn-add-cart:active,
+.btn-add-cart:focus {
+    background-color: #00a8cc !important;
+    border-color: #00a8cc !important;
+    color: #0b0f19 !important;
+    box-shadow: 0 0 20px rgba(0, 234, 255, 1) !important;
 }
 
 .qty-input {

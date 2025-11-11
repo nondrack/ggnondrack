@@ -29,8 +29,8 @@ $totalFinal = $subtotal - $desconto;
                         <h2 class="mb-0">
                             <i class="fas fa-shopping-cart me-2" style="color: #00eaff;"></i> Meu Carrinho
                         </h2>
-                        <span class="badge bg-info text-dark fs-6">
-                            <?= count($itens) ?> item(ns)
+                        <span class="badge bg-info fs-6">
+                            <?= count($itens) ?> itens
                         </span>
                     </div>
                 </div>
