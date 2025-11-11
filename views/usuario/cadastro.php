@@ -68,98 +68,13 @@
                     <i class="fas fa-arrow-left me-2"></i> Voltar à Home
                 </a>
             </form>
-        </div>
-    </div>
-</div>
+            </div>
+            </div>
+            </div>
 
-<style>
-    body {
-        background-color: #0b0f19;
-        color: #fff;
-        font-family: 'Poppins', sans-serif;
-    }
+            <!-- styles moved to public/css/components/views-inline.css -->
 
-    .neon-input {
-        background-color: #1a1f2e;
-        border: 1px solid var(--color-border);
-        color: #fff;
-        transition: 0.3s;
-    }
-
-    .neon-input::placeholder {
-        color: #ffffffb3;
-        opacity: 1;
-    }
-
-    .neon-input:focus {
-        border-color: var(--color-neon);
-        box-shadow: 0 0 10px rgba(var(--neon-rgb),0.5);
-        background-color: #10141f;
-        color: #fff;
-    }
-
-    .btn-neon {
-        background-color: var(--color-neon);
-        border: none;
-        color: #0b0f19;
-        font-weight: bold;
-        transition: 0.3s;
-    }
-
-    .btn-neon:hover {
-        background-color: rgba(var(--neon-rgb),0.85);
-        box-shadow: 0 0 20px var(--color-neon);
-        color: #fff;
-    }
-
-    .btn-outline-neon {
-        border: 1px solid var(--color-neon);
-        color: var(--color-neon);
-        font-weight: bold;
-        transition: 0.3s;
-        text-decoration: none;
-        display: inline-block;
-        padding: 10px;
-        border-radius: 6px;
-    }
-
-    .btn-outline-neon:hover {
-        background-color: var(--color-neon);
-        color: #0b0f19;
-        box-shadow: 0 0 20px var(--color-neon);
-    }
-
-    .btn-outline-secondary {
-        border: 1px solid #6c757d;
-        color: #999;
-        font-weight: bold;
-        transition: 0.3s;
-        text-decoration: none;
-        display: inline-block;
-        padding: 10px;
-        border-radius: 6px;
-    }
-
-    .btn-outline-secondary:hover {
-        background-color: #6c757d;
-        color: #fff;
-    }
-
-    .card {
-        border-radius: 12px;
-    }
-
-    .form-label {
-        color: #fff;
-    }
-
-    .input-group-text {
-        background-color: transparent;
-        border: none;
-    }
-</style>
-
-<script>
+            <script>
     function mostrarSenha() {
         const input = document.getElementById("senha");
         input.type = input.type === "password" ? "text" : "password";

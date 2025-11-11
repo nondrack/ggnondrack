@@ -188,68 +188,6 @@ $totalFinal = $subtotal - $desconto;
             </div>
         <?php endif; ?>
     </div>
-</div>
-
-<style>
-    .bg-gradient {
-        background: linear-gradient(135deg, #00eaff33 0%, #00eaff11 100%);
-    }
-
-    .card {
-        transition: all 0.3s ease;
-    }
-
-    .card:hover {
-        box-shadow: 0 8px 32px rgba(0, 234, 255, 0.15) !important;
-    }
-
-    .btn-outline-info:hover {
-        background-color: #00eaff;
-        color: #000;
-        box-shadow: 0 0 15px rgba(0, 234, 255, 0.5);
-    }
-
-    .btn-info {
-        background-color: #00eaff;
-        border-color: #00eaff;
-        color: #000;
-    }
-
-    .btn-info:hover {
-        background-color: #00d4ff;
-        border-color: #00d4ff;
-        color: #000;
-        box-shadow: 0 0 20px rgba(0, 234, 255, 0.6);
-    }
-
-    .qty-input {
-        border: 1px solid #00eaff50 !important;
-        background-color: transparent !important;
-        color: #fff !important;
-    }
-
-    .qty-input:focus {
-        border-color: #00eaff !important;
-        background-color: rgba(0, 234, 255, 0.1) !important;
-        box-shadow: 0 0 10px rgba(0, 234, 255, 0.3) !important;
-    }
-
-    .badge {
-        font-weight: 600;
-        padding: 0.5rem 0.75rem;
-    }
-
-    .sticky-top {
-        z-index: 100;
-    }
-
-    @media (max-width: 768px) {
-        .sticky-top {
-            position: static !important;
-            margin-top: 2rem;
-        }
-    }
-</style>
 
 <script>
     function finalizarCompra() {

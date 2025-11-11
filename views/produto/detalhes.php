@@ -61,33 +61,4 @@ document.querySelectorAll('.mini-img').forEach(img => {
     });
 });
 </script>
-
-<style>
-.btn-neon {
-    background-color: #00eaff;
-    border: none;
-    color: #0b0f19;
-    font-weight: bold;
-    transition: 0.3s;
-}
-.btn-neon:hover {
-    background-color: #00b8cc;
-    box-shadow: 0 0 25px #00eaff;
-    color: #fff;
-}
-.btn-outline-neon {
-    border: 1px solid #00eaff;
-    color: #00eaff;
-    font-weight: bold;
-    transition: 0.3s;
-}
-.btn-outline-neon:hover {
-    background-color: #00eaff;
-    color: #0b0f19;
-    box-shadow: 0 0 25px #00eaff;
-}
-body {
-    background-color: #0b0f19;
-    font-family: 'Poppins', sans-serif;
-}
-</style>
+<!-- product details styles moved to public/css/components/views-inline.css -->

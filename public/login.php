@@ -30,6 +30,7 @@ if ($_POST) {
     <link rel="stylesheet" href="css/sweetalert2.min.css">
     <link rel="stylesheet" href="css/dark-theme.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components/views-inline.css">
 
     <script src="js/jquery-3.5.1.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
@@ -60,90 +61,7 @@ if ($_POST) {
         }
     </script>
 
-    <style>
-        body {
-            background-color: #0b0f19;
-            color: #fff;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        /* Campos com texto e placeholder brancos */
-        .neon-input {
-            background-color: #1a1f2e;
-            border: 1px solid #00eaff60;
-            color: #fff;
-            transition: 0.3s;
-        }
-
-        .neon-input::placeholder {
-            color: #ffffffb3;
-            opacity: 1;
-        }
-
-        .neon-input:focus {
-            border-color: #00eaff;
-            box-shadow: 0 0 10px #00eaff80;
-            background-color: #10141f;
-            color: #fff;
-        }
-
-        /* Botão neon */
-        .btn-neon {
-            background-color: #00eaff;
-            border: none;
-            color: #0b0f19;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        .btn-neon:hover {
-            background-color: #00b8cc;
-            box-shadow: 0 0 20px #00eaff;
-            color: #fff;
-        }
-
-        /* Botão "Cadastrar-se" com borda neon */
-        .btn-outline-neon {
-            border: 1px solid #00eaff;
-            color: #00eaff;
-            font-weight: bold;
-            transition: 0.3s;
-            text-decoration: none;
-            display: inline-block;
-            padding: 10px;
-            border-radius: 6px;
-        }
-
-        .btn-outline-neon:hover {
-            background-color: #00eaff;
-            color: #0b0f19;
-            box-shadow: 0 0 20px #00eaff;
-        }
-
-        .card {
-            border-radius: 12px;
-        }
-
-        .login {
-            padding: 20px;
-        }
-
-        .btn-outline-secondary {
-            border: 1px solid #6c757d;
-            color: #999;
-            font-weight: bold;
-            transition: 0.3s;
-            text-decoration: none;
-            display: inline-block;
-            padding: 10px;
-            border-radius: 6px;
-        }
-
-        .btn-outline-secondary:hover {
-            background-color: #6c757d;
-            color: #fff;
-        }
-    </style>
+    <!-- login styles moved to css/components/views-inline.css -->
 </head>
 
 <body>

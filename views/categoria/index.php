@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container categoria-form">
     <div class="card shadow">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h2><i class="fas fa-tags me-2"></i><?= $dadosCategoria ? 'Editar Categoria' : 'Nova Categoria' ?></h2>
@@ -40,90 +40,4 @@
             </form>
         </div>
     </div>
-</div>
-
-<style>
-/* === Dark Neon Style === */
-body {
-    background-color: #0d1117;
-    color: #c9d1d9;
-    font-family: "Poppins", sans-serif;
-}
-
-.card {
-    background-color: #161b22;
-    border: 1px solid #1f6feb;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(31, 111, 235, 0.1);
-    margin-top: 30px;
-}
-
-.card-header {
-    background: linear-gradient(90deg, #0d6efd, #1f6feb);
-    color: #fff;
-    border-bottom: 1px solid #1f6feb;
-    border-radius: 10px 10px 0 0;
-    padding: 15px 20px;
-}
-
-.card-header h2 {
-    font-size: 1.3rem;
-    margin: 0;
-    color: #fff;
-}
-
-.form-label, label {
-    color: #58a6ff;
-    font-weight: 500;
-}
-
-.form-control, .form-select {
-    background-color: #0d1117;
-    border: 1px solid #30363d;
-    color: #c9d1d9;
-    transition: 0.3s;
-}
-
-.form-control:focus, .form-select:focus {
-    background-color: #0d1117;
-    color: #fff;
-    border-color: #1f6feb;
-    box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.25);
-}
-
-::placeholder {
-    color: #8b949e;
-}
-
-.btn-neon {
-    background-color: #1f6feb;
-    border: none;
-    color: #fff;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    border-radius: 5px;
-}
-
-.btn-neon:hover {
-    background-color: #388bfd;
-    box-shadow: 0 0 12px rgba(31, 111, 235, 0.6);
-    color: #fff;
-}
-
-.btn-outline-neon {
-    background-color: transparent;
-    border: 1px solid #1f6feb;
-    color: #58a6ff;
-    transition: all 0.3s ease;
-}
-
-.btn-outline-neon:hover {
-    background-color: #1f6feb;
-    color: #fff;
-    box-shadow: 0 0 10px rgba(31, 111, 235, 0.6);
-}
-
-.text-end {
-    text-align: end;
-}
-</style>
+<!-- categoria form styles moved to public/css/components/views-inline.css (scoped) -->
