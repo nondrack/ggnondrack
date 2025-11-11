@@ -23,28 +23,33 @@
 
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 echo "<script>mensagem('E-mail inválido','error','')</script>";
+                return;
             } else if (empty($senha)) {
                 echo "<script>mensagem('Senha inválida','error','')</script>";
+                return;
             }
 
             $dadosUsuario = $this->usuario->getDadosEmail($email);
 
-            //print_r($dadosUsuario);
             //verificar se trouxe alguma coisa
             if (empty($dadosUsuario->id)) {
-                echo "<script>mensagem('Usuário inválido','error','')</script>";
+                echo "<script>mensagem('Usuário não encontrado','error','')</script>";
+                return;
             } else if(!password_verify($senha, $dadosUsuario->senha)) {
                 echo "<script>mensagem('Senha inválida','error','')</script>";
+                return;
             } else {
-
                 //guardar informacoes em uma sessao
                 $_SESSION["user"] = array(
                     "id" => $dadosUsuario->id,
                     "nome" => $dadosUsuario->nome
                 );
-                //redireciono a tela
-                echo "<script>location.href='index.php'</script>";
-
+                
+                // Redirecionar para a página anterior ou home
+                $proximaPagina = $_SESSION['proximaPagina'] ?? 'index.php';
+                unset($_SESSION['proximaPagina']);
+                
+                echo "<script>location.href='{$proximaPagina}'</script>";
             }
         }
 

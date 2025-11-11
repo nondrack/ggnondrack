@@ -1,0 +1,433 @@
+/* ====== TEMA DARK GLOBAL ====== */
+
+/* Cores principais */
+:root {
+    --bg-dark: #0b0f19;
+    --bg-card: #111827;
+    --bg-light: #1a1f2e;
+    /* Neon primary (default azul). Use --neon-rgb for rgba helpers */
+    --color-neon: #00eaff;
+    --neon-rgb: 0,234,255;
+    --color-text: #fff;
+    --color-text-muted: #999;
+    --color-border: #00eaff30;
+    --color-border-light: #00eaff20;
+}
+
+/* Variantes translúcidas do neon para efeitos (baseadas em --neon-rgb) */
+:root {
+    --color-neon-05: rgba(var(--neon-rgb), 0.05);
+    --color-neon-06: rgba(var(--neon-rgb), 0.06);
+    --color-neon-08: rgba(var(--neon-rgb), 0.08);
+    --color-neon-12: rgba(var(--neon-rgb), 0.12);
+    --color-neon-18: rgba(var(--neon-rgb), 0.18);
+    --color-neon-20: rgba(var(--neon-rgb), 0.2);
+    --color-neon-25: rgba(var(--neon-rgb), 0.25);
+    --color-neon-30: rgba(var(--neon-rgb), 0.30);
+    --color-neon-40: rgba(var(--neon-rgb), 0.40);
+    --color-neon-50: rgba(var(--neon-rgb), 0.50);
+    --color-neon-60: rgba(var(--neon-rgb), 0.60);
+    --color-neon-80: rgba(var(--neon-rgb), 0.80);
+}
+
+/* Tema alternativo: neon roxo */
+body.theme-purple {
+    --color-neon: #b000ff;
+    --neon-rgb: 176,0,255;
+    --color-border: rgba(176,0,255,0.18);
+    --color-border-light: rgba(176,0,255,0.12);
+}
+
+/* ====== BODY E ESTRUTURA ====== */
+* {
+    background-color: inherit;
+}
+
+html, body {
+    background-color: var(--bg-dark) !important;
+    color: var(--color-text) !important;
+}
+
+/* ====== CARDS ====== */
+.card {
+    background-color: var(--bg-card) !important;
+    border-color: var(--color-border) !important;
+    color: var(--color-text) !important;
+}
+
+.card-header {
+    background-color: var(--bg-dark) !important;
+    border-bottom-color: var(--color-border) !important;
+}
+
+.card-footer {
+    background-color: var(--bg-dark) !important;
+    border-top-color: var(--color-border) !important;
+}
+
+/* ====== FORMS ====== */
+.form-control,
+.form-select,
+textarea,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="search"] {
+    background-color: var(--bg-card) !important;
+    border-color: var(--color-border) !important;
+    color: var(--color-text) !important;
+}
+
+.form-control:focus,
+.form-select:focus,
+textarea:focus {
+    background-color: var(--bg-light) !important;
+    border-color: var(--color-neon) !important;
+    color: var(--color-text) !important;
+    box-shadow: 0 0 10px rgba(var(--neon-rgb), 0.3) !important;
+}
+
+.form-control::placeholder {
+    color: var(--color-text-muted) !important;
+}
+
+.form-label {
+    color: var(--color-text) !important;
+}
+
+/* ====== NAVBARS ====== */
+.navbar,
+.navbar-expand,
+.navbar-expand-sm,
+.navbar-expand-md,
+.navbar-expand-lg,
+.navbar-expand-xl,
+.navbar-expand-xxl {
+    background-color: var(--bg-dark) !important;
+    border-bottom: 1px solid var(--color-border) !important;
+}
+
+.navbar-collapse {
+    background-color: var(--bg-dark) !important;
+}
+
+.navbar-nav .nav-link {
+    color: var(--color-neon) !important;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--color-text) !important;
+    text-shadow: 0 0 10px var(--color-neon);
+}
+
+/* ====== MODALS ====== */
+.modal-content {
+    background-color: var(--bg-card) !important;
+    border-color: var(--color-border) !important;
+}
+
+.modal-header {
+    background-color: var(--bg-dark) !important;
+    border-bottom-color: var(--color-border) !important;
+}
+
+.modal-title {
+    color: var(--color-text) !important;
+}
+
+.btn-close {
+    filter: brightness(1.2) !important;
+}
+
+/* ====== DROPDOWNS ====== */
+.dropdown-menu {
+    background-color: var(--bg-card) !important;
+    border-color: var(--color-border) !important;
+}
+
+.dropdown-item {
+    color: var(--color-text) !important;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: var(--bg-light) !important;
+    color: var(--color-neon) !important;
+}
+
+.dropdown-divider {
+    border-color: var(--color-border) !important;
+}
+
+/* ====== ALERTS ====== */
+.alert {
+    background-color: var(--bg-card) !important;
+    border-color: var(--color-border) !important;
+    color: var(--color-text) !important;
+}
+
+.alert-info {
+    background-color: rgba(var(--neon-rgb), 0.1) !important;
+    border-color: var(--color-neon) !important;
+    color: var(--color-neon) !important;
+}
+
+.alert-danger {
+    background-color: rgba(255, 107, 107, 0.1) !important;
+    border-color: #ff6b6b !important;
+    color: #ff6b6b !important;
+}
+
+.alert-success {
+    background-color: rgba(var(--neon-rgb), 0.1) !important;
+    border-color: var(--color-neon) !important;
+    color: var(--color-neon) !important;
+}
+
+/* ====== TABLES ====== */
+.table {
+    color: var(--color-text) !important;
+    border-color: var(--color-border-light) !important;
+}
+
+.table thead {
+    background-color: var(--bg-dark) !important;
+    border-bottom-color: var(--color-border) !important;
+}
+
+.table thead th {
+    color: var(--color-neon) !important;
+    border-color: var(--color-border) !important;
+}
+
+.table tbody tr {
+    border-bottom-color: var(--color-border-light) !important;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(var(--neon-rgb), 0.05) !important;
+}
+
+.table-dark {
+    background-color: var(--bg-card) !important;
+}
+
+/* ====== PAGINATION ====== */
+.pagination {
+    --bs-pagination-bg: var(--bg-card);
+    --bs-pagination-border-color: var(--color-border);
+    --bs-pagination-hover-bg: var(--bg-light);
+    --bs-pagination-hover-border-color: var(--color-neon);
+    --bs-pagination-active-bg: var(--color-neon);
+    --bs-pagination-active-border-color: var(--color-neon);
+}
+
+.page-link {
+    color: var(--color-neon);
+}
+
+.page-link:hover {
+    color: var(--color-text);
+}
+
+/* ====== BADGES ====== */
+.badge {
+    background-color: var(--color-neon) !important;
+    color: var(--bg-dark) !important;
+}
+
+.badge.bg-dark {
+    background-color: var(--bg-card) !important;
+    color: var(--color-neon) !important;
+}
+
+/* ====== BUTTONS ====== */
+.btn {
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.btn-light,
+.btn-white {
+    background-color: var(--bg-card) !important;
+    border-color: var(--color-border) !important;
+    color: var(--color-text) !important;
+}
+
+.btn-light:hover,
+.btn-white:hover {
+    background-color: var(--bg-light) !important;
+    border-color: var(--color-neon) !important;
+    color: var(--color-neon) !important;
+}
+
+.btn-outline-light {
+    color: var(--color-text) !important;
+    border-color: var(--color-border) !important;
+}
+
+.btn-outline-light:hover {
+    background-color: transparent !important;
+    border-color: var(--color-neon) !important;
+    color: var(--color-neon) !important;
+}
+
+/* ====== PROGRESS ====== */
+.progress {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--color-border) !important;
+}
+
+.progress-bar {
+    background-color: var(--color-neon) !important;
+}
+
+/* ====== TOOLTIPS ====== */
+.tooltip-inner {
+    background-color: var(--color-neon) !important;
+    color: var(--bg-dark) !important;
+}
+
+/* ====== POPOVERS ====== */
+.popover {
+    background-color: var(--bg-card) !important;
+    border-color: var(--color-border) !important;
+}
+
+.popover-header {
+    background-color: var(--bg-dark) !important;
+    border-bottom-color: var(--color-border) !important;
+    color: var(--color-neon) !important;
+}
+
+.popover-body {
+    color: var(--color-text) !important;
+}
+
+/* ====== LINKS ====== */
+a {
+    color: var(--color-neon) !important;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: var(--color-text) !important;
+    text-shadow: 0 0 10px var(--color-neon);
+}
+
+/* ====== HORIZONTAIS ====== */
+hr {
+    border-color: var(--color-border) !important;
+}
+
+/* ====== BACKGROUNDS GENÉRICOS ====== */
+.bg-white,
+.bg-light {
+    background-color: var(--bg-card) !important;
+    color: var(--color-text) !important;
+}
+
+.bg-dark {
+    background-color: var(--bg-dark) !important;
+    color: var(--color-text) !important;
+}
+
+/* ====== TEXTOS GENÉRICOS ====== */
+.text-dark,
+.text-secondary {
+    color: var(--color-text) !important;
+}
+
+.text-muted {
+    color: var(--color-text-muted) !important;
+}
+
+/* ====== SCROLLBAR ====== */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-neon);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #00b8cc;
+}
+
+/* ====== SEPARADORES ====== */
+.border,
+.border-top,
+.border-bottom,
+.border-start,
+.border-end {
+    border-color: var(--color-border) !important;
+}
+
+/* ====== SHADOWS ====== */
+.shadow,
+.shadow-sm,
+.shadow-lg {
+    box-shadow: 0 0 10px rgba(var(--neon-rgb), 0.1) !important;
+}
+
+/* ====== INPUT GROUPS ====== */
+.input-group-text {
+    background-color: var(--bg-card) !important;
+    border-color: var(--color-border) !important;
+    color: var(--color-neon) !important;
+}
+
+/* ====== PURPLE NEON BRANDING ====== */
+@keyframes purple-glow-pulse {
+    0%, 100% {
+        color: #b000ff;
+        text-shadow: 0 0 10px #b000ff, 0 0 20px #b000ff;
+    }
+    50% {
+        color: #ff00ff;
+        text-shadow: 0 0 20px #b000ff, 0 0 40px #b000ff, 0 0 60px #b000ff;
+    }
+}
+
+.text-purple-neon {
+    color: #b000ff !important;
+    animation: purple-glow-pulse 2s ease-in-out infinite !important;
+    font-weight: bold;
+}
+
+/* ====== CUSTOM SELECTS ====== */
+select option {
+    background-color: var(--bg-card);
+    color: var(--color-text);
+}
+
+/* ====== PLACEHOLDERS ====== */
+::placeholder {
+    color: var(--color-text-muted) !important;
+    opacity: 0.7;
+}
+
+/* ====== FOCUS STATES ====== */
+:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(var(--neon-rgb), 0.3) !important;
+}
+
+/* ====== PRINT ====== */
+@media print {
+    html,
+    body {
+        background-color: white !important;
+        color: black !important;
+    }
+}

@@ -1,74 +1,64 @@
 <?php
-require_once "../config/conexao.php";
+require_once "../config/Conexao.php";
 require_once "../models/Usuario.php";
 
 class UsuarioController {
 
     private $usuario;
 
-    public function __construct($pdo) {
+    public function __construct() {
+        $pdo = Conexao::conectar();
         $this->usuario = new Usuario($pdo);
     }
 
-    // =====================================
-    // LOGIN DO USUÁRIO
-    // =====================================
-    public function login() {
-    if ($_POST) {
-        $email = $_POST['email'] ?? '';
-        $senha = $_POST['senha'] ?? '';
+    /**
+     * Exibe a página de cadastro
+     */
+    public function cadastro() {
+        require "../views/usuario/cadastro.php";
+    }
 
-        $usuario = $this->usuario->getDadosEmail($email);
+    /**
+     * Salva um novo usuário
+     */
+    public function salvar() {
+        if ($_POST) {
+            $nome = trim($_POST['nome'] ?? '');
+            $email = trim($_POST['email'] ?? '');
+            $senha = trim($_POST['senha'] ?? '');
+            $confirmarSenha = trim($_POST['confirmarSenha'] ?? '');
 
-        if ($usuario && password_verify($senha, $usuario->senha)) {
-            // Sucesso
-            session_start();
-            $_SESSION['user'] = [
-                'id' => $usuario->id,
-                'nome' => $usuario->nome,
-                'email' => $usuario->email
-            ];
-            header("Location: ../../public/index.php");
-        } else {
-            session_start();
-            $_SESSION['erro'] = "E-mail ou senha incorretos!";
-            header("Location: ../../views/index/login.php");
+            // Validações
+            if (empty($nome)) {
+                echo "<script>mensagem('Nome é obrigatório!','error','')</script>";
+                return;
+            }
+
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                echo "<script>mensagem('E-mail inválido!','error','')</script>";
+                return;
+            }
+
+            if (strlen($senha) < 6) {
+                echo "<script>mensagem('Senha deve ter pelo menos 6 caracteres!','error','')</script>";
+                return;
+            }
+
+            if ($senha !== $confirmarSenha) {
+                echo "<script>mensagem('As senhas não conferem!','error','')</script>";
+                return;
+            }
+
+            // Tentar cadastrar
+            $resultado = $this->usuario->cadastrar($nome, $email, $senha);
+
+            if ($resultado['status']) {
+                echo "<script>mensagem('Cadastro realizado com sucesso! Você será redirecionado para o login.','success','login.php')</script>";
+            } else {
+                echo "<script>mensagem('{$resultado['mensagem']}','error','')</script>";
+            }
         }
     }
 }
-
-    // =====================================
-    // CADASTRO DE USUÁRIO
-    // =====================================
-       public function cadastro() {
-        require "../views/usuario/cadastro.php";
-    }
-    
-    public function salvar() {
-        if ($_POST) {
-            $nome = $_POST['nome'] ?? '';
-            $email = $_POST['email'] ?? '';
-            $senha = $_POST['senha'] ?? '';
-
-            // Verificar se email já existe
-            if ($this->usuario->getDadosEmail($email)) {
-                $_SESSION['erro'] = "E-mail já cadastrado!";
-                header("Location: cadastro.php");
-                exit;
-            }
-
-            $cadastrado = $this->usuario->cadastrar($nome, $email, $senha);
-
-            if ($cadastrado) {
-                $_SESSION['sucesso'] = "Cadastro realizado com sucesso!";
-                header("Location: login.php");
-            } else {
-                $_SESSION['erro'] = "Erro ao cadastrar usuário.";
-                header("Location: cadastro.php");
-            }
-        }
-    }
-    }
-
-
+?>
 

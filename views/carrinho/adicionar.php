@@ -7,6 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     die("<h3 style='color:red;text-align:center;'>ID do produto não informado!</h3>");
 }
+echo"<h2> teste</h2>";
 
 $id = intval($_GET['id']);
 
