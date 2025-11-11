@@ -14,9 +14,9 @@ foreach ($itens as $item) {
 
 // Simular taxas e descontos
 $subtotal = $total;
-$taxa = $subtotal * 0.05; // 5% de taxa
+$taxa = 0; // Sem taxa
 $desconto = 0; // Pode ser atualizado dinamicamente
-$totalFinal = $subtotal + $taxa - $desconto;
+$totalFinal = $subtotal - $desconto;
 ?>
 
 <div class="container py-5">
@@ -77,7 +77,7 @@ $totalFinal = $subtotal + $taxa - $desconto;
                                                 <!-- QUANTIDADE -->
                                                 <div class="col-md-2 col-4">
                                                     <form method="POST" action="index.php?param=carrinho/atualizar/<?= $id ?>" class="d-flex align-items-center justify-content-center">
-                                                        <div class="btn-group" role="group">
+                                                        <div class="btn-group qty-control" role="group" data-id="<?= $id ?>">
                                                             <button type="button" class="btn btn-sm btn-outline-info qty-minus" data-id="<?= $id ?>">−</button>
                                                             <input type="number" name="quantidade" value="<?= $item['qtde'] ?>" class="form-control form-control-sm text-center qty-input" style="width: 50px;" min="1" max="999">
                                                             <button type="button" class="btn btn-sm btn-outline-info qty-plus" data-id="<?= $id ?>">+</button>
@@ -145,12 +145,6 @@ $totalFinal = $subtotal + $taxa - $desconto;
                         <div class="d-flex justify-content-between mb-2">
                             <span class="text-light">Subtotal:</span>
                             <span class="text-light fw-bold">R$ <?= number_format($subtotal, 2, ',', '.') ?></span>
-                        </div>
-
-                        <!-- TAXA -->
-                        <div class="d-flex justify-content-between mb-2 pb-2 border-bottom border-secondary">
-                            <span class="text-light">Taxa (5%):</span>
-                            <span class="text-warning fw-bold">R$ <?= number_format($taxa, 2, ',', '.') ?></span>
                         </div>
 
                         <!-- DESCONTO (se houver) -->
@@ -279,17 +273,21 @@ $totalFinal = $subtotal + $taxa - $desconto;
     // Aumentar quantidade
     document.querySelectorAll('.qty-plus').forEach(btn => {
         btn.addEventListener('click', function() {
-            const input = this.parentElement.querySelector('.qty-input');
+            const form = this.closest('form');
+            const input = form.querySelector('.qty-input');
             input.value = parseInt(input.value) + 1;
+            form.submit();
         });
     });
 
     // Diminuir quantidade
     document.querySelectorAll('.qty-minus').forEach(btn => {
         btn.addEventListener('click', function() {
-            const input = this.parentElement.querySelector('.qty-input');
+            const form = this.closest('form');
+            const input = form.querySelector('.qty-input');
             if (parseInt(input.value) > 1) {
                 input.value = parseInt(input.value) - 1;
+                form.submit();
             }
         });
     });

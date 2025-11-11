@@ -149,6 +149,29 @@
 </style>
 
 <script>
+  // Atualizar contador do carrinho
+  function atualizarContadorCarrinho() {
+    fetch('index.php?action=get-cart-count', {
+      method: 'GET',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      const cartCount = document.getElementById('cart-count');
+      if (cartCount) {
+        const quantidade = data.quantidade || 0;
+        cartCount.textContent = quantidade;
+        cartCount.style.display = quantidade > 0 ? 'block' : 'none';
+      }
+    })
+    .catch(error => console.log('Erro ao atualizar carrinho:', error));
+  }
+
+  // Inicializar contador ao carregar a página
+  document.addEventListener('DOMContentLoaded', atualizarContadorCarrinho);
+
   // Theme toggle: alterna entre neon azul (padrão) e neon roxo
   (function(){
     const btn = document.getElementById('theme-toggle');

@@ -1,5 +1,18 @@
 <?php
 session_start();
+
+// Endpoint para obter quantidade do carrinho
+if (isset($_GET['action']) && $_GET['action'] === 'get-cart-count') {
+    header('Content-Type: application/json');
+    $quantidade = 0;
+    if (isset($_SESSION['carrinho']) && is_array($_SESSION['carrinho'])) {
+        foreach ($_SESSION['carrinho'] as $item) {
+            $quantidade += $item['qtde'] ?? 0;
+        }
+    }
+    echo json_encode(['quantidade' => $quantidade]);
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -71,6 +84,12 @@ session_start();
             
             // Se está logado, redireciona para adicionar ao carrinho
             location.href = 'index.php?param=carrinho/adicionar/' + produtoId;
+            
+            // Atualizar contador após adicionar
+            setTimeout(() => {
+                atualizarContadorCarrinho();
+            }, 500);
+            
             return false;
         }
     </script>
