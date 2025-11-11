@@ -202,8 +202,8 @@ $totalFinal = $subtotal - $desconto;
             cancelButtonText: '<i class="fas fa-times"></i> Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
-                // location.href = 'index.php?param=checkout';
-                alert('Checkout em desenvolvimento!');
+                // Redirecionar para a página de finalização com formulário de dados
+                location.href = 'index.php?param=carrinho/dados';
             }
         });
     }
