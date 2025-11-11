@@ -110,11 +110,10 @@
 
         // Crie um objeto de preferência
         $preference = new MercadoPago\Preference();
-        use MercadoPago\Payer;
 
         $preference->items = $itens;
 
-        $payer = new Payer();
+        $payer = new MercadoPago\Payer();
         $payer->name = $nome;
         $payer->email = $email;
 
