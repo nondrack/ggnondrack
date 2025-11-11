@@ -1,7 +1,12 @@
 <?php
-    //iniciar a sessao
+    // iniciar a sessao
     session_start();
-    //apagar a sessao user
+
+    // remover informações do usuário e esvaziar o carrinho ao sair
     unset($_SESSION["user"]);
-    //redirecionar para o index / login
+    if (isset($_SESSION["carrinho"])) {
+        unset($_SESSION["carrinho"]);
+    }
+
+    // redirecionar para a página inicial
     header("Location: index.php");

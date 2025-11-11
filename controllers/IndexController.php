@@ -18,6 +18,7 @@
         }
 
         public function verificar($dados) {
+            if (session_status() === PHP_SESSION_NONE) session_start();
             $email = trim($dados["email"] ?? NULL);
             $senha = trim($dados["senha"] ?? NULL);
 
@@ -39,6 +40,11 @@
                 echo "<script>mensagem('Senha inválida','error','')</script>";
                 return;
             } else {
+                // Se já existia um usuário diferente logado, esvaziar o carrinho
+                if (isset($_SESSION["user"]) && ($_SESSION["user"]["id"] ?? null) !== $dadosUsuario->id) {
+                    if (isset($_SESSION["carrinho"])) unset($_SESSION["carrinho"]);
+                }
+
                 //guardar informacoes em uma sessao
                 $_SESSION["user"] = array(
                     "id" => $dadosUsuario->id,
