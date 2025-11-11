@@ -63,6 +63,22 @@ class CarrinhoController {
     }
 
     /**
+     * Exibe o formulário de dados (nome e email) antes de finalizar
+     */
+    public function dados() {
+        if (session_status() === PHP_SESSION_NONE) session_start();
+        require_once __DIR__ . '/../views/carrinho/dados.php';
+    }
+
+    /**
+     * Exibe a página de finalização com opções de pagamento (PIX, etc)
+     */
+    public function finalizar() {
+        if (session_status() === PHP_SESSION_NONE) session_start();
+        require_once __DIR__ . '/../views/carrinho/finalizar.php';
+    }
+
+    /**
      * Limpa todos os itens do carrinho
      */
     public function limpar() {
