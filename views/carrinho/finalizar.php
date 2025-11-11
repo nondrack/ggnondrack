@@ -31,6 +31,10 @@
 
         $vendaId = $vendaModel->criarVenda($clienteId);
 
+        // Salvar itens da venda
+        if (!empty($_SESSION['carrinho'])) {
+            $vendaModel->salvarItens($vendaId, $_SESSION['carrinho']);
+        }
         // Aqui você poderia salvar itens da venda em tabela separada (venda_itens) se existir.
 
         // Limpar carrinho
@@ -52,6 +56,10 @@
 
         // armazenar id temporariamente para exibir QR
         $generatedPixVendaId = $pixVendaId;
+        // Salvar itens da venda recém-criada
+        if (!empty($_SESSION['carrinho'])) {
+            $vendaModel->salvarItens($pixVendaId, $_SESSION['carrinho']);
+        }
     }
 
     // Confirmar pagamento via PIX (simulado) - etapa 2
@@ -94,6 +102,57 @@
 
     }
 
+    // Calcular total do carrinho (usado para pagamentos)
+    $total = 0;
+    foreach ($_SESSION["carrinho"] as $p) {
+        $total += ($p['valor'] * $p['qtde']);
+    }
+
+    // Verificar status de pagamento Mercado Pago (consulta manual via botão)
+    if (isset($_POST['check_mp']) && !empty($_POST['venda_id'])) {
+        require_once __DIR__ . '/../../config/Conexao.php';
+        require_once __DIR__ . '/../../models/Venda.php';
+
+        $pdo = Conexao::conectar();
+        $vendaModel = new Venda($pdo);
+        $vendaIdCheck = (int)$_POST['venda_id'];
+        $venda = $vendaModel->buscarPorId($vendaIdCheck);
+
+        $txid = $venda->txid ?? null;
+        if ($txid && strpos($txid, 'mp_') === 0) {
+            $mpPaymentId = substr($txid, 3);
+
+            // Consultar API do Mercado Pago
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, "https://api.mercadopago.com/v1/payments/{$mpPaymentId}");
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ["Authorization: Bearer {$mpToken}"]);
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            if ($httpCode === 200) {
+                $pay = json_decode($response, true);
+                $status = $pay['status'] ?? null;
+                if ($status === 'approved') {
+                    $vendaModel->finalizarVenda($vendaIdCheck, 'mercadopago', $mpPaymentId);
+                    unset($_SESSION['carrinho']);
+                    echo "<script>alert('Pagamento confirmado via Mercado Pago. Venda #{$vendaIdCheck} marcada como PAGA.'); location.href='index.php';</script>";
+                    exit;
+                } else {
+                    echo "<script>alert('Pagamento ainda não aprovado. Status: " . htmlspecialchars($status) . "'); history.back();</script>";
+                    exit;
+                }
+            } else {
+                echo "<script>alert('Erro ao consultar Mercado Pago (HTTP: {$httpCode}).'); history.back();</script>";
+                exit;
+            }
+        } else {
+            echo "<script>alert('TXID do Mercado Pago não encontrado para essa venda.'); history.back();</script>";
+            exit;
+        }
+    }
+
     // PIX configurado?
     $usePix = false;
     $pixConfig = $paymentConfig['pix'] ?? null;
@@ -108,29 +167,87 @@
         require __DIR__ . '/../../vendor/autoload.php'; // autoload do Composer
         MercadoPago\SDK::setAccessToken($mpToken);
 
-        // Crie um objeto de preferência
-        $preference = new MercadoPago\Preference();
+        // Se Mercado Pago e PIX habilitado, criar pagamento PIX via API e mostrar QR
+        if ($usePix) {
+            require_once __DIR__ . '/../../config/Conexao.php';
+            require_once __DIR__ . '/../../models/Venda.php';
 
-        $preference->items = $itens;
+            $pdo = Conexao::conectar();
+            $vendaModel = new Venda($pdo);
+            $clienteId = $_SESSION['user']['id'] ?? 0;
 
-        $payer = new MercadoPago\Payer();
-        $payer->name = $nome;
-        $payer->email = $email;
+            // Criar pagamento PIX via Mercado Pago apenas se o usuário tiver solicitado geração (generatedPixVendaId)
+            if (!empty($generatedPixVendaId)) {
+                // usar a venda previamente criada no POST generate_pix
+                $vendaIdForMp = $generatedPixVendaId;
 
-        $preference->payer = $payer;
+                // Criar pagamento PIX via Mercado Pago
+                $payment_mp = new MercadoPago\Payment();
+            $payment_mp->transaction_amount = (float)$total;
+            $payment_mp->description = "Compra #{$vendaIdForMp}";
+            $payment_mp->payment_method_id = 'pix';
+            $payment_mp->payer = array(
+                'email' => $email,
+                'first_name' => $nome
+            );
+            $payment_mp->metadata = array('venda_id' => $vendaIdForMp);
 
-        // URL de retorno após o pagamento (usar base configurada)
-        $base = rtrim($returnBase, '/');
-        $preference->back_urls = array(
-            "success" => $base . "/index.php?param=carrinho/sucesso",
-            "failure" => $base . "/index.php?param=carrinho/falha",
-            "pending" => $base . "/index.php?param=carrinho/pendente"
-        );
+            $payment_mp->save();
 
-        $preference->notification_url = $notificationUrl;
-        $preference->auto_return = "approved"; // Retorno automático quando aprovado
+            // Armazenar identificação do pagamento no campo txid da venda
+            try {
+                $stmt = $pdo->prepare("UPDATE venda SET txid = :tx WHERE id = :id");
+                $stmt->execute([':tx' => 'mp_' . ($payment_mp->id ?? ''), ':id' => $vendaIdForMp]);
+            } catch (Exception $e) {
+                // não crítico
+            }
 
-        $preference->save();
+                $generatedPixVendaId = $vendaIdForMp;
+
+            // Tentar obter QR do response do Mercado Pago
+            $qr_code = null;
+            $qr_base64 = null;
+            if (!empty($payment_mp->point_of_interaction)) {
+                $poi = $payment_mp->point_of_interaction;
+                if (!empty($poi->transaction_data)) {
+                    $td = $poi->transaction_data;
+                    $qr_code = $td->qr_code ?? null;
+                    $qr_base64 = $td->qr_code_base64 ?? null;
+                }
+            }
+
+            if (!empty($qr_base64)) {
+                $qrUrl = 'data:image/png;base64,' . $qr_base64;
+            } elseif (!empty($qr_code)) {
+                $qrUrl = 'https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=' . urlencode($qr_code);
+            } else {
+                $qrUrl = null;
+            }
+
+        } else {
+            // Crie um objeto de preferência (checkout web) quando não for PIX
+            $preference = new MercadoPago\Preference();
+            $preference->items = $itens;
+
+            $payer = new MercadoPago\Payer();
+            $payer->name = $nome;
+            $payer->email = $email;
+
+            $preference->payer = $payer;
+
+            // URL de retorno após o pagamento (usar base configurada)
+            $base = rtrim($returnBase, '/');
+            $preference->back_urls = array(
+                "success" => $base . "/index.php?param=carrinho/sucesso",
+                "failure" => $base . "/index.php?param=carrinho/falha",
+                "pending" => $base . "/index.php?param=carrinho/pendente"
+            );
+
+            $preference->notification_url = $notificationUrl;
+            $preference->auto_return = "approved"; // Retorno automático quando aprovado
+
+            $preference->save();
+        }
     }
 
   
@@ -194,10 +311,41 @@
                 <p class="text-center">
                     <!-- Botão de pagamento -->
                     <?php if ($useMercadoPago): ?>
-                        <script src="https://www.mercadopago.com.br/integrations/v1/web-payment-checkout.js"
-                                data-preference-id="<?php echo htmlspecialchars($preference->id); ?>"
-                                data-button-label="Pagar com Mercado Pago (Boleto, Cartão de Crédito ou Débito)">
-                        </script>
+                        <?php if ($usePix): ?>
+                            <?php if (!empty($generatedPixVendaId) && !empty($qrUrl)): ?>
+                                <h5>PIX - Código (Mercado Pago)</h5>
+                                <p>Valor: <strong>R$ <?= number_format($total, 2, ',', '.') ?></strong></p>
+
+                                <div class="text-center mb-3">
+                                    <img src="<?= htmlspecialchars($qrUrl) ?>" alt="QR Code PIX" style="width:300px;height:300px;" />
+                                </div>
+
+                                <div class="d-flex justify-content-center gap-2">
+                                    <form method="post" action="">
+                                        <input type="hidden" name="venda_id" value="<?= $generatedPixVendaId ?>">
+                                        <button type="submit" name="check_mp" value="1" class="btn btn-primary">Verificar pagamento (Mercado Pago)</button>
+                                    </form>
+                                    <form method="post" action="">
+                                        <input type="hidden" name="venda_id" value="<?= $generatedPixVendaId ?>">
+                                        <button type="submit" name="confirm_pix" value="1" class="btn btn-secondary">Confirmar manualmente (simulado)</button>
+                                    </form>
+                                </div>
+
+                                <p class="small text-muted mt-2">A confirmação automática também pode chegar via webhook se você configurar a URL de notificação em `config/payment.php`.</p>
+                            <?php else: ?>
+                                <form method="post" action="">
+                                    <input type="hidden" name="nome" value="<?= htmlspecialchars($nome) ?>">
+                                    <input type="hidden" name="email" value="<?= htmlspecialchars($email) ?>">
+                                    <button type="submit" name="generate_pix" value="1" class="btn btn-success">Gerar Código PIX (Mercado Pago)</button>
+                                </form>
+                                <p class="small text-muted">Ao gerar o código, será criada uma venda pendente e você receberá o QR para pagamento via Mercado Pago.</p>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <script src="https://www.mercadopago.com.br/integrations/v1/web-payment-checkout.js"
+                                    data-preference-id="<?php echo htmlspecialchars($preference->id); ?>"
+                                    data-button-label="Pagar com Mercado Pago (Boleto, Cartão de Crédito ou Débito)">
+                            </script>
+                        <?php endif; ?>
                     <?php else: ?>
                         <!-- Se PIX estiver habilitado, oferecer opção PIX -->
                         <?php if ($usePix): ?>
