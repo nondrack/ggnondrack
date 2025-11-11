@@ -84,16 +84,19 @@ $categorias = $categoriaModel->listar(); // array de objetos com id e nome
             <label for="filtro-categoria" class="filter-label">
                 <i class="fas fa-filter me-2"></i> Filtrar por Categoria:
             </label>
-            <select id="filtro-categoria" class="form-select filtro-categoria">
-                <option value="todas">
-                    <i class="fas fa-th"></i> Todas as categorias
-                </option>
-                <?php foreach ($categorias as $cat): ?>
-                    <option value="<?= htmlspecialchars($cat->nome) ?>">
-                        <?= htmlspecialchars($cat->nome) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
+      <select id="filtro-categoria" class="form-select filtro-categoria">
+        <option value="todas">
+          <i class="fas fa-th"></i> Todas as categorias
+        </option>
+        <?php
+          // Criar mapa id => nome para exibir nomes das categorias nos produtos
+          $categoriaMap = [];
+          foreach ($categorias as $cat) {
+            $categoriaMap[$cat->id] = $cat->nome;
+        ?>
+          <option value="<?= htmlspecialchars($cat->id) ?>"><?= htmlspecialchars($cat->nome) ?></option>
+        <?php } ?>
+      </select>
         </div>
     </div>
 
@@ -106,7 +109,7 @@ $categorias = $categoriaModel->listar(); // array de objetos com id e nome
                     $caminhoWeb = '../_arquivos/' . $produto->imagem;
                     $temImagem = !empty($produto->imagem) && file_exists($caminhoServidor);
                 ?>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-3 produto-item" data-categoria="<?= htmlspecialchars($produto->categoria) ?>">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 produto-item" data-categoria="<?= htmlspecialchars($produto->categoria_id) ?>">
                     <div class="card produto-card h-100">
                         <!-- IMAGEM DO PRODUTO -->
                         <div class="produto-img-wrapper">
@@ -129,12 +132,12 @@ $categorias = $categoriaModel->listar(); // array de objetos com id e nome
                                     <?= htmlspecialchars($produto->nome) ?>
                                 </h5>
 
-                                <?php if (!empty($produto->categoria)): ?>
-                                    <p class="categoria-badge">
-                                        <i class="fas fa-tag"></i>
-                                        <?= htmlspecialchars($produto->categoria) ?>
-                                    </p>
-                                <?php endif; ?>
+                <?php if (!empty($produto->categoria_id)): ?>
+                  <p class="categoria-badge">
+                    <i class="fas fa-tag"></i>
+                    <?= htmlspecialchars($categoriaMap[$produto->categoria_id] ?? $produto->categoria_id) ?>
+                  </p>
+                <?php endif; ?>
 
                                 <p class="card-text descricao-produto">
                                     <?= substr($produto->descricao ?? "Sem descrição", 0, 80) ?>...
@@ -174,14 +177,14 @@ $categorias = $categoriaModel->listar(); // array de objetos com id e nome
 <!-- Script para filtrar por categoria -->
 <script>
 document.getElementById('filtro-categoria').addEventListener('change', function() {
-  const categoriaSelecionada = this.value.toLowerCase();
+  const categoriaSelecionada = this.value;
   const itens = document.querySelectorAll('.produto-item');
   let visivel = 0;
 
   itens.forEach(item => {
-    const categoriasProduto = item.dataset.categoria.toLowerCase().split(',').map(c => c.trim());
+    const categoriasProduto = (item.dataset.categoria || '').toString().split(',').map(c => c.trim());
     const mostrar = categoriaSelecionada === 'todas' || categoriasProduto.includes(categoriaSelecionada);
-    
+
     if (mostrar) {
       item.style.display = 'block';
       item.style.animation = 'fadeIn 0.3s ease';
@@ -229,6 +232,80 @@ document.getElementById('filtro-categoria').addEventListener('change', function(
   50% {
     text-shadow: 0 0 20px var(--color-neon), 0 0 40px var(--color-neon), 0 0 60px var(--color-neon);
   }
+}
+
+/* ====== ESTILOS - LISTAGEM DE PRODUTOS ====== */
+.produto-card {
+  border: 1px solid var(--color-border);
+  background: linear-gradient(180deg, rgba(17,24,39,0.6), rgba(17,24,39,0.4));
+  box-shadow: 0 8px 30px rgba(11,15,25,0.45);
+  transition: transform 220ms ease, box-shadow 220ms ease;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.produto-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 48px rgba(11,15,25,0.6), 0 0 40px rgba(var(--neon-rgb), 0.08);
+}
+
+.produto-img-wrapper {
+  position: relative;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(var(--neon-rgb),0.03), transparent);
+}
+
+.produto-img {
+  max-height: 140px;
+  width: auto;
+  object-fit: contain;
+  transition: transform 300ms ease, filter 300ms ease;
+}
+
+.produto-card:hover .produto-img {
+  transform: scale(1.03);
+}
+
+.produto-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: linear-gradient(90deg, #b000ff 0%, #7a00ff 100%);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  box-shadow: 0 6px 20px rgba(176,0,255,0.12);
+}
+
+.categoria-badge {
+  display: inline-block;
+  background: rgba(176,0,255,0.06);
+  color: #b000ff;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  border: 1px solid rgba(176,0,255,0.08);
+}
+
+.preco-produto {
+  font-weight: 800;
+  color: var(--color-neon);
+  text-shadow: 0 0 6px rgba(var(--neon-rgb), 0.12);
+  font-size: 1.05rem;
+}
+
+.produto-footer .btn {
+  border-radius: 8px;
+}
+
+@media (max-width: 576px) {
+  .produto-img-wrapper { height: 120px; }
+  .produto-img { max-height: 100px; }
 }
 
 /* ====== HERO BANNER ====== */

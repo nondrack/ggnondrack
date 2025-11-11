@@ -4,107 +4,124 @@
 
 <style>
     /* ======= ESTILO GERAL ======= */
+    :root {
+        --bg: #0b0f19;
+        --card-bg: #0f1720;
+        --muted: #9aa7b2;
+        --neon: #b000ff; /* branding purple */
+        --neon-rgb: 176,0,255;
+        --border: rgba(176,0,255,0.12);
+    }
+
     body {
-        background-color: #0d1117;
-        color: #c9d1d9;
+        background-color: var(--bg);
+        color: #e6eef6;
         font-family: "Poppins", sans-serif;
     }
 
     .card {
-        background-color: #161b22;
-        border: 1px solid #1f6feb;
-        border-radius: 10px;
-        box-shadow: 0 0 15px rgba(31, 111, 235, 0.1);
+        background-color: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        box-shadow: 0 6px 28px rgba(0,0,0,0.6);
+        overflow: hidden;
     }
 
     .card-header {
-        background: linear-gradient(90deg, #0d6efd, #1f6feb);
+        background: linear-gradient(90deg, rgba(var(--neon-rgb),0.18), rgba(122,0,255,0.06));
         color: #fff;
-        border-bottom: 1px solid #1f6feb;
-        border-radius: 10px 10px 0 0;
+        border-bottom: 1px solid rgba(255,255,255,0.03);
+        border-radius: 12px 12px 0 0;
     }
 
     .card-header h2 {
-        font-size: 1.3rem;
+        font-size: 1.25rem;
         margin: 0;
+        color: var(--neon);
+        text-shadow: 0 0 8px rgba(var(--neon-rgb),0.15);
     }
 
     /* ======= FORMULÁRIO ======= */
     .form-label {
-        color: #58a6ff;
-        font-weight: 500;
+        color: var(--neon);
+        font-weight: 600;
     }
 
     .form-control,
     .form-select {
-        background-color: #0d1117;
-        border: 1px solid #30363d;
-        color: #c9d1d9;
-        transition: 0.3s;
+        background-color: transparent;
+        border: 1px solid rgba(255,255,255,0.04);
+        color: #e6eef6;
+        transition: 0.18s;
+        border-radius: 8px;
+        padding: 10px 12px;
     }
 
     .form-control:focus,
     .form-select:focus {
-        background-color: #0d1117;
+        background-color: rgba(255,255,255,0.02);
         color: #fff;
-        border-color: #1f6feb;
-        box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.25);
+        border-color: var(--neon);
+        box-shadow: 0 0 18px rgba(var(--neon-rgb), 0.08);
+        outline: none;
     }
 
     ::placeholder {
-        color: #8b949e;
+        color: var(--muted);
     }
 
     /* ======= BOTÕES ======= */
     .btn-neon {
-        background-color: #1f6feb;
+        background: linear-gradient(90deg, var(--neon), #7a00ff);
         border: none;
-        color: #fff;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        border-radius: 5px;
+        color: #000;
+        font-weight: 700;
+        transition: all 0.18s ease;
+        border-radius: 10px;
+        padding: 10px 16px;
+        box-shadow: 0 8px 30px rgba(var(--neon-rgb), 0.08);
     }
 
     .btn-neon:hover {
-        background-color: #388bfd;
-        box-shadow: 0 0 12px rgba(31, 111, 235, 0.6);
-        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 18px 48px rgba(var(--neon-rgb), 0.12);
     }
 
     .btn-outline-neon {
         background-color: transparent;
-        border: 1px solid #1f6feb;
-        color: #58a6ff;
-        transition: all 0.3s ease;
+        border: 1px solid rgba(var(--neon-rgb),0.18);
+        color: var(--neon);
+        transition: all 0.18s ease;
+        border-radius: 10px;
+        padding: 8px 12px;
     }
 
     .btn-outline-neon:hover {
-        background-color: #1f6feb;
+        background: rgba(var(--neon-rgb),0.08);
         color: #fff;
-        box-shadow: 0 0 10px rgba(31, 111, 235, 0.6);
     }
 
     /* ======= SUMMERNOTE DARK ======= */
-    .note-editor {
-        background-color: #0d1117 !important;
-        color: #c9d1d9 !important;
-        border: 1px solid #30363d !important;
-        border-radius: 6px;
-    }
-
-    .note-toolbar {
-        background-color: #161b22 !important;
-        border-bottom: 1px solid #30363d !important;
-    }
-
-    .note-editable {
-        background-color: #0d1117 !important;
-        color: #c9d1d9 !important;
-    }
+    .note-editor { background-color: transparent !important; border: 1px solid rgba(255,255,255,0.04) !important; }
+    .note-toolbar { background-color: transparent !important; border-bottom: 1px solid rgba(255,255,255,0.03) !important; }
+    .note-editable { background-color: transparent !important; color: #e6eef6 !important; }
 
     /* ======= TITULOS ======= */
-    h2, h4 {
-        color: #58a6ff;
+    h2, h4 { color: var(--neon); }
+
+    /* ======= PREVIEW IMAGEM ======= */
+    .img-preview {
+        display: block;
+        max-width: 100%;
+        max-height: 160px;
+        border-radius: 8px;
+        object-fit: contain;
+        margin-top: 8px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    }
+
+    @media (max-width: 768px) {
+        .card-header h2 { font-size: 1.05rem; }
     }
 </style>
 
@@ -195,20 +212,45 @@
     </div>
 </div>
 
-<!-- Inicialização do Summernote -->
+<!-- Inicialização e melhorias JS -->
 <script>
     $(document).ready(function() {
+        // Summernote dark
         $('#descricao').summernote({
             placeholder: 'Digite a descrição do produto...',
             tabsize: 2,
-            height: 200,
+            height: 220,
             toolbar: [
                 ['style', ['bold', 'italic', 'underline', 'clear']],
-                ['font', ['fontsize', 'color']],
+                ['font', ['fontsize', 'color', 'bold', 'italic']],
                 ['para', ['ul', 'ol', 'paragraph']],
                 ['insert', ['link', 'picture']],
                 ['view', ['fullscreen', 'codeview']]
-            ]
+            ],
+            callbacks: {
+                onImageUpload: function(files) {
+                    // permitir upload via backend se implementar
+                }
+            }
+        });
+
+        // Mascara para campo valor (usar máscara brasileira)
+        if ($.fn.inputmask) {
+            $('#valor').inputmask({ alias: 'numeric', groupSeparator: '.', radixPoint: ',', digits: 2, autoGroup: true, rightAlign: false, allowMinus: false });
+        }
+
+        // Preview de imagem selecionada
+        $('#imagem').on('change', function(e) {
+            const file = this.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                // remover preview anterior
+                $('#imagem-preview').remove();
+                const img = $('<img id="imagem-preview" class="img-preview" />').attr('src', ev.target.result);
+                $('#imagem').after(img);
+            };
+            reader.readAsDataURL(file);
         });
     });
 </script>
