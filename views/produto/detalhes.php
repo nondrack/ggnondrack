@@ -42,10 +42,10 @@ if (!empty($produto->imagem) && file_exists($caminhoServidor)) {
                 </div>
 
                 <!-- Botões -->
-                <a href="carrinho/adicionar/<?= $produto->id ?>" class="btn btn-neon w-100 mb-2">
+                <a href="javascript:void(0);" onclick="adicionarAoCarrinho(<?= (int)$produto->id ?>)" class="btn btn-neon w-100 mb-2" role="button">
                     Comprar
                 </a>
-                <a href="../../public/index" class="btn btn-outline-neon w-100">
+                <a href="index" class="btn btn-outline-neon w-100">
                     Voltar
                 </a>
             </div>
