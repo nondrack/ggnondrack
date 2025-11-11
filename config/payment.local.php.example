@@ -1,0 +1,21 @@
+<?php
+// Exemplo de overrides locais para `config/payment.php`.
+// Copie este arquivo para `config/payment.local.php` e preencha suas chaves.
+
+return [
+    'mercadopago' => [
+        // substitua pelas suas credenciais reais (sandbox ou produção)
+        'access_token' => 'SEU_ACCESS_TOKEN_MERCADOPAGO_AQUI',
+        'return_base_url' => 'https://seu-dominio.com',
+        'notification_url' => 'https://seu-dominio.com/public/webhook/mercadopago.php',
+        'sandbox' => true,
+    ],
+
+    'pix' => [
+        'enabled' => true,
+        // sua chave PIX (e-mail/cpf/cnpj/chave aleatória)
+        'merchant_key' => 'sua_chave_pix_aqui',
+        'merchant_name' => 'Nome da Sua Loja',
+        'merchant_city' => 'Cidade',
+    ],
+];

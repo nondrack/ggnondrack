@@ -1,6 +1,6 @@
 <?php
 // Configurações de pagamento - preencha com suas credenciais
-return [
+$config = [
     // Gateway suportado: 'mercadopago' (atual), 'mock' (apenas para testes)
     'gateway' => 'mercadopago',
 
@@ -32,3 +32,14 @@ return [
         'merchant_city' => 'SuaCidade',
     ]
 ];
+
+// Permite override local sem commitar segredos: copie `payment.local.php.example` para `payment.local.php` e preencha.
+$localFile = __DIR__ . '/payment.local.php';
+if (file_exists($localFile)) {
+    $local = include $localFile;
+    if (is_array($local)) {
+        $config = array_replace_recursive($config, $local);
+    }
+}
+
+return $config;

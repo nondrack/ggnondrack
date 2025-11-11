@@ -249,9 +249,9 @@
             $preference->save();
         }
     }
+}
 
-  
-
+?>
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -353,6 +353,7 @@
                                 <?php
                                     // Dados do PIX para exibição
                                     $pixKey = $pixConfig['merchant_key'] ?? '';
+                                    $pixPlaceholder = in_array(strtoupper(trim($pixKey)), ['SUA_CHAVE_PIX_AQUI', 'SEU_PIX_AQUI', '']) ;
                                     $pixMerchant = $pixConfig['merchant_name'] ?? '';
                                     $pixCity = $pixConfig['merchant_city'] ?? '';
                                     $amount = number_format($total, 2, '.', '');
@@ -414,7 +415,10 @@
                                     $qrUrl = 'https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=' . urlencode($payload);
                                 ?>
                                 <h5>PIX - Gerar Código</h5>
-                                <p>Chave: <strong><?= htmlspecialchars($pixKey) ?></strong></p>
+                                <?php if ($pixPlaceholder): ?>
+                                    <div class="alert alert-warning">Chave PIX não configurada. Para exibir sua chave PIX aqui, crie um arquivo <code>config/payment.local.php</code> (copie <code>config/payment.local.php.example</code>) e defina <code>'pix' => ['merchant_key' => 'SUA_CHAVE_AQUI']</code> ou exporte a variável de ambiente <code>PIX_KEY</code>.</div>
+                                <?php endif; ?>
+                                <p>Chave: <strong><?= htmlspecialchars($pixKey ?: '—') ?></strong></p>
                                 <p>Nome: <strong><?= htmlspecialchars($pixMerchant) ?></strong> — Cidade: <strong><?= htmlspecialchars($pixCity) ?></strong></p>
                                 <p>Valor: <strong>R$ <?= number_format($total, 2, ',', '.') ?></strong></p>
 
