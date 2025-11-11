@@ -121,7 +121,7 @@ $totalFinal = $subtotal - $desconto;
                         <div class="text-center py-5">
                             <i class="fas fa-shopping-cart" style="font-size: 4rem; color: #00eaff33;"></i>
                             <p class="text-muted fs-5 mt-3">Seu carrinho está vazio.</p>
-                            <a href="index.php?param=produto/index" class="btn btn-info mt-3">
+                            <a href="#produtos-section" class="btn btn-info mt-3">
                                 <i class="fas fa-shopping-bag me-2"></i> Começar a Comprar
                             </a>
                         </div>
