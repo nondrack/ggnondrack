@@ -45,6 +45,9 @@
             <i class="fas fa-user-circle me-1"></i>
             <?= htmlspecialchars($_SESSION["user"]["nome"] ?? "Usuário") ?>
           </span>
+          <a href="index.php?param=dashboard" class="btn btn-info btn-sm me-2">
+            <i class="fas fa-chart-bar me-1"></i> Dashboard
+          </a>
           <a href="sair.php" class="btn btn-danger btn-sm">
             <i class="fas fa-sign-out-alt me-1"></i> Sair
           </a>
