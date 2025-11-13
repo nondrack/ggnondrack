@@ -1,5 +1,13 @@
 <?php
-    session_start();
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    // Verificar se o usuário está logado
+    if (!isset($_SESSION['user']) || !isset($_SESSION['user']['id'])) {
+        header('Location: ../../public/login.php?erro=É necessário fazer login para finalizar a compra');
+        exit;
+    }
 
     if (!isset($_SESSION["carrinho"])) {
         echo "<script>alert('Carrinho vazio!');history.back();</script>";

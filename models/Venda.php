@@ -8,6 +8,19 @@ class Venda {
     }
 
     public function criarVenda($cliente_id) {
+        // Verificar se o cliente existe
+        if ($cliente_id <= 0) {
+            throw new Exception("ID de cliente inválido");
+        }
+        
+        $checkSql = "SELECT id FROM cliente WHERE id = :cliente_id";
+        $checkStmt = $this->pdo->prepare($checkSql);
+        $checkStmt->execute([':cliente_id' => $cliente_id]);
+        
+        if ($checkStmt->rowCount() === 0) {
+            throw new Exception("Cliente não encontrado. Por favor, complete seu cadastro antes de finalizar a compra.");
+        }
+        
         $stmt = $this->pdo->prepare("INSERT INTO venda (cliente_id, data, status) VALUES (:cliente_id, NOW(), 'aberta')");
         $stmt->execute([':cliente_id' => $cliente_id]);
         return $this->pdo->lastInsertId();

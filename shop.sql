@@ -120,10 +120,15 @@ INSERT INTO `usuario` (`id`, `nome`, `email`, `senha`, `ativo`) VALUES
 -- Estrutura para tabela `venda`
 --
 
-ALTER TABLE `venda`
-  ADD COLUMN `metodo_pagamento` VARCHAR(50) DEFAULT NULL,
-  ADD COLUMN `txid` VARCHAR(100) DEFAULT NULL,
-  ADD COLUMN `data_pagamento` DATETIME DEFAULT NULL;
+CREATE TABLE `venda` (
+  `id` int(11) NOT NULL,
+  `cliente_id` int(11) NOT NULL,
+  `data` datetime NOT NULL,
+  `status` enum('aberta','paga','cancelada') NOT NULL DEFAULT 'aberta',
+  `metodo_pagamento` varchar(50) DEFAULT NULL,
+  `txid` varchar(100) DEFAULT NULL,
+  `data_pagamento` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Índices para tabelas despejadas
