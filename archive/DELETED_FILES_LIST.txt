@@ -1,0 +1,13 @@
+Arquivos removidos por solicitação do usuário (12 de novembro de 2025):
+
+- migrate_venda.php
+- migrate_usuarios_to_clientes.php
+- migrate_to_new_database.php
+- database_new.sql
+- MIGRATION_GUIDE.md
+- public/composer.phar
+- public/composer-setup.php
+
+Observações:
+- Para restaurar, use o Git local: `git checkout HEAD -- <caminho/do/arquivo>`
+- Se precisar, posso recriar os arquivos dentro de `archive/` para ter os conteúdos também aqui.
