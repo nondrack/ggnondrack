@@ -19,8 +19,7 @@
 
             return $consulta->fetch(PDO::FETCH_OBJ);
             }
-        public function cadastrar($nome, $email, $senha)
-            {
+        public function cadastrar($nome, $email, $senha){
         try {
         // Verifica se já existe um usuário com esse e-mail
         $sql = "SELECT id FROM usuario WHERE email = :email LIMIT 1";
