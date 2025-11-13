@@ -117,9 +117,10 @@ $categoriaIdsAtivas = array_map(function($c){ return $c->id; }, $categorias);
           }
         ?>
                 <?php
-                    $caminhoServidor = __DIR__ . '/../../_arquivos/' . $produto->imagem;
-                    $caminhoWeb = '../_arquivos/' . $produto->imagem;
-                    $temImagem = !empty($produto->imagem) && file_exists($caminhoServidor);
+                    $isUrlImg = !empty($produto->imagem) && preg_match('/^https?:\/\//i', $produto->imagem);
+                    $caminhoServidor = $isUrlImg ? null : (__DIR__ . '/../../_arquivos/' . $produto->imagem);
+                    $caminhoWeb = $isUrlImg ? $produto->imagem : ('../_arquivos/' . $produto->imagem);
+                    $temImagem = !empty($produto->imagem) && ($isUrlImg || ($caminhoServidor && file_exists($caminhoServidor)));
                 ?>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 produto-item" data-categoria="<?= htmlspecialchars($produto->categoria_id) ?>">
                     <div class="card produto-card h-100">
@@ -158,9 +159,10 @@ $categoriaIdsAtivas = array_map(function($c){ return $c->id; }, $categorias);
 
                             <!-- PREÇO E AÇÕES -->
                             <div class="produto-footer">
-                                <p class="preco-produto">
-                                    R$ <?= number_format($produto->valor, 2, ',', '.') ?>
-                                </p>
+                <p class="preco-produto">
+                  <?php $preco = $produto->preco ?? $produto->valor ?? 0; ?>
+                  R$ <?= number_format($preco, 2, ',', '.') ?>
+                </p>
                                 
                                 <div class="btn-group-vertical w-100 gap-2">
                                     <a href="produto/detalhes/<?= $produto->id ?>" class="btn btn-outline-info btn-sm">

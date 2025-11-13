@@ -26,15 +26,16 @@
                     <!-- ID -->
                     <div class="col-12 col-md-2">
                         <label for="id" class="form-label">ID</label>
-                        <input type="text" name="id" id="id" class="form-control text-center" readonly>
+                        <input type="text" name="id" id="id" class="form-control text-center" readonly value="<?= isset($produto) ? htmlspecialchars($produto->id) : '' ?>">
                     </div>
 
                     <!-- Nome -->
                     <div class="col-12 col-md-7">
                         <label for="nome" class="form-label">Nome do Produto <span class="text-danger">*</span></label>
-                        <input type="text" name="nome" id="nome" class="form-control"
-                               placeholder="Digite o nome do produto" required
-                               data-parsley-required-message="Preencha este campo">
+               <input type="text" name="nome" id="nome" class="form-control"
+                   placeholder="Digite o nome do produto" required
+                   value="<?= isset($produto) ? htmlspecialchars($produto->nome) : '' ?>"
+                   data-parsley-required-message="Preencha este campo">
                     </div>
 
                     <!-- Categoria -->
@@ -45,8 +46,10 @@
                             <option value="">Selecione</option>
                             <?php
                             $dadosCategoria = $this->categoria->listar();
+                            $categoriaAtual = isset($produto) ? $produto->categoria_id : null;
                             foreach ($dadosCategoria as $dados) {
-                                echo "<option value='{$dados->id}'>{$dados->nome}</option>";
+                                $sel = ($categoriaAtual == $dados->id) ? 'selected' : '';
+                                echo "<option value='{$dados->id}' {$sel}>{$dados->nome}</option>";
                             }
                             ?>
                         </select>
@@ -58,22 +61,58 @@
                         <textarea name="descricao" id="descricao" class="form-control"
                                   rows="6" required
                                   placeholder="Descreva o produto em detalhes..."
-                                  data-parsley-required-message="Preencha este campo"></textarea>
+                                  data-parsley-required-message="Preencha este campo"><?= isset($produto) ? htmlspecialchars($produto->descricao) : '' ?></textarea>
                     </div>
 
-                    <!-- Imagem -->
+                    <!-- Imagem (Upload ou URL) -->
                     <div class="col-12 col-md-6">
-                        <label for="imagem" class="form-label">Imagem do Produto</label>
-                        <input type="file" name="imagem" id="imagem" class="form-control" accept="image/*">
+                        <label class="form-label">Imagem do Produto</label>
+                        <div class="nav nav-pills mb-2" id="imgTab" role="tablist">
+                            <button class="nav-link active" id="tab-upload" data-mode="upload" type="button">Upload</button>
+                            <button class="nav-link" id="tab-url" data-mode="url" type="button">URL</button>
+                        </div>
+                        <div id="area-upload">
+                            <input type="file" name="imagem" id="imagem" class="form-control" accept="image/*">
+                            <input type="hidden" name="imagem_atual" value="<?= isset($produto) ? htmlspecialchars($produto->imagem) : '' ?>">
+                            <?php if(isset($produto) && !empty($produto->imagem)): ?>
+                                <?php $isUrl = preg_match('/^https?:\/\//i', $produto->imagem); $srcPreview = $isUrl ? $produto->imagem : ('../_arquivos/' . $produto->imagem); ?>
+                                <div class="mt-2">
+                                    <img src="<?= htmlspecialchars($srcPreview) ?>" alt="Imagem atual" style="max-height:120px;object-fit:contain;border:1px solid #444;padding:4px;border-radius:4px;" />
+                                    <small class="text-muted d-block">Imagem atual. Envie outra ou informe URL para substituir.</small>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                        <div id="area-url" style="display:none;">
+                            <input type="text" name="imagem_url" id="imagem_url" class="form-control" placeholder="https://exemplo.com/imagem.jpg">
+                            <small class="text-muted">Cole uma URL iniciando com http ou https apontando para uma imagem.</small>
+                        </div>
                     </div>
 
-                    <!-- Valor -->
+                    <!-- Preço -->
                     <div class="col-12 col-md-3">
-                        <label for="valor" class="form-label">Valor (R$)</label>
-                        <input type="text" name="valor" id="valor" class="form-control"
+                        <label for="preco" class="form-label">Preço (R$)</label>
+                        <?php
+                            $precoForm = '';
+                            if (isset($produto)) {
+                                $valorBr = number_format((float)($produto->preco ?? $produto->valor ?? 0), 2, ',', '.');
+                                $precoForm = $valorBr;
+                            }
+                        ?>
+                        <input type="text" name="preco" id="preco" class="form-control"
                                placeholder="0,00"
-                               data-parsley-pattern="^\d+(,\d{1,2})?$"
-                               data-parsley-pattern-message="Informe um valor válido">
+                               value="<?= $precoForm ?>"
+                               data-parsley-pattern="^\d{1,3}(\.\d{3})*(,\d{2})?$|^\d+(,\d{2})?$"
+                               data-parsley-pattern-message="Informe um preço válido (ex: 199,90 ou 1.234,56)">
+                    </div>
+
+                    <!-- Status -->
+                    <div class="col-12 col-md-2">
+                        <label for="ativo" class="form-label">Status</label>
+                        <select name="ativo" id="ativo" class="form-select">
+                            <?php $ativoAtual = isset($produto) ? strtoupper($produto->ativo) : 'S'; ?>
+                            <option value="S" <?= $ativoAtual === 'S' ? 'selected' : '' ?>>Ativo</option>
+                            <option value="N" <?= $ativoAtual === 'N' ? 'selected' : '' ?>>Inativo</option>
+                        </select>
                     </div>
 
                     <!-- Botões -->
@@ -113,10 +152,26 @@
             }
         });
 
-        // Mascara para campo valor (usar máscara brasileira)
+    // Máscara para campo preço
         if ($.fn.inputmask) {
-            $('#valor').inputmask({ alias: 'numeric', groupSeparator: '.', radixPoint: ',', digits: 2, autoGroup: true, rightAlign: false, allowMinus: false });
+            $('#preco').inputmask({ alias: 'numeric', groupSeparator: '.', radixPoint: ',', digits: 2, autoGroup: true, rightAlign: false, allowMinus: false });
         }
+
+        // Alternância Upload/URL
+        $('#imgTab button').on('click', function(){
+            $('#imgTab button').removeClass('active');
+            $(this).addClass('active');
+            const mode = $(this).data('mode');
+            if (mode === 'upload') {
+                $('#area-upload').show();
+                $('#area-url').hide();
+                $('#imagem_url').val('');
+            } else {
+                $('#area-upload').hide();
+                $('#area-url').show();
+                $('#imagem').val('');
+            }
+        });
 
         // Preview de imagem selecionada
         $('#imagem').on('change', function(e) {
@@ -130,6 +185,16 @@
                 $('#imagem').after(img);
             };
             reader.readAsDataURL(file);
+        });
+
+        // Preview para URL
+        $('#imagem_url').on('input', function(){
+            const url = $(this).val().trim();
+            $('#imagem-preview').remove();
+            if (/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp|svg)$/i.test(url)) {
+                const img = $('<img id="imagem-preview" class="img-preview" />').attr('src', url);
+                $(this).after(img);
+            }
         });
     });
 </script>

@@ -39,14 +39,17 @@ class CarrinhoController {
             // Aumentar quantidade
             $_SESSION["carrinho"][$id]["qtde"]++;
         } else {
-            // Adicionar novo item
+            // Adicionar novo item (usar preco; manter 'valor' por compatibilidade)
+            $preco = $produto->preco ?? $produto->valor ?? 0;
             $_SESSION["carrinho"][$id] = [
-                "id"     => $produto->id,
-                "nome"   => $produto->nome,
-                "qtde"   => 1,
-                "valor"  => $produto->valor,
-                "imagem" => $produto->imagem,
-                "categoria" => $produto->categoria_id
+                "id"       => $produto->id,
+                "nome"     => $produto->nome,
+                "qtde"     => 1,
+                "preco"    => $preco,
+                "valor"    => $preco,
+                "imagem"   => $produto->imagem,
+                "descricao"=> $produto->descricao ?? '',
+                "categoria"=> $produto->categoria_id
             ];
         }
 
@@ -147,7 +150,8 @@ class CarrinhoController {
         $itens = $_SESSION["carrinho"] ?? [];
 
         foreach ($itens as $item) {
-            $total += $item['valor'] * $item['qtde'];
+            $unit = $item['preco'] ?? $item['valor'] ?? 0;
+            $total += $unit * $item['qtde'];
         }
 
         return $total;

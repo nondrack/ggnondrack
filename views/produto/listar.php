@@ -24,8 +24,9 @@
                         <tr>
                             <th>ID</th>
                             <th>Nome</th>
-                            <th>Valor</th>
+                            <th>Preço</th>
                             <th>Imagem</th>
+                            <th>Status</th>
                             <th>Opções</th>
                         </tr>
 
@@ -49,7 +50,8 @@
 
                             <!-- product list styles moved to public/css/components/views-inline.css -->
                         <?php
-                        $dadosProduto = $this->produto->listar() ?? [];
+                        // Controller já envia somente ativos; se quiser todos, trocar para listar()
+                        $dadosProduto = $dadosProduto ?? [];
 
                         if (!empty($dadosProduto)):
                             foreach ($dadosProduto as $produto):
@@ -57,20 +59,37 @@
                         <tr>
                             <td><?= htmlspecialchars($produto->id ?? '') ?></td>
                             <td class="text-start"><?= htmlspecialchars($produto->nome ?? '') ?></td>
-                            <td>R$ <?= number_format($produto->valor ?? 0, 2, ',', '.') ?></td>
+                            <td>R$ <?= number_format($produto->preco ?? $produto->valor ?? 0, 2, ',', '.') ?></td>
                             <td>
-                                <?php if (!empty($produto->imagem)): ?>
-                                    <img src="../_arquivos/<?= htmlspecialchars($produto->imagem) ?>" 
-                                         alt="<?= htmlspecialchars($produto->nome ?? 'Produto') ?>" 
+                                <?php if (!empty($produto->imagem)):
+                                    $img = $produto->imagem;
+                                    $isUrl = preg_match('/^https?:\/\//i', $img);
+                                    $src = $isUrl ? $img : ('../_arquivos/' . $img);
+                                ?>
+                                    <img src="<?= htmlspecialchars($src) ?>"
+                                         alt="<?= htmlspecialchars($produto->nome ?? 'Produto') ?>"
                                          class="img-produto rounded">
                                 <?php else: ?>
                                     <span class="text-muted fst-italic">Sem imagem</span>
                                 <?php endif; ?>
                             </td>
                             <td>
+                                <?php
+                                    $ativo = strtoupper(trim($produto->ativo ?? 'S'));
+                                    if ($ativo === 'S') {
+                                        echo '<span class="badge bg-success">Ativo</span>';
+                                    } else {
+                                        echo '<span class="badge bg-danger">Inativo</span>';
+                                    }
+                                ?>
+                            </td>
+                            <td>
                                 <!-- BOTÃO EDITAR CORRIGIDO -->
-                                    <a href="produto/index/<?= urlencode($produto->id) ?>" class="btn btn-sm btn-primary me-2 shadow-sm btn-circle" title="Editar">
+                                    <a href="produto/editar/<?= urlencode($produto->id) ?>" class="btn btn-sm btn-primary me-2 shadow-sm btn-circle" title="Editar">
                                         <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="produto/toggleStatus/<?= urlencode($produto->id) ?>" class="btn btn-sm <?= ($produto->ativo==='S'?'btn-warning':'btn-success') ?> me-2 shadow-sm btn-circle" title="<?= $produto->ativo==='S'?'Inativar':'Reativar' ?>">
+                                        <i class="fas <?= $produto->ativo==='S'?'fa-ban':'fa-check' ?>"></i>
                                     </a>
 
                                 <!-- BOTÃO EXCLUIR -->
@@ -84,7 +103,7 @@
                         else:
                         ?>
                         <tr>
-                            <td colspan="5" class="text-center text-muted py-3">
+                            <td colspan="6" class="text-center text-muted py-3">
                                 Nenhum produto encontrado.
                             </td>
                         </tr>

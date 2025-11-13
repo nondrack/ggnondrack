@@ -3,7 +3,7 @@ class Conexao {
     private static $host = "localhost";
     private static $user = "root";
     private static $pass = "";
-    private static $db   = "shop2b";
+    private static $db   = "ggnondrack_shop"; // Novo banco organizado
 
     public static function conectar() {
         try {

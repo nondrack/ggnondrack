@@ -1,5 +1,8 @@
 <?php
-    session_start();
+    // Evita Notice de sessão já iniciada
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
 
     // Se não há carrinho, redirecionar
     if (!isset($_SESSION["carrinho"]) || empty($_SESSION["carrinho"])) {
@@ -56,15 +59,26 @@
                                 <tbody>
                                     <?php
                                         $total = 0;
+                                        // Helper para preço unitário com fallback preco -> valor
+                                        function precoUnitarioDados(array $p): float {
+                                            if (isset($p['preco']) && $p['preco'] !== '' && $p['preco'] !== null) {
+                                                return (float)$p['preco'];
+                                            }
+                                            if (isset($p['valor']) && $p['valor'] !== '' && $p['valor'] !== null) {
+                                                return (float)$p['valor'];
+                                            }
+                                            return 0.0;
+                                        }
                                         if (isset($_SESSION["carrinho"])) {
                                             foreach ($_SESSION["carrinho"] as $produto) {
-                                                $subtotal = $produto["valor"] * $produto["qtde"];
+                                                $unit = precoUnitarioDados($produto);
+                                                $subtotal = $unit * (int)$produto["qtde"];
                                                 $total += $subtotal;
                                                 ?>
                                                 <tr>
                                                     <td><?= htmlspecialchars($produto["nome"]) ?></td>
                                                     <td><?= $produto["qtde"] ?></td>
-                                                    <td>R$ <?= number_format($produto["valor"], 2, ',', '.') ?></td>
+                                                    <td>R$ <?= number_format($unit, 2, ',', '.') ?></td>
                                                     <td>R$ <?= number_format($subtotal, 2, ',', '.') ?></td>
                                                 </tr>
                                                 <?php

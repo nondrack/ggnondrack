@@ -35,9 +35,9 @@
         $vendaModel = new Venda($pdo);
 
         // Se usuário logado, usar id, caso contrário 0
-        $clienteId = $_SESSION['user']['id'] ?? 0;
+        $usuarioId = $_SESSION['user']['id'] ?? 0;
 
-        $vendaId = $vendaModel->criarVenda($clienteId);
+        $vendaId = $vendaModel->criarVenda($usuarioId);
 
         // Salvar itens da venda
         if (!empty($_SESSION['carrinho'])) {
@@ -59,8 +59,8 @@
 
         $pdo = Conexao::conectar();
         $vendaModel = new Venda($pdo);
-        $clienteId = $_SESSION['user']['id'] ?? 0;
-        $pixVendaId = $vendaModel->criarVenda($clienteId);
+        $usuarioId = $_SESSION['user']['id'] ?? 0;
+        $pixVendaId = $vendaModel->criarVenda($usuarioId);
 
         // armazenar id temporariamente para exibir QR
         $generatedPixVendaId = $pixVendaId;
@@ -99,21 +99,31 @@
 
     $itens = [];
 
+    // Helper para preço unitário (fallback preco -> valor)
+    function precoUnitario(array $p): float {
+        if (isset($p['preco']) && $p['preco'] !== '' && $p['preco'] !== null) {
+            return (float)$p['preco'];
+        }
+        if (isset($p['valor']) && $p['valor'] !== '' && $p['valor'] !== null) {
+            return (float)$p['valor'];
+        }
+        return 0.0;
+    }
+
     foreach ($_SESSION["carrinho"] as $produto) {
-        
+        $unit = precoUnitario($produto);
         $itens[] = array(
             "title"       => $produto["nome"],
             "quantity"    => (int)$produto["qtde"],
             "currency_id" => "BRL",
-            "unit_price"  => (float)$produto["valor"]
+            "unit_price"  => $unit
         );
-
     }
 
     // Calcular total do carrinho (usado para pagamentos)
     $total = 0;
     foreach ($_SESSION["carrinho"] as $p) {
-        $total += ($p['valor'] * $p['qtde']);
+        $total += (precoUnitario($p) * (int)$p['qtde']);
     }
 
     // Verificar status de pagamento Mercado Pago (consulta manual via botão)
@@ -182,7 +192,7 @@
 
             $pdo = Conexao::conectar();
             $vendaModel = new Venda($pdo);
-            $clienteId = $_SESSION['user']['id'] ?? 0;
+            $usuarioId = $_SESSION['user']['id'] ?? 0;
 
             // Criar pagamento PIX via Mercado Pago apenas se o usuário tiver solicitado geração (generatedPixVendaId)
             if (!empty($generatedPixVendaId)) {
@@ -297,14 +307,15 @@
                             $total = 0;
                             if (isset($_SESSION["carrinho"])) {
                                 foreach ($_SESSION["carrinho"] as $dados) {
-                                    $total = $total + ($dados["valor"] * $dados["qtde"]);
+                                    $unit = precoUnitario($dados);
+                                    $total = $total + ($unit * (int)$dados["qtde"]);
                                     ?>
                                     <tr>
                                         <td><?=$dados["id"]?></td>
                                         <td><?=$dados["nome"]?></td>
                                         <td><?=$dados["qtde"]?></td>
-                                        <td><?=$dados["valor"]?></td>
-                                        <td><?=$dados["valor"] * $dados["qtde"]?></td>
+                                        <td><?= number_format($unit, 2, ',', '.') ?></td>
+                                        <td><?= number_format($unit * (int)$dados["qtde"], 2, ',', '.') ?></td>
                                     </tr>
                                     <?php
                                 }
@@ -313,7 +324,7 @@
                     </tbody>
                 </table>
                 <p>
-                    <strong>Total da Compra: <?=$total?></strong>
+                    <strong>Total da Compra: R$ <?= number_format($total, 2, ',', '.') ?></strong>
                 </p>
                 <br>
                 <p class="text-center">

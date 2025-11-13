@@ -1,12 +1,14 @@
 <?php
 // $produto já vem do controller
 // Caminhos das imagens
-$caminhoServidor = __DIR__ . '/../../_arquivos/' . $produto->imagem;
-$caminhoWeb = '../_arquivos/' . $produto->imagem;
+// Suporte a URL externa ou arquivo local
+$isUrl = !empty($produto->imagem) && preg_match('/^https?:\/\//i', $produto->imagem);
+$caminhoServidor = $isUrl ? null : (__DIR__ . '/../../_arquivos/' . $produto->imagem);
+$caminhoWeb = $isUrl ? $produto->imagem : ('../_arquivos/' . $produto->imagem);
 
 // Garantir que $imagens seja sempre um array
 $imagens = [];
-if (!empty($produto->imagem) && file_exists($caminhoServidor)) {
+if (!empty($produto->imagem) && ($isUrl || ($caminhoServidor && file_exists($caminhoServidor)))) {
     $imagens[] = $produto->imagem;
 } else {
     $imagens[] = null;
@@ -33,7 +35,7 @@ if (!empty($produto->imagem) && file_exists($caminhoServidor)) {
             <div class="col-md-6 text-light">
                 <h2 style="color:#00eaff;"><?= htmlspecialchars($produto->nome) ?></h2>
                 <p class="text-light mb-3" style="font-weight:bold; font-size:1.5rem;">
-                    R$ <?= number_format($produto->valor, 2, ',', '.') ?>
+                    R$ <?= number_format($produto->preco ?? $produto->valor ?? 0, 2, ',', '.') ?>
                 </p>
 
                 <!-- Descrição -->

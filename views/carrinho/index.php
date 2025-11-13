@@ -7,9 +7,21 @@ if (session_status() === PHP_SESSION_NONE) {
 $itens = $_SESSION["carrinho"] ?? [];
 $total = 0;
 
-// Calcular total
+// Função helper para obter preço unitário com fallback (preco -> valor)
+function precoUnitarioCarrinho(array $item): float {
+    // Usa 'preco' se existir e for > 0, senão tenta 'valor'
+    if (isset($item['preco']) && $item['preco'] !== '' && $item['preco'] !== null) {
+        return (float)$item['preco'];
+    }
+    if (isset($item['valor']) && $item['valor'] !== '' && $item['valor'] !== null) {
+        return (float)$item['valor'];
+    }
+    return 0.0;
+}
+
+// Calcular total com fallback
 foreach ($itens as $item) {
-    $total += $item['valor'] * $item['qtde'];
+    $total += precoUnitarioCarrinho($item) * (int)$item['qtde'];
 }
 
 // Simular taxas e descontos
@@ -40,10 +52,12 @@ $totalFinal = $subtotal - $desconto;
                         <div class="row g-3">
                             <?php foreach ($itens as $id => $item): ?>
                                 <?php
-                                    $subtotalItem = $item['valor'] * $item['qtde'];
-                                    $caminhoServidor = __DIR__ . '/../../_arquivos/' . $item['imagem'];
-                                    $caminhoWeb = '../_arquivos/' . $item['imagem'];
-                                    $temImagem = !empty($item['imagem']) && file_exists($caminhoServidor);
+                                    $unit = precoUnitarioCarrinho($item);
+                                    $subtotalItem = $unit * (int)$item['qtde'];
+                                    $isUrlImg = !empty($item['imagem']) && preg_match('/^https?:\/\//i', $item['imagem']);
+                                    $caminhoServidor = $isUrlImg ? null : (__DIR__ . '/../../_arquivos/' . $item['imagem']);
+                                    $caminhoWeb = $isUrlImg ? $item['imagem'] : ('../_arquivos/' . $item['imagem']);
+                                    $temImagem = !empty($item['imagem']) && ($isUrlImg || ($caminhoServidor && file_exists($caminhoServidor)));
                                 ?>
                                 <div class="col-12">
                                     <div class="card bg-secondary bg-opacity-25 border-info border-opacity-50 rounded-3">
@@ -66,7 +80,7 @@ $totalFinal = $subtotal - $desconto;
                                                         <?= htmlspecialchars($item['nome']) ?>
                                                     </h5>
                                                     <p class="text-info mb-2">
-                                                        <strong>R$ <?= number_format($item['valor'], 2, ',', '.') ?></strong>
+                                                        <strong>R$ <?= number_format($unit, 2, ',', '.') ?></strong>
                                                         <span class="text-muted ms-2" style="font-size: 0.9rem;">por unidade</span>
                                                     </p>
                                                     <p class="text-light" style="font-size: 0.9rem;">

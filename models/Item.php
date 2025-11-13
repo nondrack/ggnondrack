@@ -8,8 +8,8 @@ class Item {
 
     // Listar itens de uma venda
     public function listar($venda_id) {
-        $sql = "SELECT i.id AS item_id, i.produto_id, i.qtde, i.valor, p.nome, p.imagem
-                FROM item i
+        $sql = "SELECT i.id AS item_id, i.produto_id, i.quantidade AS qtde, i.preco_unitario AS valor, p.nome, p.imagem
+                FROM item_venda i
                 JOIN produto p ON i.produto_id = p.id
                 WHERE i.venda_id = :venda_id";
         $stmt = $this->pdo->prepare($sql);
@@ -28,7 +28,7 @@ class Item {
             }
 
             // Verifica se o produto já está no carrinho
-            $sql = "SELECT id, qtde FROM item WHERE venda_id = :venda_id AND produto_id = :produto_id";
+            $sql = "SELECT id, quantidade AS qtde FROM item_venda WHERE venda_id = :venda_id AND produto_id = :produto_id";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([
                 ':venda_id' => $venda_id,
@@ -37,8 +37,8 @@ class Item {
             $item = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($item) {
-                // Atualiza quantidade
-                $sql = "UPDATE item SET qtde = qtde + :qtde WHERE id = :id";
+                // Atualiza quantidade e subtotal
+                $sql = "UPDATE item_venda SET quantidade = quantidade + :qtde, subtotal = (quantidade + :qtde) * preco_unitario WHERE id = :id";
                 $stmt = $this->pdo->prepare($sql);
                 $stmt->execute([
                     ':qtde' => $qtde,
@@ -46,14 +46,16 @@ class Item {
                 ]);
             } else {
                 // Insere novo item
-                $sql = "INSERT INTO item (venda_id, produto_id, qtde, valor)
-                        VALUES (:venda_id, :produto_id, :qtde, :valor)";
+                $subtotal = $qtde * $valor;
+                $sql = "INSERT INTO item_venda (venda_id, produto_id, quantidade, preco_unitario, subtotal)
+                        VALUES (:venda_id, :produto_id, :quantidade, :preco_unitario, :subtotal)";
                 $stmt = $this->pdo->prepare($sql);
                 $stmt->execute([
                     ':venda_id' => $venda_id,
                     ':produto_id' => $produto_id,
-                    ':qtde' => $qtde,
-                    ':valor' => $valor
+                    ':quantidade' => $qtde,
+                    ':preco_unitario' => $valor,
+                    ':subtotal' => $subtotal
                 ]);
             }
         } catch (Exception $e) {
@@ -63,14 +65,14 @@ class Item {
 
     // Excluir item
     public function excluir($item_id) {
-        $sql = "DELETE FROM item WHERE id = :item_id";
+        $sql = "DELETE FROM item_venda WHERE id = :item_id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([':item_id' => $item_id]);
     }
 
     // Limpar carrinho
     public function limpar($venda_id) {
-        $sql = "DELETE FROM item WHERE venda_id = :venda_id";
+        $sql = "DELETE FROM item_venda WHERE venda_id = :venda_id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([':venda_id' => $venda_id]);
     }
