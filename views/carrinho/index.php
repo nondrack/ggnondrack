@@ -123,7 +123,7 @@ $totalFinal = $subtotal - $desconto;
                         </div>
 
                         <div class="mt-4 d-flex justify-content-between">
-                            <a href="index.php?param=produto/index" class="btn btn-outline-info">
+                            <a href="#produtos-section" class="btn btn-outline-info">
                                 <i class="fas fa-arrow-left me-2"></i> Continuar Comprando
                             </a>
                             <a href="index.php?param=carrinho/limpar" class="btn btn-outline-danger" onclick="return confirm('Deseja limpar o carrinho?');">
