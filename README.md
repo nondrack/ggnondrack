@@ -15,13 +15,13 @@ Este é um projeto de e-commerce desenvolvido como trabalho para a disciplina de
 O projeto será desenvolvido utilizando as seguintes tecnologias:
 
 * **Back-end:**
-    * PHP 8.x
-    * MySQL (ou outro banco de dados de sua preferência)
+    * PHP 8.x (85.4%)
+    * MySQL (DBeaver)
 * **Front-end:**
     * HTML5
-    * CSS3
-    * ? JavaScript (JS)
-    * ? TypeScript
+    * CSS3 (11.5%)
+    * JavaScript (JS) (0.3%)
+    * Hack (2.8%)
 * **Dependências (Planejadas):**
     * (? Composer)
     * (? biblioteca para processamento de pagamentos)
@@ -31,27 +31,27 @@ O projeto será desenvolvido utilizando as seguintes tecnologias:
 ## 🎯 Funcionalidades Planejadas
 
 ### Módulo de Usuário
-- [ ] Cadastro de cliente
-- [ ] Login e autenticação de cliente
-- [ ] Área do cliente (meus pedidos, meus dados)
+- [✅] Cadastro de cliente
+- [✅] Login e autenticação de cliente
+- [✅] Área do cliente (meus pedidos, meus dados)
 - [ ] Recuperação de senha
 
 ### Módulo de Produtos
-- [ ] Listagem de produtos com paginação
-- [ ] Busca de produtos
-- [ ] Página de detalhes do produto
-- [ ] Organização por categorias
+- [✅] Listagem de produtos com paginação
+- [✅] Busca de produtos
+- [✅] Página de detalhes do produto
+- [✅] Organização por categorias
 
 ### Módulo de Carrinho e Compra
-- [ ] Adicionar/Remover itens do carrinho
+- [✅] Adicionar/Remover itens do carrinho
 - [ ] Cálculo de frete (simulado)
 - [ ] Finalização de pedido (Checkout)
-- [ ] Integração com meio de pagamento (simulado)
+- [✅] Integração com meio de pagamento (simulado)
 
 ### Módulo Administrativo (Painel do Admin)
-- [ ] CRUD de Produtos (Criar, Ler, Atualizar, Deletar)
-- [ ] CRUD de Categorias
-- [ ] Visualização de Pedidos
+- [✅] CRUD de Produtos (Criar, Ler, Atualizar, Deletar)
+- [✅] CRUD de Categorias
+- [✅] Visualização de Pedidos
 
 ---
 
