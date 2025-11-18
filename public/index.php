@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-
+// Endpoint para obter quantidade do carrinho
 if (isset($_GET['action']) && $_GET['action'] === 'get-cart-count') {
     header('Content-Type: application/json');
     $quantidade = 0;
@@ -39,7 +39,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'get-cart-count') {
     <script src="js/sweetalert2.js"></script>
 
     <script>
-        
+        //conter os meus script
         function mensagem(titulo, icone, pagina) {
             Swal.fire({
                 title: titulo,
@@ -106,6 +106,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'get-cart-count') {
         $controller->verificar($_POST);
     }
 
+    // NOVA LÓGICA: Não forçar login na página inicial
+    // Permitir navegação sem login
     require "menu.php";
 
     if (isset($_GET["param"])) {

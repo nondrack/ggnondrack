@@ -14,7 +14,7 @@
     </button>
 
     <!-- Itens da navbar -->
-    <div class="collapse navbar-collapse justify-content-center" id="navbarResponsive">
+    <div class="collapse navbar-collapse justify-content-end" id="navbarResponsive">
       <ul class="navbar-nav mb-2 mb-lg-0 d-flex align-items-center">
         <li class="nav-item mx-2">
           <a class="nav-link neon-link" href="index">Home</a>
