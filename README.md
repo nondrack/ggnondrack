@@ -1,6 +1,6 @@
 # ecommerce
 Projeto de e-commerce desenvolvido no curso de TADS
-# Projeto E-commerce - [Nome ainda não definido]
+# Projeto E-commerce - [DualCore Tech]
 
 ![em Desenvolvimento]
 
@@ -17,11 +17,10 @@ O projeto será desenvolvido utilizando as seguintes tecnologias:
 * **Back-end:**
     * PHP 8.x (85.4%)
     * MySQL (DBeaver)
+    * JavaScript (JS) (0.3%)
 * **Front-end:**
     * HTML5
     * CSS3 (11.5%)
-    * JavaScript (JS) (0.3%)
-    * Hack (2.8%)
 * **Dependências (Planejadas):**
     * (? Composer)
     * (? biblioteca para processamento de pagamentos)
@@ -34,7 +33,6 @@ O projeto será desenvolvido utilizando as seguintes tecnologias:
 - [✅] Cadastro de cliente
 - [✅] Login e autenticação de cliente
 - [✅] Área do cliente (meus pedidos, meus dados)
-- [ ] Recuperação de senha
 
 ### Módulo de Produtos
 - [✅] Listagem de produtos com paginação
@@ -44,8 +42,7 @@ O projeto será desenvolvido utilizando as seguintes tecnologias:
 
 ### Módulo de Carrinho e Compra
 - [✅] Adicionar/Remover itens do carrinho
-- [ ] Cálculo de frete (simulado)
-- [ ] Finalização de pedido (Checkout)
+- [✅] Finalização de pedido (Checkout)
 - [✅] Integração com meio de pagamento (simulado)
 
 ### Módulo Administrativo (Painel do Admin)
@@ -64,7 +61,7 @@ O projeto será desenvolvido utilizando as seguintes tecnologias:
 
 ---
 
-## 📅 Cronograma Inicial (Entregas)
+## 📅 Cronograma de Entregas
 
 * **Data de Início:** 29/09/2025
 * **Prazo Final:** 27/11/2025
