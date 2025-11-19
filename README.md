@@ -64,20 +64,11 @@ Siga os passos abaixo para ter uma cópia do projeto rodando em sua máquina loc
     * Mova a pasta clonada (`ggnondrack`) para o diretório raiz do seu servidor web (ex: `htdocs` no XAMPP).
 
 3.  **Configurar o Banco de Dados:**
-    * Crie um novo banco de dados (Sugestão: `dualcore_ecommerce`).
-    * **Importe o *Schema*:** Importe o arquivo de *schema* e dados (`dualcore.sql` ou similar) que se encontra na pasta `database/` do projeto.
-    * Atualize as credenciais de acesso ao BD no arquivo de configuração do projeto (ex: `config/database.php`).
+    * Abra o Dump.sql no VScode, dentro da pasta `ggnondrack` e copie todo o código e execute-o dentro do DBeaver.
+    * Atualize as credenciais de acesso ao DBeaver no arquivo configurado de acordo com sua preferência.
 
 4.  **Acesse o Projeto:**
     * Abra o navegador e acesse: `http://localhost/ggnondrack/`
-
-### 3. 🔑 Credenciais de Teste
-
-Para testes de compra e gerenciamento:
-
-* **URL do Admin:** `http://localhost/ggnondrack/admin` (ou o caminho configurado)
-* **Usuário Admin:** `admin@dualcore.com`
-* **Senha Admin:** `123456`
 
 ---
 
@@ -96,7 +87,3 @@ Para testes de compra e gerenciamento:
 | **Lucas Fernando** | [luckasfernando500@gmail.com] |
 
 *Desenvolvido para a disciplina Tech Academy do Centro Universitário Integrado.*
-
-## ⚖️ Licença
-
-Este projeto está sob a Licença MIT - veja o arquivo [LICENSE.md](LICENSE.md) para detalhes.
