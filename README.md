@@ -5,7 +5,6 @@
 ![Status do Projeto](https://img.shields.io/badge/Status-90%25%20Concluído-blue)
 ![Tecnologia Principal](https://img.shields.io/badge/PHP-8.x-7778B8.svg?logo=php)
 ![Banco de Dados](https://img.shields.io/badge/MySQL-4479A1.svg?logo=mysql)
-![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 ## 📖 Sobre o Projeto
 
