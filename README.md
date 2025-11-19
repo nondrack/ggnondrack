@@ -1,67 +1,87 @@
-# ecommerce
-Projeto de e-commerce desenvolvido no curso de TADS
-# Projeto E-commerce - [DualCore Tech]
+# 🛒 Projeto E-commerce - DualCore Tech
 
-![em Desenvolvimento]
+> **Plataforma de e-commerce completa desenvolvida para a disciplina Tech Academy do curso de TADS.**
+
+![Status do Projeto](https://img.shields.io/badge/Status-90%25%20Concluído-blue)
+![Tecnologia Principal](https://img.shields.io/badge/PHP-8.x-7778B8.svg?logo=php)
+![Banco de Dados](https://img.shields.io/badge/MySQL-4479A1.svg?logo=mysql)
+![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 ## 📖 Sobre o Projeto
 
-Este é um projeto de e-commerce desenvolvido como trabalho para a disciplina de Tech Academy do curso de TADS do Centro Universitário Integrado. O objetivo é criar uma loja virtual funcional, implementando as principais funcionalidades de um sistema de vendas online.
+Este projeto é um sistema de vendas online que simula um e-commerce funcional, focando na implementação das principais arquiteturas e funcionalidades exigidas em um ambiente real de comércio eletrônico, como gestão de produtos, carrinho de compras e painel administrativo.
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## 🛠️ Tecnologias e Bibliotecas Utilizadas
 
-O projeto será desenvolvido utilizando as seguintes tecnologias:
+O projeto foi construído utilizando uma *stack* com foco em PHP e MySQL, e bibliotecas front-end populares para garantir um design responsivo.
 
-* **Back-end:**
-    * PHP 8.x (85.4%)
-    * MySQL (DBeaver)
-    * JavaScript (JS) (0.3%)
-* **Front-end:**
-    * HTML5
-    * CSS3 (11.5%)
-* **Dependências (Planejadas):**
-    * (? Composer)
-    * (? biblioteca para processamento de pagamentos)
+| Categoria | Tecnologia | Versão/Detalhe |
+| :--- | :--- | :--- |
+| **Back-end** | PHP | 8.x |
+| **Banco de Dados** | MySQL | Gerenciado via DBeaver |
+| **Gerenciamento** | Composer | Uso planejado para futuras dependências. |
+| **Framework CSS** | **Bootstrap** | Utilizado para *layout* responsivo e componentes de interface. |
+| **Biblioteca JS** | **jQuery** | Utilizado para manipular o DOM e adicionar interatividade. |
+| **Assets** | **Webfonts** | Inclusão de fontes externas para aprimoramento visual. |
 
 ---
 
-## 🎯 Funcionalidades Planejadas
+## 🎯 Funcionalidades Implementadas (90% Concluído)
 
-### Módulo de Usuário
-- [✅] Cadastro de cliente
-- [✅] Login e autenticação de cliente
-- [✅] Área do cliente (meus pedidos, meus dados)
-
-### Módulo de Produtos
-- [✅] Listagem de produtos com paginação
-- [✅] Busca de produtos
-- [✅] Página de detalhes do produto
-- [✅] Organização por categorias
-
-### Módulo de Carrinho e Compra
-- [✅] Adicionar/Remover itens do carrinho
-- [✅] Finalização de pedido (Checkout)
-- [✅] Integração com meio de pagamento (simulado)
-
-### Módulo Administrativo (Painel do Admin)
-- [✅] CRUD de Produtos (Criar, Ler, Atualizar, Deletar)
-- [✅] CRUD de Categorias
-- [✅] Visualização de Pedidos
+| Módulo | Funcionalidade | Status |
+| :--- | :--- | :--- |
+| **Módulo de Usuário** | Cadastro, Login e Autenticação de cliente | **[✅]** |
+| | Área do Cliente (pedidos e dados pessoais) | **[✅]** |
+| **Módulo de Produtos** | Listagem com Paginação, Busca e Categorização | **[✅]** |
+| | Página de Detalhes do Produto | **[✅]** |
+| **Módulo de Carrinho e Compra** | Adicionar/Remover itens e Finalização de Pedido (Checkout) | **[✅]** |
+| | **Integração de Pagamento (Mercado Pago Simulado)** | **[✅]** |
+| **Módulo Administrativo** | CRUD de Produtos e Categorias | **[✅]** |
+| | Visualização e Gerenciamento de Pedidos | **[✅]** |
 
 ---
 
-## 🚀 Como Executar o Projeto (Instruções Futuras)
+## 🚀 Como Executar o Projeto Localmente
 
-*Esta seção será atualizada com as instruções para clonar e rodar o projeto localmente.*
+Siga os passos abaixo para ter uma cópia do projeto rodando em sua máquina local.
 
-1.  Clone o repositório: `git clone [https://github.com/nondrack/ggnondrack]`
-2.  ...
+### 1. ⚙️ Pré-requisitos
+
+* Servidor Web Local (XAMPP, WAMP ou MAMP)
+* PHP 8.x
+* MySQL Server
+
+### 2. 💾 Instalação
+
+1.  **Clone o Repositório:**
+    ```bash
+    git clone [https://github.com/nondrack/ggnondrack](https://github.com/nondrack/ggnondrack)
+    ```
+
+2.  **Configurar o Servidor Local:**
+    * Mova a pasta clonada (`ggnondrack`) para o diretório raiz do seu servidor web (ex: `htdocs` no XAMPP).
+
+3.  **Configurar o Banco de Dados:**
+    * Crie um novo banco de dados (Sugestão: `dualcore_ecommerce`).
+    * **Importe o *Schema*:** Importe o arquivo de *schema* e dados (`dualcore.sql` ou similar) que se encontra na pasta `database/` do projeto.
+    * Atualize as credenciais de acesso ao BD no arquivo de configuração do projeto (ex: `config/database.php`).
+
+4.  **Acesse o Projeto:**
+    * Abra o navegador e acesse: `http://localhost/ggnondrack/`
+
+### 3. 🔑 Credenciais de Teste
+
+Para testes de compra e gerenciamento:
+
+* **URL do Admin:** `http://localhost/ggnondrack/admin` (ou o caminho configurado)
+* **Usuário Admin:** `admin@dualcore.com`
+* **Senha Admin:** `123456`
 
 ---
 
-## 📅 Cronograma de Entregas
+## 📅 Cronograma de Desenvolvimento
 
 * **Data de Início:** 29/09/2025
 * **Prazo Final:** 27/11/2025
@@ -70,5 +90,13 @@ O projeto será desenvolvido utilizando as seguintes tecnologias:
 
 ## 👨‍💻 Autores
 
-* **[Ronald]** - [ronaldvernek1234@gmail.com]
-* **[Lucas Fernando]** - [luckasfernando500@gmail.com]
+| Nome | Contato |
+| :--- | :--- |
+| **Ronald** | [ronaldvernek1234@gmail.com] |
+| **Lucas Fernando** | [luckasfernando500@gmail.com] |
+
+*Desenvolvido para a disciplina Tech Academy do Centro Universitário Integrado.*
+
+## ⚖️ Licença
+
+Este projeto está sob a Licença MIT - veja o arquivo [LICENSE.md](LICENSE.md) para detalhes.
