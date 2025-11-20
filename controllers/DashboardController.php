@@ -33,14 +33,8 @@ class DashboardController {
     }
 
     private function getIndicadores() {
-        try {
-            $sql = "SELECT * FROM vw_dashboard_indicadores";
-            $stmt = $this->pdo->query($sql);
-            return $stmt->fetch(PDO::FETCH_OBJ);
-        } catch (Exception $e) {
-            // Fallback para consultas manuais se a view não existir
-            return $this->getIndicadoresManual();
-        }
+        // Usar sempre o método manual para garantir dados corretos
+        return $this->getIndicadoresManual();
     }
 
     private function getIndicadoresManual() {
@@ -54,8 +48,8 @@ class DashboardController {
         $stmt = $this->pdo->query("SELECT COUNT(*) as count FROM usuario WHERE ativo = 'S'");
         $indicadores->total_usuarios = $stmt->fetch(PDO::FETCH_OBJ)->count;
         
-        // Total de vendas pagas
-        $stmt = $this->pdo->query("SELECT COUNT(*) as count FROM venda WHERE status = 'paga'");
+        // Total de vendas (todas)
+        $stmt = $this->pdo->query("SELECT COUNT(*) as count FROM venda");
         $indicadores->total_vendas = $stmt->fetch(PDO::FETCH_OBJ)->count;
         
         // Receita total
@@ -139,8 +133,7 @@ class DashboardController {
                 COALESCE(SUM(iv.subtotal), 0) as receita
             FROM venda v
             LEFT JOIN item_venda iv ON v.id = iv.venda_id
-            WHERE v.status = 'paga' 
-            AND v.data_criacao >= DATE_SUB(NOW(), INTERVAL 12 MONTH)
+            WHERE v.data_criacao >= DATE_SUB(NOW(), INTERVAL 12 MONTH)
             GROUP BY DATE_FORMAT(v.data_criacao, '%Y-%m')
             ORDER BY mes DESC
             LIMIT 12

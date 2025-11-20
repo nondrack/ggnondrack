@@ -20,10 +20,10 @@
           <a class="nav-link neon-link" href="index">Home</a>
         </li>
         <li class="nav-item mx-2">
-          <a class="nav-link neon-link" href="categoria/listar">Categoria</a>
+          <a class="nav-link neon-link" href="#produtos-section">Categoria</a>
         </li>
         <li class="nav-item mx-2">
-          <a class="nav-link neon-link" href="produto/listar">Produto</a>
+          <a class="nav-link neon-link" href="#produtos-section">Produtos</a>
         </li>
 
         <!-- Carrinho -->

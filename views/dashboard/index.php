@@ -168,26 +168,26 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-dark table-hover">
-                                <thead>
+                            <table class="table table-dark table-hover table-striped">
+                                <thead class="table-primary">
                                     <tr>
-                                        <th>Produto</th>
-                                        <th>Vendidos</th>
-                                        <th>Receita</th>
+                                        <th style="border-bottom: 2px solid #00eaff;">Produto</th>
+                                        <th style="border-bottom: 2px solid #00eaff;">Vendidos</th>
+                                        <th style="border-bottom: 2px solid #00eaff;">Receita</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php if (!empty($produtosMaisVendidos)): ?>
                                         <?php foreach ($produtosMaisVendidos as $produto): ?>
-                                            <tr>
-                                                <td><?= htmlspecialchars($produto->nome) ?></td>
-                                                <td><span class="badge bg-success"><?= $produto->total_vendido ?></span></td>
-                                                <td>R$ <?= number_format($produto->receita, 2, ',', '.') ?></td>
+                                            <tr style="border-bottom: 1px solid #333;">
+                                                <td class="text-light"><?= htmlspecialchars($produto->nome) ?></td>
+                                                <td><span class="badge bg-success fs-6"><?= $produto->total_vendido ?></span></td>
+                                                <td class="text-success fw-bold">R$ <?= number_format($produto->receita, 2, ',', '.') ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php else: ?>
                                         <tr>
-                                            <td colspan="3" class="text-center text-muted">Nenhum produto vendido ainda</td>
+                                            <td colspan="3" class="text-center text-muted py-4">Nenhum produto vendido ainda</td>
                                         </tr>
                                     <?php endif; ?>
                                 </tbody>
@@ -207,30 +207,30 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-dark table-hover">
-                                <thead>
+                            <table class="table table-dark table-hover table-striped">
+                                <thead class="table-warning">
                                     <tr>
-                                        <th>Produto</th>
-                                        <th>Estoque</th>
-                                        <th>Preço</th>
+                                        <th style="border-bottom: 2px solid #ffc107;">Produto</th>
+                                        <th style="border-bottom: 2px solid #ffc107;">Estoque</th>
+                                        <th style="border-bottom: 2px solid #ffc107;">Preço</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php if (!empty($produtosBaixoEstoque)): ?>
                                         <?php foreach ($produtosBaixoEstoque as $produto): ?>
-                                            <tr>
-                                                <td><?= htmlspecialchars($produto->nome) ?></td>
+                                            <tr style="border-bottom: 1px solid #333;">
+                                                <td class="text-light"><?= htmlspecialchars($produto->nome) ?></td>
                                                 <td>
-                                                    <span class="badge bg-<?= $produto->estoque < 5 ? 'danger' : 'warning' ?>">
-                                                        <?= $produto->estoque ?>
+                                                    <span class="badge bg-<?= $produto->estoque < 5 ? 'danger' : 'warning' ?> fs-6">
+                                                        <?= $produto->estoque ?> unidades
                                                     </span>
                                                 </td>
-                                                <td>R$ <?= number_format($produto->preco, 2, ',', '.') ?></td>
+                                                <td class="text-info fw-bold">R$ <?= number_format($produto->preco, 2, ',', '.') ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php else: ?>
                                         <tr>
-                                            <td colspan="3" class="text-center text-success">Todos os produtos com estoque adequado</td>
+                                            <td colspan="3" class="text-center text-success py-4">Todos os produtos com estoque adequado</td>
                                         </tr>
                                     <?php endif; ?>
                                 </tbody>
@@ -253,37 +253,37 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-dark table-hover">
-                                <thead>
+                            <table class="table table-dark table-hover table-striped">
+                                <thead class="table-info">
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Cliente</th>
-                                        <th>Data</th>
-                                        <th>Status</th>
-                                        <th>Valor</th>
+                                        <th style="border-bottom: 2px solid #00eaff;">ID</th>
+                                        <th style="border-bottom: 2px solid #00eaff;">Cliente</th>
+                                        <th style="border-bottom: 2px solid #00eaff;">Data</th>
+                                        <th style="border-bottom: 2px solid #00eaff;">Status</th>
+                                        <th style="border-bottom: 2px solid #00eaff;">Valor</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php if (!empty($vendasRecentes)): ?>
                                         <?php foreach ($vendasRecentes as $venda): ?>
-                                            <tr>
-                                                <td>#<?= $venda->id ?></td>
-                                                <td><?= htmlspecialchars($venda->cliente ?? 'Cliente não identificado') ?></td>
-                                                <td><?= date('d/m/Y H:i', strtotime($venda->data_criacao)) ?></td>
+                                            <tr style="border-bottom: 1px solid #333;">
+                                                <td class="text-info fw-bold">#<?= $venda->id ?></td>
+                                                <td class="text-light"><?= htmlspecialchars($venda->cliente ?? 'Cliente não identificado') ?></td>
+                                                <td class="text-muted"><?= date('d/m/Y H:i', strtotime($venda->data_criacao)) ?></td>
                                                 <td>
                                                     <span class="badge bg-<?= 
                                                         $venda->status === 'paga' ? 'success' : 
                                                         ($venda->status === 'aguardando_pagamento' ? 'warning' : 'secondary') 
-                                                    ?>">
-                                                        <?= ucfirst($venda->status) ?>
+                                                    ?> fs-6">
+                                                        <?= ucfirst(str_replace('_', ' ', $venda->status)) ?>
                                                     </span>
                                                 </td>
-                                                <td>R$ <?= number_format($venda->valor_total, 2, ',', '.') ?></td>
+                                                <td class="text-success fw-bold fs-5">R$ <?= number_format($venda->valor_total, 2, ',', '.') ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php else: ?>
                                         <tr>
-                                            <td colspan="5" class="text-center text-muted">Nenhuma venda registrada ainda</td>
+                                            <td colspan="5" class="text-center text-muted py-4">Nenhuma venda registrada ainda</td>
                                         </tr>
                                     <?php endif; ?>
                                 </tbody>
@@ -308,7 +308,8 @@
             data: {
                 labels: vendasData.map(item => {
                     const [ano, mes] = item.mes.split('-');
-                    return `${mes}/${ano}`;
+                    const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+                    return `${meses[parseInt(mes) - 1]}/${ano}`;
                 }).reverse(),
                 datasets: [{
                     label: 'Vendas',
@@ -344,14 +345,24 @@
                         type: 'linear',
                         display: true,
                         position: 'left',
-                        ticks: { color: '#fff' },
+                        ticks: { 
+                            color: '#fff',
+                            beginAtZero: true,
+                            precision: 0
+                        },
                         grid: { color: '#333' }
                     },
                     y1: {
                         type: 'linear',
                         display: true,
                         position: 'right',
-                        ticks: { color: '#fff' },
+                        ticks: { 
+                            color: '#fff',
+                            beginAtZero: true,
+                            callback: function(value) {
+                                return 'R$ ' + value.toLocaleString('pt-BR');
+                            }
+                        },
                         grid: { drawOnChartArea: false }
                     }
                 }
