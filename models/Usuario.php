@@ -10,7 +10,7 @@
          }
 
         public function getDadosEmail($email) {
-            $sql = "select id, nome, email, senha from usuario
+            $sql = "select id, nome, email, senha, tipo from usuario
                 where ativo = 'S' and email = :email
                 limit 1";
             $consulta = $this->pdo->prepare($sql);

@@ -16,6 +16,12 @@ class DashboardController {
             exit;
         }
 
+        // Verificar se o usuário é administrador
+        if ($_SESSION["user"]["tipo"] !== "admin") {
+            header("Location: index.php");
+            exit;
+        }
+
         $indicadores = $this->getIndicadores();
         $produtosMaisVendidos = $this->getProdutosMaisVendidos();
         $vendasRecentes = $this->getVendasRecentes();

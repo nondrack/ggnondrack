@@ -48,7 +48,8 @@
                 //guardar informacoes em uma sessao
                 $_SESSION["user"] = array(
                     "id" => $dadosUsuario->id,
-                    "nome" => $dadosUsuario->nome
+                    "nome" => $dadosUsuario->nome,
+                    "tipo" => $dadosUsuario->tipo
                 );
                 
                 // Redirecionar para a página anterior ou home
