@@ -52,11 +52,36 @@
                     "tipo" => $dadosUsuario->tipo
                 );
                 
-                // Redirecionar para a página anterior ou home
-                $proximaPagina = $_SESSION['proximaPagina'] ?? 'index.php';
-                unset($_SESSION['proximaPagina']);
+                // Verificar se há redirect após login (ex: finalizar carrinho)
+                if (isset($_SESSION['redirect_after_login'])) {
+                    $proximaPagina = 'index.php?param=' . $_SESSION['redirect_after_login'];
+                    unset($_SESSION['redirect_after_login']);
+                } else {
+                    // Redirecionar para a página anterior ou home
+                    $proximaPagina = $_SESSION['proximaPagina'] ?? 'index.php';
+                    unset($_SESSION['proximaPagina']);
+                }
                 
-                echo "<script>location.href='{$proximaPagina}'</script>";
+                echo "<script>
+                    // Restaurar carrinho temporário do localStorage se existir
+                    const carrinhoTemp = localStorage.getItem('carrinho_temp');
+                    if (carrinhoTemp) {
+                        // Enviar carrinho para o servidor via AJAX
+                        fetch('index.php?action=restore-cart', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
+                            body: carrinhoTemp
+                        }).then(() => {
+                            localStorage.removeItem('carrinho_temp');
+                            location.href='{$proximaPagina}';
+                        });
+                    } else {
+                        location.href='{$proximaPagina}';
+                    }
+                </script>";
             }
         }
 

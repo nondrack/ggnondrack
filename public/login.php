@@ -7,6 +7,11 @@ if (isset($_SESSION["user"])) {
     exit;
 }
 
+// Salvar redirect se fornecido
+if (isset($_GET['redirect']) && !isset($_SESSION['redirect_after_login'])) {
+    $_SESSION['redirect_after_login'] = $_GET['redirect'];
+}
+
 // Processar formulário de login
 if ($_POST) {
     require "../controllers/IndexController.php";

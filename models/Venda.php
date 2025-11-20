@@ -38,6 +38,9 @@ class Venda {
             $del->execute([':venda_id' => $venda_id]);
 
             $ins = $this->pdo->prepare("INSERT INTO item_venda (venda_id, produto_id, quantidade, preco_unitario, subtotal) VALUES (:venda_id, :produto_id, :quantidade, :preco_unitario, :subtotal)");
+            $updateEstoque = $this->pdo->prepare("UPDATE produto SET estoque = estoque - :quantidade WHERE id = :produto_id");
+            $desativarProduto = $this->pdo->prepare("UPDATE produto SET ativo = 'N' WHERE id = :produto_id AND estoque <= 0");
+            
             foreach ($itens as $item) {
                 // suportar tanto formato indexado quanto associativo
                 $produtoId = $item['id'] ?? $item['produto_id'] ?? null;
@@ -45,6 +48,8 @@ class Venda {
                 $valor = (float)($item['valor'] ?? $item['unit_price'] ?? 0);
                 $subtotal = $qtde * $valor;
                 if (!$produtoId) continue;
+                
+                // Inserir item da venda
                 $ins->execute([
                     ':venda_id' => $venda_id,
                     ':produto_id' => $produtoId,
@@ -52,6 +57,15 @@ class Venda {
                     ':preco_unitario' => $valor,
                     ':subtotal' => $subtotal
                 ]);
+                
+                // Reduzir estoque do produto
+                $updateEstoque->execute([
+                    ':quantidade' => $qtde,
+                    ':produto_id' => $produtoId
+                ]);
+                
+                // Desativar produto se estoque chegou a 0 ou menos
+                $desativarProduto->execute([':produto_id' => $produtoId]);
             }
 
             $this->pdo->commit();

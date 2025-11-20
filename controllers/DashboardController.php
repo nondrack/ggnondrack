@@ -52,12 +52,11 @@ class DashboardController {
         $stmt = $this->pdo->query("SELECT COUNT(*) as count FROM venda");
         $indicadores->total_vendas = $stmt->fetch(PDO::FETCH_OBJ)->count;
         
-        // Receita total
+        // Receita total (todas as vendas)
         $stmt = $this->pdo->query("
             SELECT COALESCE(SUM(iv.subtotal), 0) as total
             FROM item_venda iv 
-            JOIN venda v ON iv.venda_id = v.id 
-            WHERE v.status = 'paga'
+            JOIN venda v ON iv.venda_id = v.id
         ");
         $indicadores->receita_total = $stmt->fetch(PDO::FETCH_OBJ)->total;
         

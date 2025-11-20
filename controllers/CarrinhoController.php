@@ -29,6 +29,7 @@ class CarrinhoController {
             return;
         }
 
+        // Adicionar ao carrinho (funciona com ou sem login)
         // Inicializar carrinho se não existir
         if (!isset($_SESSION["carrinho"])) {
             $_SESSION["carrinho"] = [];
@@ -53,8 +54,20 @@ class CarrinhoController {
             ];
         }
 
-        // Redirecionar para o carrinho
-        echo "<script>location.href='index.php?param=carrinho/index';</script>";
+        // Redirecionar para o carrinho com mensagem
+        echo "<script>
+            Swal.fire({
+                title: 'Produto Adicionado!',
+                text: 'O produto foi adicionado ao seu carrinho.',
+                icon: 'success',
+                timer: 1500,
+                showConfirmButton: false,
+                background: '#111827',
+                color: '#fff'
+            }).then(() => {
+                location.href='index.php?param=carrinho/index';
+            });
+        </script>";
     }
 
     /**
@@ -62,6 +75,10 @@ class CarrinhoController {
      */
     public function index() {
         if (session_status() === PHP_SESSION_NONE) session_start();
+        
+        // Se não está logado mas tem carrinho temp no localStorage, será mostrado via JS
+        // Se está logado, mostrar carrinho da sessão normalmente
+        
         require_once __DIR__ . '/../views/carrinho/index.php';
     }
 

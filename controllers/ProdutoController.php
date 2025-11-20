@@ -60,6 +60,11 @@ class ProdutoController {
     $_POST['ativo'] = $ativo;
     unset($_POST['valor']);
 
+    // Validar e processar estoque
+    $estoque = isset($_POST['estoque']) ? (int)$_POST['estoque'] : 0;
+    if ($estoque < 0) $estoque = 0;
+    $_POST['estoque'] = $estoque;
+
     // Validar categoria obrigatória
     if (empty($_POST['categoria_id']) || !ctype_digit((string)$_POST['categoria_id'])) {
         echo "<script>alert('Selecione uma categoria válida.');history.back();</script>";

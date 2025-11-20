@@ -3,6 +3,10 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Se não está logado, usar carrinho temporário do localStorage via JavaScript
+// Se está logado, usar carrinho da sessão
+$usuarioLogado = isset($_SESSION['user']);
+
 // Itens do carrinho
 $itens = $_SESSION["carrinho"] ?? [];
 $total = 0;
@@ -205,21 +209,41 @@ $totalFinal = $subtotal - $desconto;
 
 <script>
     function finalizarCompra() {
-        Swal.fire({
-            title: 'Confirmar Compra?',
-            text: 'Você deseja prosseguir para o checkout?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--color-neon'),
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: '<i class="fas fa-check"></i> Sim, Confirmar',
-            cancelButtonText: '<i class="fas fa-times"></i> Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Redirecionar para a página de finalização com formulário de dados
-                location.href = 'index.php?param=carrinho/dados';
-            }
-        });
+        <?php if (!isset($_SESSION['user'])): ?>
+            // Usuário não logado - salvar carrinho e redirecionar para login
+            Swal.fire({
+                title: 'Login Necessário',
+                text: 'Você precisa fazer login para finalizar a compra.',
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--color-neon'),
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="fas fa-sign-in-alt"></i> Fazer Login',
+                cancelButtonText: '<i class="fas fa-times"></i> Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Salvar carrinho temporário e redirecionar para login
+                    localStorage.setItem('carrinho_temp', JSON.stringify(<?= json_encode($itens) ?>));
+                    location.href = 'login.php?redirect=carrinho/dados';
+                }
+            });
+        <?php else: ?>
+            // Usuário logado - prosseguir normalmente
+            Swal.fire({
+                title: 'Confirmar Compra?',
+                text: 'Você deseja prosseguir para o checkout?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--color-neon'),
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="fas fa-check"></i> Sim, Confirmar',
+                cancelButtonText: '<i class="fas fa-times"></i> Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    location.href = 'index.php?param=carrinho/dados';
+                }
+            });
+        <?php endif; ?>
     }
 
     // Aumentar quantidade

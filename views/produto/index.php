@@ -105,6 +105,16 @@
                                data-parsley-pattern-message="Informe um preço válido (ex: 199,90 ou 1.234,56)">
                     </div>
 
+                    <!-- Estoque -->
+                    <div class="col-12 col-md-2">
+                        <label for="estoque" class="form-label">Estoque</label>
+                        <input type="number" name="estoque" id="estoque" class="form-control"
+                               placeholder="0" min="0" step="1"
+                               value="<?= isset($produto) ? (int)$produto->estoque : 0 ?>"
+                               data-parsley-type="integer"
+                               data-parsley-type-message="Informe um número inteiro">
+                    </div>
+
                     <!-- Status -->
                     <div class="col-12 col-md-2">
                         <label for="ativo" class="form-label">Status</label>

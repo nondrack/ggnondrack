@@ -78,7 +78,7 @@ class Produto {
         try {
         // Atualiza mantendo campos existentes (sem remover descrição/ativo/estoque se não enviados)
         $sql = "UPDATE produto
-            SET nome = :nome, descricao = :descricao, categoria_id = :categoria_id, preco = :preco, imagem = :imagem, ativo = :ativo
+            SET nome = :nome, descricao = :descricao, categoria_id = :categoria_id, preco = :preco, estoque = :estoque, imagem = :imagem, ativo = :ativo
             WHERE id = :id";
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(":nome", $dados["nome"]);
@@ -86,6 +86,7 @@ class Produto {
         $stmt->bindValue(":preco", $preco);
             $stmt->bindValue(":descricao", strip_tags($dados['descricao'] ?? ''));
             $stmt->bindValue(":categoria_id", $dados["categoria_id"] ?? null);
+            $stmt->bindValue(":estoque", $dados['estoque'] ?? 0, PDO::PARAM_INT);
             // Ajuste de nome se reativar produto previamente marcado como [DESATIVADO]
             $nome = $dados['nome'] ?? '';
             $ativoFlag = strtoupper($dados['ativo'] ?? 'S');

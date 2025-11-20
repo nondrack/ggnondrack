@@ -13,6 +13,35 @@ if (isset($_GET['action']) && $_GET['action'] === 'get-cart-count') {
     echo json_encode(['quantidade' => $quantidade]);
     exit;
 }
+
+// Endpoint para restaurar carrinho após login
+if (isset($_GET['action']) && $_GET['action'] === 'restore-cart' && isset($_SESSION['user'])) {
+    header('Content-Type: application/json');
+    $input = file_get_contents('php://input');
+    $carrinhoTemp = json_decode($input, true);
+    
+    if ($carrinhoTemp && is_array($carrinhoTemp)) {
+        // Mesclar com carrinho existente (se houver)
+        if (!isset($_SESSION['carrinho'])) {
+            $_SESSION['carrinho'] = [];
+        }
+        
+        foreach ($carrinhoTemp as $id => $item) {
+            if (isset($_SESSION['carrinho'][$id])) {
+                // Produto já existe, somar quantidades
+                $_SESSION['carrinho'][$id]['qtde'] += $item['qtde'];
+            } else {
+                // Adicionar novo produto
+                $_SESSION['carrinho'][$id] = $item;
+            }
+        }
+        
+        echo json_encode(['success' => true, 'message' => 'Carrinho restaurado']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Dados inválidos']);
+    }
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -57,39 +86,10 @@ if (isset($_GET['action']) && $_GET['action'] === 'get-cart-count') {
             });
         }
 
-        // Verificar se precisa fazer login para adicionar ao carrinho
+        // Adicionar produto ao carrinho (funciona com ou sem login)
         function adicionarAoCarrinho(produtoId) {
-            // Verificar se o usuário está logado
-            const usuarioLogado = <?= isset($_SESSION["user"]) ? 'true' : 'false' ?>;
-            
-            if (!usuarioLogado) {
-                Swal.fire({
-                    title: 'Login Necessário',
-                    text: 'Você precisa fazer login para adicionar produtos ao carrinho!',
-                    icon: 'warning',
-                    background: '#111827',
-                    color: '#fff',
-                    showCancelButton: true,
-                    confirmButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--color-neon'),
-                    cancelButtonColor: '#6c757d',
-                    confirmButtonText: '<i class="fas fa-sign-in-alt"></i> Fazer Login',
-                    cancelButtonText: '<i class="fas fa-times"></i> Cancelar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        location.href = 'login.php';
-                    }
-                });
-                return false;
-            }
-            
-            // Se está logado, redireciona para adicionar ao carrinho
+            // Redireciona para adicionar ao carrinho (controller decide se salva na sessão ou localStorage)
             location.href = 'index.php?param=carrinho/adicionar/' + produtoId;
-            
-            // Atualizar contador após adicionar
-            setTimeout(() => {
-                atualizarContadorCarrinho();
-            }, 500);
-            
             return false;
         }
     </script>
