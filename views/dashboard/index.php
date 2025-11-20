@@ -47,16 +47,22 @@
         <!-- Header -->
         <div class="row mb-4">
             <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
                     <h1 class="text-light mb-0">
                         <i class="fas fa-chart-bar me-2" style="color: #00eaff;"></i>
                         Dashboard de Indicadores
                     </h1>
-                    <div>
-                        <a href="index.php" class="btn btn-outline-neon btn-sm me-2">
+                    <div class="d-flex gap-2 align-items-center flex-wrap">
+                        <a href="index.php?param=produto/index" class="btn btn-success btn-sm">
+                            <i class="fas fa-box me-1"></i> Cadastrar Produto
+                        </a>
+                        <a href="index.php?param=categoria/index" class="btn btn-warning btn-sm">
+                            <i class="fas fa-tags me-1"></i> Cadastrar Categoria
+                        </a>
+                        <a href="index.php" class="btn btn-outline-neon btn-sm">
                             <i class="fas fa-home"></i> Voltar ao Site
                         </a>
-                        <span class="text-muted">Última atualização: <?= date('d/m/Y H:i') ?></span>
+                        <span class="text-muted d-none d-md-inline">Última atualização: <?= date('d/m/Y H:i') ?></span>
                     </div>
                 </div>
             </div>
