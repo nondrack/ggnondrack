@@ -10,7 +10,7 @@
     }
 
     if (!isset($_SESSION["carrinho"])) {
-        echo "<script>alert('Carrinho vazio!');history.back();</script>";
+        echo "<script>Swal.fire({icon:'warning',title:'Carrinho Vazio',text:'Adicione produtos ao carrinho antes de finalizar.',confirmButtonColor:'#00eaff'}).then(()=>history.back());</script>";
     }
 
     // carregar configurações de pagamento
@@ -92,7 +92,7 @@
         // Limpar carrinho
         unset($_SESSION['carrinho']);
 
-        echo "<script>alert('Pagamento simulado com sucesso! Venda #{$vendaId} criada.'); location.href='index.php';</script>";
+        echo "<script>Swal.fire({icon:'success',title:'Pagamento Confirmado!',text:'Venda #{$vendaId} criada com sucesso.',confirmButtonColor:'#00eaff',timer:3000}).then(()=>location.href='index.php');</script>";
         exit;
     }
 
@@ -136,16 +136,16 @@
         // Limpar carrinho
         unset($_SESSION['carrinho']);
 
-        echo "<script>alert('Pagamento via PIX confirmado (simulado). Venda #{$vendaIdConfirm} registrada como PAGA.'); location.href='index.php';</script>";
+        echo "<script>Swal.fire({icon:'success',title:'Pagamento PIX Confirmado!',html:'<p>Venda <strong>#{$vendaIdConfirm}</strong> registrada como PAGA.</p>',confirmButtonColor:'#00eaff',timer:3000}).then(()=>location.href='index.php');</script>";
         exit;
     }
 
     // Validação mínima (somente na primeira chegada com os dados do formulário)
     if (!isset($_POST['generate_pix']) && !isset($_POST['simulate_payment']) && !isset($_POST['confirm_pix']) && !isset($_POST['check_mp'])) {
         if (empty($nome)) {
-            echo "<script>alert('Preencha o nome!');history.back();</script>";
+            echo "<script>Swal.fire({icon:'error',title:'Campo Obrigatório',text:'Por favor, preencha o nome.',confirmButtonColor:'#00eaff'}).then(()=>history.back());</script>";
         } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            echo "<script>alert('Digite um e-mail válido!');history.back();</script>";
+            echo "<script>Swal.fire({icon:'error',title:'E-mail Inválido',text:'Por favor, digite um e-mail válido.',confirmButtonColor:'#00eaff'}).then(()=>history.back());</script>";
         }
     }
 
@@ -207,18 +207,18 @@
                 if ($status === 'approved') {
                     $vendaModel->finalizarVenda($vendaIdCheck, 'mercadopago', $mpPaymentId);
                     unset($_SESSION['carrinho']);
-                    echo "<script>alert('Pagamento confirmado via Mercado Pago. Venda #{$vendaIdCheck} marcada como PAGA.'); location.href='index.php';</script>";
+                    echo "<script>Swal.fire({icon:'success',title:'Pagamento Aprovado!',html:'<p>Venda <strong>#{$vendaIdCheck}</strong> confirmada via Mercado Pago.</p>',confirmButtonColor:'#00eaff',timer:3000}).then(()=>location.href='index.php');</script>";
                     exit;
                 } else {
-                    echo "<script>alert('Pagamento ainda não aprovado. Status: " . htmlspecialchars($status) . "'); history.back();</script>";
+                    echo "<script>Swal.fire({icon:'info',title:'Aguardando Aprovação',text:'Status: " . htmlspecialchars($status) . "',confirmButtonColor:'#00eaff'}).then(()=>history.back());</script>";
                     exit;
                 }
             } else {
-                echo "<script>alert('Erro ao consultar Mercado Pago (HTTP: {$httpCode}).'); history.back();</script>";
+                echo "<script>Swal.fire({icon:'error',title:'Erro na Consulta',text:'Erro ao consultar Mercado Pago (HTTP: {$httpCode}).',confirmButtonColor:'#00eaff'}).then(()=>history.back());</script>";
                 exit;
             }
         } else {
-            echo "<script>alert('TXID do Mercado Pago não encontrado para essa venda.'); history.back();</script>";
+            echo "<script>Swal.fire({icon:'warning',title:'TXID não encontrado',text:'TXID do Mercado Pago não encontrado para essa venda.',confirmButtonColor:'#00eaff'}).then(()=>history.back());</script>";
             exit;
         }
     }
@@ -378,8 +378,16 @@
             border-bottom: 1px solid #333;
             transition: all 0.3s ease;
         }
+        .product-row:last-child {
+            border-bottom: none;
+            border-radius: 0 0 15px 15px;
+        }
         .product-row:hover {
             background: #222;
+        }
+        .payment-card .card-body {
+            border-radius: 0 0 15px 15px;
+            overflow: hidden;
         }
         .total-section {
             background: #16213e;
@@ -654,28 +662,25 @@
                                     <div class="payment-icon">
                                         <i class="fab fa-pix"></i>
                                     </div>
-                                    <h5 class="text-light mb-3">PIX - Pagamento Simulado</h5>
-                                    
-                                    <?php if ($pixPlaceholder): ?>
-                                        <div class="alert alert-warning">
-                                            <i class="fas fa-exclamation-triangle me-2"></i>
-                                            Chave PIX não configurada. Configure em <code>config/payment.local.php</code>
-                                        </div>
-                                    <?php endif; ?>
+                                    <h5 class="text-light mb-3">PIX - Pagamento Instantâneo</h5>
+                                    <p class="text-muted mb-4">Escaneie o QR Code ou use o código PIX</p>
 
-                                    <div class="row text-start mb-3">
-                                        <div class="col-md-6">
-                                            <p class="text-muted mb-1"><small>Chave PIX:</small></p>
-                                            <p class="text-light"><strong><?= htmlspecialchars($pixKey ?: '—') ?></strong></p>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <p class="text-muted mb-1"><small>Valor:</small></p>
-                                            <p class="text-success"><strong>R$ <?= number_format($total, 2, ',', '.') ?></strong></p>
-                                        </div>
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        Valor a pagar: <strong class="text-dark">R$ <?= number_format($total, 2, ',', '.') ?></strong>
                                     </div>
 
                                     <div class="qr-container mx-auto">
-                                        <img src="<?= $qrUrl ?>" alt="QR Code PIX" style="width:300px;height:300px;" />
+                                        <img src="images/pix.jpg" alt="QR Code PIX" style="width:300px;height:300px;" />
+                                    </div>
+
+                                    <div class="alert alert-dark mt-3">
+                                        <p class="text-muted mb-2"><small><i class="fas fa-copy me-2"></i>Copie e Cole:</small></p>
+                                        <input type="text" class="form-control form-control-sm bg-dark text-light border-secondary" 
+                                               value="00020126360014BR.GOV.BCB.PIX0114+55449970134435204000053039865802BR5925LUCAS FERNANDO BARBOSA DA6007ARARUNA622605222nGujMiKVViQjhYCRgjHKu6304ABFB" 
+                                               readonly 
+                                               onclick="this.select(); document.execCommand('copy'); Swal.fire({icon:'success',title:'Copiado!',text:'Código PIX copiado para a área de transferência.',confirmButtonColor:'#00eaff',timer:2000,showConfirmButton:false});" 
+                                               style="font-size: 0.75rem; cursor: pointer;">
                                     </div>
 
                                     <form method="post" action="" class="mt-4">
