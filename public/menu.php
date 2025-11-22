@@ -1,80 +1,3 @@
-<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #0b0f19; box-shadow: 0 0 10px rgba(var(--neon-rgb,0,234,255),0.25);">
-  <div class="container-fluid">
-
-    <!-- Logo -->
-    <a class="navbar-brand d-flex align-items-center" href="index">
-  <img src="images/logo.png" alt="DualCore Tech" style="height:90px; width:auto; margin-right: 10px;">
-      <span class="fw-bold text-purple-neon d-none d-sm-inline">DualCore Tech</span>
-    </a>
-
-    <!-- Botão hamburguer (mobile) -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
-      aria-controls="navbarResponsive" aria-expanded="false" aria-label="Alternar navegação">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <!-- Itens da navbar -->
-    <div class="collapse navbar-collapse justify-content-end" id="navbarResponsive">
-      <ul class="navbar-nav mb-2 mb-lg-0 d-flex align-items-center">
-        <li class="nav-item mx-2">
-          <a class="nav-link neon-link" href="index">Home</a>
-        </li>
-        <li class="nav-item mx-2">
-          <a class="nav-link neon-link" href="#produtos-section">Categoria</a>
-        </li>
-        <li class="nav-item mx-2">
-          <a class="nav-link neon-link" href="#produtos-section">Produtos</a>
-        </li>
-
-        <!-- Carrinho -->
-        <li class="nav-item mx-2">
-          <a class="nav-link neon-link position-relative" href="carrinho">
-            <i class="fas fa-shopping-cart"></i> Carrinho
-            <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-              0
-            </span>
-          </a>
-        </li>
-      </ul>
-
-      <!-- Botão de Login/Logout (à direita em telas grandes) -->
-      <div class="d-flex align-items-center ms-lg-3 mt-3 mt-lg-0 gap-2">
-        <?php if (isset($_SESSION["user"])): ?>
-          <!-- Usuário logado -->
-          <span class="text-light d-none d-sm-inline me-2">
-            <i class="fas fa-user-circle me-1"></i>
-            <?= htmlspecialchars($_SESSION["user"]["nome"] ?? "Usuário") ?>
-          </span>
-          <!-- DEBUG: <?php var_dump($_SESSION["user"]); ?> -->
-          <?php if (isset($_SESSION["user"]["tipo"]) && $_SESSION["user"]["tipo"] === "admin"): ?>
-            <a href="index.php?param=dashboard" class="btn btn-info btn-sm me-2">
-              <i class="fas fa-chart-bar me-1"></i> Dashboard
-            </a>
-          <?php endif; ?>
-          <a href="sair.php" class="btn btn-danger btn-sm">
-            <i class="fas fa-sign-out-alt me-1"></i> Sair
-          </a>
-        <?php else: ?>
-          <!-- Usuário não logado -->
-          <a href="login.php" class="btn btn-success btn-sm">
-            <i class="fas fa-sign-in-alt me-1"></i> Logar
-          </a>
-          <a href="index.php?param=usuario/cadastro" class="btn btn-outline-info btn-sm">
-            <i class="fas fa-user-plus me-1"></i> Cadastro
-          </a>
-          <!-- Theme toggle -->
-          <button id="theme-toggle" title="Alternar tema" class="btn btn-sm" style="background:transparent; border:1px solid var(--color-border); color:var(--color-neon);">
-            <i id="theme-icon" class="fas fa-adjust"></i>
-          </button>
-        <?php endif; ?>
-      </div>
-    </div>
-  </div>
-</nav>
-
-
-
-
 <!-- Navbar styles moved to public/css/components/views-inline.css -->
 
 <script>
@@ -129,3 +52,74 @@
     });
   })();
 </script>
+
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #0b0f19; box-shadow: 0 0 10px rgba(var(--neon-rgb,0,234,255),0.25);">
+  <div class="container-fluid">
+
+    <!-- Logo -->
+    <a class="navbar-brand d-flex align-items-center" href="index">
+  <img src="images/logo.png" alt="DualCore Tech" style="height:90px; width:auto; margin-right: 10px;">
+      <span class="fw-bold text-purple-neon d-none d-sm-inline">DualCore Tech</span>
+    </a>
+
+    <!-- Botão hamburguer (mobile) -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+      aria-controls="navbarResponsive" aria-expanded="false" aria-label="Alternar navegação">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Itens da navbar -->
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav mb-2 mb-lg-0 d-flex align-items-center ms-auto">
+        <li class="nav-item mx-2">
+          <a class="nav-link neon-link" href="index">Home</a>
+        </li>
+        <li class="nav-item mx-2">
+          <a class="nav-link neon-link" href="#produtos-section">Categorias</a>
+        </li>
+        <li class="nav-item mx-2">
+          <a class="nav-link neon-link" href="#produtos-section">Produtos</a>
+        </li>
+
+        <!-- Carrinho -->
+        <li class="nav-item mx-2">
+          <a class="nav-link neon-link position-relative" href="carrinho">
+            <i class="fas fa-shopping-cart"></i> Carrinho
+            <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              0
+            </span>
+          </a>
+        </li>
+      </ul>
+
+      <!-- Botão de Login/Logout (à direita em telas grandes) -->
+      <div class="d-flex align-items-center ms-lg-3 mt-3 mt-lg-0 gap-2">
+        <?php if (isset($_SESSION["user"])): ?>
+          <!-- Usuário logado -->
+          <span class="text-light d-none d-sm-inline me-2">
+            <i class="fas fa-user-circle me-1"></i>
+            <?= htmlspecialchars($_SESSION["user"]["nome"] ?? "Usuário") ?>
+          </span>
+          <a href="index.php?param=dashboard" class="btn btn-info btn-sm me-2">
+            <i class="fas fa-chart-bar me-1"></i> Dashboard
+          </a>
+          <a href="sair.php" class="btn btn-danger btn-sm">
+            <i class="fas fa-sign-out-alt me-1"></i> Sair
+          </a>
+        <?php else: ?>
+          <!-- Usuário não logado -->
+          <a href="login.php" class="btn btn-success btn-sm">
+            <i class="fas fa-sign-in-alt me-1"></i> Logar
+          </a>
+          <a href="index.php?param=usuario/cadastro" class="btn btn-outline-info btn-sm">
+            <i class="fas fa-user-plus me-1"></i> Cadastro
+          </a>
+          <!-- Theme toggle -->
+          <button id="theme-toggle" title="Alternar tema" class="btn btn-sm" style="background:transparent; border:1px solid var(--color-border); color:var(--color-neon);">
+            <i id="theme-icon" class="fas fa-adjust"></i>
+          </button>
+        <?php endif; ?>
+      </div>
+    </div>
+  </div>
+</nav>

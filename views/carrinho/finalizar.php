@@ -338,102 +338,249 @@
 }
 
 ?>
-?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Produtos - MeLi</title>
+    <title>Finalizar Pagamento - DualCore Tech</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/all.min.css">
+    <link rel="stylesheet" href="css/dark-theme.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/sweetalert2.min.css">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #0b0f19 0%, #1a1a2e 100%);
+            min-height: 100vh;
+        }
+        .payment-card {
+            background: #1a1a2e;
+            border: 1px solid #333;
+            border-radius: 15px;
+            box-shadow: none;
+            margin-bottom: 20px;
+        }
+        .payment-card:hover {
+            border-color: #00eaff;
+            box-shadow: none;
+        }
+        .payment-header {
+            background: #16213e;
+            border-bottom: 2px solid #333;
+            padding: 20px;
+            border-radius: 15px 15px 0 0;
+        }
+        .product-row {
+            padding: 15px;
+            border-bottom: 1px solid #333;
+            transition: all 0.3s ease;
+        }
+        .product-row:hover {
+            background: #222;
+        }
+        .total-section {
+            background: #16213e;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px solid #333;
+        }
+        .payment-method {
+            background: #16213e;
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .payment-method:hover {
+            border-color: #00eaff;
+            background: #1a2332;
+            transform: translateY(-2px);
+        }
+        .qr-container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            display: inline-block;
+            margin: 20px auto;
+        }
+        .btn-payment {
+            background: linear-gradient(135deg, #00eaff, #0099cc);
+            border: none;
+            color: #000;
+            font-weight: bold;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: none;
+        }
+        .btn-payment:hover {
+            transform: translateY(-3px);
+            box-shadow: none;
+            background: linear-gradient(135deg, #0099cc, #00eaff);
+        }
+        .payment-icon {
+            font-size: 3rem;
+            color: #00eaff;
+            margin-bottom: 15px;
+        }
+        .price-tag {
+            background: linear-gradient(135deg, #00eaff, #0099cc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="text-center">
-            <a href="index.php" title="MeLi">
-                <img src="images/mercado-pago-logo.png" alt="Mercado Pago" width="300px">
-            </a>
-        </h1>
-        <hr>
-        <div class="card">
-            <div class="card-body">
-                <h2>Produtos do Carrinho:</h2>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <td>ID</td>
-                            <td>Produto</td>
-                            <td>Qtde</td>
-                            <td>Valor</td>
-                            <td>Total</td>
-                        </tr>
-                    </thead>
-                    <tbody>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="text-center mb-4">
+                    <a href="index.php">
+                        <img src="images/logo.png" alt="DualCore Tech" style="height: 80px;">
+                    </a>
+                    <h2 class="text-light mt-3">
+                        <i class="fas fa-credit-card me-2" style="color: #00eaff;"></i>
+                        Finalizar Pagamento
+                    </h2>
+                </div>
+
+                <div class="payment-card">
+                    <div class="payment-header">
+                        <h4 class="text-light mb-0">
+                            <i class="fas fa-shopping-bag me-2"></i>
+                            Resumo do Pedido
+                        </h4>
+                    </div>
+                    <div class="card-body p-0">
                         <?php
                             $total = 0;
-                            if (isset($_SESSION["carrinho"])) {
-                                foreach ($_SESSION["carrinho"] as $dados) {
+                            if (isset($_SESSION["carrinho"]) && !empty($_SESSION["carrinho"])):
+                                foreach ($_SESSION["carrinho"] as $dados):
                                     $unit = precoUnitario($dados);
-                                    $total = $total + ($unit * (int)$dados["qtde"]);
-                                    ?>
-                                    <tr>
-                                        <td><?=$dados["id"]?></td>
-                                        <td><?=$dados["nome"]?></td>
-                                        <td><?=$dados["qtde"]?></td>
-                                        <td><?= number_format($unit, 2, ',', '.') ?></td>
-                                        <td><?= number_format($unit * (int)$dados["qtde"], 2, ',', '.') ?></td>
-                                    </tr>
-                                    <?php
-                                }
-                            }
+                                    $subtotal = $unit * (int)$dados["qtde"];
+                                    $total += $subtotal;
                         ?>
-                    </tbody>
-                </table>
-                <p>
-                    <strong>Total da Compra: R$ <?= number_format($total, 2, ',', '.') ?></strong>
-                </p>
-                <br>
-                <p class="text-center">
+                                    <div class="product-row">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-6">
+                                                <h6 class="text-light mb-1"><?= htmlspecialchars($dados["nome"]) ?></h6>
+                                                <small class="text-muted">Quantidade: <?= $dados["qtde"] ?> x R$ <?= number_format($unit, 2, ',', '.') ?></small>
+                                            </div>
+                                            <div class="col-md-3 text-center">
+                                                <span class="badge bg-info fs-6">ID: <?= $dados["id"] ?></span>
+                                            </div>
+                                            <div class="col-md-3 text-end">
+                                                <span class="text-success fw-bold fs-5">R$ <?= number_format($subtotal, 2, ',', '.') ?></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                        <?php
+                                endforeach;
+                            endif;
+                        ?>
+                    </div>
+                </div>
+
+                <div class="total-section text-center">
+                    <h3 class="text-light mb-2">Total do Pedido</h3>
+                    <div class="price-tag">R$ <?= number_format($total, 2, ',', '.') ?></div>
+                    <p class="text-muted mt-2">
+                        <i class="fas fa-shield-alt me-2"></i>
+                        Pagamento 100% seguro
+                    </p>
+                </div>
+
+                <div class="payment-card">
+                    <div class="payment-header">
+                        <h4 class="text-light mb-0">
+                            <i class="fas fa-wallet me-2"></i>
+                            Método de Pagamento
+                        </h4>
+                    </div>
+                    <div class="card-body p-4">
                     <!-- Botão de pagamento -->
                     <?php if ($useMercadoPago): ?>
                         <?php if ($usePix): ?>
                             <?php if (!empty($generatedPixVendaId) && !empty($qrUrl)): ?>
-                                <h5>PIX - Código (Mercado Pago)</h5>
-                                <p>Valor: <strong>R$ <?= number_format($total, 2, ',', '.') ?></strong></p>
+                                <div class="payment-method text-center">
+                                    <div class="payment-icon">
+                                        <i class="fas fa-qrcode"></i>
+                                    </div>
+                                    <h5 class="text-light mb-3">PIX - Mercado Pago</h5>
+                                    <p class="text-muted mb-4">Escaneie o QR Code ou use o código PIX</p>
 
-                                <div class="text-center mb-3">
-                                    <img src="<?= htmlspecialchars($qrUrl) ?>" alt="QR Code PIX" style="width:300px;height:300px;" />
+                                    <div class="qr-container mx-auto">
+                                        <img src="<?= htmlspecialchars($qrUrl) ?>" alt="QR Code PIX" style="width:300px;height:300px;" />
+                                    </div>
+
+                                    <div class="alert alert-info mt-3">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        Valor a pagar: <strong class="text-dark">R$ <?= number_format($total, 2, ',', '.') ?></strong>
+                                    </div>
+
+                                    <div class="d-flex justify-content-center gap-3 mt-4">
+                                        <form method="post" action="">
+                                            <input type="hidden" name="venda_id" value="<?= $generatedPixVendaId ?>">
+                                            <button type="submit" name="check_mp" value="1" class="btn btn-payment">
+                                                <i class="fas fa-check-circle me-2"></i>
+                                                Verificar Pagamento
+                                            </button>
+                                        </form>
+                                        <form method="post" action="">
+                                            <input type="hidden" name="venda_id" value="<?= $generatedPixVendaId ?>">
+                                            <button type="submit" name="confirm_pix" value="1" class="btn btn-outline-light">
+                                                <i class="fas fa-hand-point-up me-2"></i>
+                                                Simular Confirmação
+                                            </button>
+                                        </form>
+                                    </div>
+
+                                    <p class="small text-muted mt-3">
+                                        <i class="fas fa-shield-alt me-2"></i>
+                                        Pagamento processado pelo Mercado Pago
+                                    </p>
                                 </div>
-
-                                <div class="d-flex justify-content-center gap-2">
-                                    <form method="post" action="">
-                                        <input type="hidden" name="venda_id" value="<?= $generatedPixVendaId ?>">
-                                        <button type="submit" name="check_mp" value="1" class="btn btn-primary">Verificar pagamento (Mercado Pago)</button>
-                                    </form>
-                                    <form method="post" action="">
-                                        <input type="hidden" name="venda_id" value="<?= $generatedPixVendaId ?>">
-                                        <button type="submit" name="confirm_pix" value="1" class="btn btn-secondary">Confirmar manualmente (simulado)</button>
-                                    </form>
-                                </div>
-
-                                <p class="small text-muted mt-2">A confirmação automática também pode chegar via webhook se você configurar a URL de notificação em `config/payment.php`.</p>
                             <?php else: ?>
-                                <form method="post" action="">
-                                    <input type="hidden" name="generate_pix" value="1">
-                                    <?php foreach ($enderecoDados as $k => $v): ?>
-                                        <input type="hidden" name="<?= htmlspecialchars($k) ?>" value="<?= htmlspecialchars($v) ?>">
-                                    <?php endforeach; ?>
-                                    <button type="submit" class="btn btn-success">Gerar Código PIX (Mercado Pago)</button>
-                                </form>
-                                <p class="small text-muted">Ao gerar o código, será criada uma venda pendente e você receberá o QR para pagamento via Mercado Pago.</p>
+                                <div class="payment-method text-center">
+                                    <div class="payment-icon">
+                                        <i class="fab fa-pix"></i>
+                                    </div>
+                                    <h5 class="text-light mb-3">Pagar com PIX</h5>
+                                    <p class="text-muted mb-4">Pagamento instantâneo e seguro</p>
+                                    
+                                    <form method="post" action="">
+                                        <input type="hidden" name="generate_pix" value="1">
+                                        <?php foreach ($enderecoDados as $k => $v): ?>
+                                            <input type="hidden" name="<?= htmlspecialchars($k) ?>" value="<?= htmlspecialchars($v) ?>">
+                                        <?php endforeach; ?>
+                                        <button type="submit" class="btn btn-payment">
+                                            <i class="fas fa-qrcode me-2"></i>
+                                            Gerar Código PIX
+                                        </button>
+                                    </form>
+                                    <p class="small text-muted mt-3">Você receberá o QR Code para pagamento</p>
+                                </div>
                             <?php endif; ?>
                         <?php else: ?>
-                            <script src="https://www.mercadopago.com.br/integrations/v1/web-payment-checkout.js"
-                                    data-preference-id="<?php echo htmlspecialchars($preference->id); ?>"
-                                    data-button-label="Pagar com Mercado Pago (Boleto, Cartão de Crédito ou Débito)">
-                            </script>
+                            <div class="payment-method text-center">
+                                <div class="payment-icon">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                                <h5 class="text-light mb-3">Mercado Pago</h5>
+                                <p class="text-muted mb-4">Cartão de crédito, débito ou boleto</p>
+                                <script src="https://www.mercadopago.com.br/integrations/v1/web-payment-checkout.js"
+                                        data-preference-id="<?php echo htmlspecialchars($preference->id); ?>"
+                                        data-button-label="Pagar com Mercado Pago">
+                                </script>
+                            </div>
                         <?php endif; ?>
                     <?php else: ?>
                         <!-- Se PIX estiver habilitado, oferecer opção PIX -->
@@ -503,48 +650,106 @@
 
                                     $qrUrl = 'https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=' . urlencode($payload);
                                 ?>
-                                <h5>PIX - Gerar Código</h5>
-                                <?php if ($pixPlaceholder): ?>
-                                    <div class="alert alert-warning">Chave PIX não configurada. Para exibir sua chave PIX aqui, crie um arquivo <code>config/payment.local.php</code> (copie <code>config/payment.local.php.example</code>) e defina <code>'pix' => ['merchant_key' => 'SUA_CHAVE_AQUI']</code> ou exporte a variável de ambiente <code>PIX_KEY</code>.</div>
-                                <?php endif; ?>
-                                <p>Chave: <strong><?= htmlspecialchars($pixKey ?: '—') ?></strong></p>
-                                <p>Nome: <strong><?= htmlspecialchars($pixMerchant) ?></strong> — Cidade: <strong><?= htmlspecialchars($pixCity) ?></strong></p>
-                                <p>Valor: <strong>R$ <?= number_format($total, 2, ',', '.') ?></strong></p>
+                                <div class="payment-method text-center">
+                                    <div class="payment-icon">
+                                        <i class="fab fa-pix"></i>
+                                    </div>
+                                    <h5 class="text-light mb-3">PIX - Pagamento Simulado</h5>
+                                    
+                                    <?php if ($pixPlaceholder): ?>
+                                        <div class="alert alert-warning">
+                                            <i class="fas fa-exclamation-triangle me-2"></i>
+                                            Chave PIX não configurada. Configure em <code>config/payment.local.php</code>
+                                        </div>
+                                    <?php endif; ?>
 
-                                <div class="text-center mb-3">
-                                    <img src="<?= $qrUrl ?>" alt="QR Code PIX" style="width:300px;height:300px;" />
-                                </div>
+                                    <div class="row text-start mb-3">
+                                        <div class="col-md-6">
+                                            <p class="text-muted mb-1"><small>Chave PIX:</small></p>
+                                            <p class="text-light"><strong><?= htmlspecialchars($pixKey ?: '—') ?></strong></p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p class="text-muted mb-1"><small>Valor:</small></p>
+                                            <p class="text-success"><strong>R$ <?= number_format($total, 2, ',', '.') ?></strong></p>
+                                        </div>
+                                    </div>
 
-                                <p class="text-center">
-                                    <form method="post" action="">
+                                    <div class="qr-container mx-auto">
+                                        <img src="<?= $qrUrl ?>" alt="QR Code PIX" style="width:300px;height:300px;" />
+                                    </div>
+
+                                    <form method="post" action="" class="mt-4">
                                         <input type="hidden" name="venda_id" value="<?= $generatedPixVendaId ?>">
-                                        <button type="submit" name="confirm_pix" value="1" class="btn btn-primary">Já realizei o pagamento (Simular confirmação)</button>
+                                        <button type="submit" name="confirm_pix" value="1" class="btn btn-payment">
+                                            <i class="fas fa-check-circle me-2"></i>
+                                            Já realizei o pagamento
+                                        </button>
                                     </form>
-                                </p>
-                                <p class="small text-muted">Copie a chave e o valor e efetue o pagamento no seu app bancário. Este é um fluxo simulado; clique em "Já realizei o pagamento" para concluir.</p>
+
+                                    <p class="small text-muted mt-3">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        Este é um modo de teste. Clique no botão para simular a confirmação.
+                                    </p>
+                                </div>
                             <?php else: ?>
-                                <form method="post" action="">
-                                    <input type="hidden" name="nome" value="<?= htmlspecialchars($nome) ?>">
-                                    <input type="hidden" name="email" value="<?= htmlspecialchars($email) ?>">
-                                    <button type="submit" name="generate_pix" value="1" class="btn btn-success">Gerar Código PIX</button>
-                                </form>
-                                <p class="small text-muted">Ao gerar o código, será criada uma venda pendente e um QR Code será exibido.</p>
+                                <div class="payment-method text-center">
+                                    <div class="payment-icon">
+                                        <i class="fab fa-pix"></i>
+                                    </div>
+                                    <h5 class="text-light mb-3">Pagar com PIX</h5>
+                                    <p class="text-muted mb-4">Rápido, fácil e seguro</p>
+                                    
+                                    <form method="post" action="">
+                                        <input type="hidden" name="generate_pix" value="1">
+                                        <input type="hidden" name="nome" value="<?= htmlspecialchars($nome) ?>">
+                                        <input type="hidden" name="email" value="<?= htmlspecialchars($email) ?>">
+                                        <button type="submit" class="btn btn-payment">
+                                            <i class="fas fa-qrcode me-2"></i>
+                                            Gerar Código PIX
+                                        </button>
+                                    </form>
+                                </div>
                             <?php endif; ?>
                         <?php else: ?>
-                            <!-- Mercado Pago não configurado: mostrar botão de simulação local -->
-                            <form method="post" action="">
-                                <input type="hidden" name="simulate_payment" value="1">
-                                <?php foreach ($enderecoDados as $k => $v): ?>
-                                    <input type="hidden" name="<?= htmlspecialchars($k) ?>" value="<?= htmlspecialchars($v) ?>">
-                                <?php endforeach; ?>
-                                <button type="submit" class="btn btn-success">Simular Pagamento (modo de teste)</button>
-                            </form>
-                            <p class="small text-muted">Para ativar o Mercado Pago, configure `config/payment.php` com seu Access Token e instale o SDK via Composer (<code>composer require mercadopago/dx-php</code>).</p>
+                            <div class="payment-method text-center">
+                                <div class="payment-icon">
+                                    <i class="fas fa-hand-holding-usd"></i>
+                                </div>
+                                <h5 class="text-light mb-3">Simular Pagamento</h5>
+                                <p class="text-muted mb-4">Modo de teste - Para desenvolvimento</p>
+                                
+                                <form method="post" action="">
+                                    <input type="hidden" name="simulate_payment" value="1">
+                                    <?php foreach ($enderecoDados as $k => $v): ?>
+                                        <input type="hidden" name="<?= htmlspecialchars($k) ?>" value="<?= htmlspecialchars($v) ?>">
+                                    <?php endforeach; ?>
+                                    <button type="submit" class="btn btn-payment">
+                                        <i class="fas fa-play-circle me-2"></i>
+                                        Simular Pagamento
+                                    </button>
+                                </form>
+                                
+                                <div class="alert alert-info mt-4">
+                                    <i class="fas fa-lightbulb me-2"></i>
+                                    <small>Configure o Mercado Pago em <code>config/payment.php</code></small>
+                                </div>
+                            </div>
                         <?php endif; ?>
                     <?php endif; ?>
-                </p>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="index.php?param=carrinho" class="btn btn-outline-light">
+                        <i class="fas fa-arrow-left me-2"></i>
+                        Voltar ao Carrinho
+                    </a>
+                </div>
             </div>
         </div>
     </div>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/sweetalert2.js"></script>
 </body>
 </html>
