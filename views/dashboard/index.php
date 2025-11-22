@@ -53,10 +53,10 @@
                         Dashboard de Indicadores
                     </h1>
                     <div class="d-flex gap-2 align-items-center flex-wrap">
-                        <a href="index.php?param=produto/index" class="btn btn-success btn-sm">
+                        <a href="index.php?param=produto/index" class="btn btn-neon-product">
                             <i class="fas fa-box me-1"></i> Cadastrar Produto
                         </a>
-                        <a href="index.php?param=categoria/index" class="btn btn-warning btn-sm">
+                        <a href="index.php?param=categoria/index" class="btn btn-neon-category">
                             <i class="fas fa-tags me-1"></i> Cadastrar Categoria
                         </a>
                         <a href="index.php" class="btn btn-outline-neon btn-sm">
