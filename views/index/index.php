@@ -125,7 +125,7 @@ $categoriaIdsAtivas = array_map(function($c){ return $c->id; }, $categorias);
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 produto-item" data-categoria="<?= htmlspecialchars($produto->categoria_id) ?>">
                     <div class="card produto-card h-100">
                         <!-- IMAGEM DO PRODUTO -->
-                        <div class="produto-img-wrapper">
+                        <div class="produto-img-wrapper <?= ($produto->estoque <= 0) ? 'produto-esgotado-wrapper' : '' ?>">
                             <a href="produto/detalhes/<?= $produto->id ?>" class="text-decoration-none">
                                 <?php if($temImagem): ?>
                                     <img src="<?= $caminhoWeb ?>" class="produto-img" alt="<?= htmlspecialchars($produto->nome) ?>">
@@ -135,7 +135,6 @@ $categoriaIdsAtivas = array_map(function($c){ return $c->id; }, $categorias);
                                     </div>
                                 <?php endif; ?>
                             </a>
-                            <div class="produto-badge">Novo</div>
                         </div>
 
                         <!-- CORPO DO CARD -->
@@ -144,6 +143,20 @@ $categoriaIdsAtivas = array_map(function($c){ return $c->id; }, $categorias);
                                 <h5 class="card-title produto-nome">
                                     <?= htmlspecialchars($produto->nome) ?>
                                 </h5>
+
+                                <?php if ($produto->estoque <= 0): ?>
+                                    <div class="mb-2">
+                                        <span class="badge-estoque-inline" style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); box-shadow: 0 2px 8px rgba(220, 53, 69, 0.4);">
+                                            <i class="fas fa-times-circle me-1"></i> Estoque Esgotado
+                                        </span>
+                                    </div>
+                                <?php elseif ($produto->estoque > 0 && $produto->estoque <= 5): ?>
+                                    <div class="mb-2">
+                                        <span class="badge-estoque-inline">
+                                            <i class="fas fa-fire me-1"></i> Estoque Limitado
+                                        </span>
+                                    </div>
+                                <?php endif; ?>
 
                 <?php if (!empty($produto->categoria_id)): ?>
                   <p class="categoria-badge">
@@ -168,9 +181,15 @@ $categoriaIdsAtivas = array_map(function($c){ return $c->id; }, $categorias);
                                     <a href="produto/detalhes/<?= $produto->id ?>" class="btn btn-outline-info btn-sm">
                                         <i class="fas fa-eye me-1"></i> Ver Detalhes
                                     </a>
+                                  <?php if ($produto->estoque > 0): ?>
                                     <a href="javascript:void(0);" onclick="adicionarAoCarrinho(<?= $produto->id ?>)" class="btn btn-info btn-sm btn-add-cart">
-                                        <i class="fas fa-shopping-cart me-1"></i> Adicionar
+                                      <i class="fas fa-shopping-cart me-1"></i> Adicionar
                                     </a>
+                                  <?php else: ?>
+                                    <div class="btn btn-danger btn-sm disabled" style="cursor: not-allowed; opacity: 0.8;">
+                                      <i class="fas fa-times-circle me-1"></i> Indisponível
+                                    </div>
+                                  <?php endif; ?>
                                 </div>
                             </div>
                         </div>
