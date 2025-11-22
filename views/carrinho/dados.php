@@ -10,6 +10,17 @@ if (!isset($_SESSION['carrinho']) || empty($_SESSION['carrinho'])) {
     exit;
 }
 
+// Buscar último endereço do usuário (se logado) para pré-preencher
+$ultimoEndereco = null;
+if (isset($_SESSION['user']['id'])) {
+    require_once __DIR__ . '/../../config/Conexao.php';
+    require_once __DIR__ . '/../../models/Endereco.php';
+    
+    $pdo = Conexao::conectar();
+    $enderecoModel = new Endereco($pdo);
+    $ultimoEndereco = $enderecoModel->buscarUltimoPorUsuario($_SESSION['user']['id']);
+}
+
 // Helper preço unitário (fallback preco -> valor)
 function precoUnitarioDados(array $p): float {
     if (isset($p['preco']) && $p['preco'] !== '' && $p['preco'] !== null) {
@@ -60,31 +71,31 @@ $totalFinal = $total + $frete - $desconto;
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label text-light" for="nome">Nome Completo <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control neon-input" name="nome" id="nome" required data-parsley-required-message="Informe seu nome completo" placeholder="Seu nome">
+                                <input type="text" class="form-control neon-input" name="nome" id="nome" required data-parsley-required-message="Informe seu nome completo" placeholder="Seu nome" value="<?= htmlspecialchars($ultimoEndereco['nome'] ?? $_SESSION['user']['nome'] ?? '') ?>">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label text-light" for="email">E-mail <span class="text-danger">*</span></label>
-                                <input type="email" class="form-control neon-input" name="email" id="email" required data-parsley-type="email" data-parsley-required-message="Informe um e-mail" data-parsley-type-message="E-mail inválido" placeholder="seu.email@exemplo.com">
+                                <input type="email" class="form-control neon-input" name="email" id="email" required data-parsley-type="email" data-parsley-required-message="Informe um e-mail" data-parsley-type-message="E-mail inválido" placeholder="seu.email@exemplo.com" value="<?= htmlspecialchars($ultimoEndereco['email'] ?? $_SESSION['user']['email'] ?? '') ?>">
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label text-light" for="cep">CEP <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control neon-input" name="cep" id="cep" required placeholder="00000-000" data-parsley-required-message="Informe o CEP">
+                                <input type="text" class="form-control neon-input" name="cep" id="cep" required placeholder="00000-000" data-parsley-required-message="Informe o CEP" value="<?= htmlspecialchars($ultimoEndereco['cep'] ?? '') ?>">
                             </div>
                             <div class="col-md-8">
                                 <label class="form-label text-light" for="endereco">Endereço <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control neon-input" name="endereco" id="endereco" required placeholder="Rua / Avenida" data-parsley-required-message="Informe o endereço">
+                                <input type="text" class="form-control neon-input" name="endereco" id="endereco" required placeholder="Rua / Avenida" data-parsley-required-message="Informe o endereço" value="<?= htmlspecialchars($ultimoEndereco['logradouro'] ?? '') ?>">
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label text-light" for="numero">Número <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control neon-input" name="numero" id="numero" required placeholder="Número" data-parsley-required-message="Informe o número">
+                                <input type="text" class="form-control neon-input" name="numero" id="numero" required placeholder="Número" data-parsley-required-message="Informe o número" value="<?= htmlspecialchars($ultimoEndereco['numero'] ?? '') ?>">
                             </div>
                             <div class="col-md-5">
                                 <label class="form-label text-light" for="bairro">Bairro <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control neon-input" name="bairro" id="bairro" required placeholder="Bairro" data-parsley-required-message="Informe o bairro">
+                                <input type="text" class="form-control neon-input" name="bairro" id="bairro" required placeholder="Bairro" data-parsley-required-message="Informe o bairro" value="<?= htmlspecialchars($ultimoEndereco['bairro'] ?? '') ?>">
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label text-light" for="cidade">Cidade <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control neon-input" name="cidade" id="cidade" required placeholder="Cidade" data-parsley-required-message="Informe a cidade">
+                                <input type="text" class="form-control neon-input" name="cidade" id="cidade" required placeholder="Cidade" data-parsley-required-message="Informe a cidade" value="<?= htmlspecialchars($ultimoEndereco['cidade'] ?? '') ?>">
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label text-light" for="estado">UF <span class="text-danger">*</span></label>
@@ -92,21 +103,25 @@ $totalFinal = $total + $frete - $desconto;
                                     <option value="">UF</option>
                                     <?php
                                     $ufs = ["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"];
-                                    foreach ($ufs as $uf) echo "<option value='$uf'>$uf</option>";
+                                    $ufSelecionado = $ultimoEndereco['uf'] ?? '';
+                                    foreach ($ufs as $uf) {
+                                        $selected = ($uf === $ufSelecionado) ? 'selected' : '';
+                                        echo "<option value='$uf' $selected>$uf</option>";
+                                    }
                                     ?>
                                 </select>
                             </div>
                             <div class="col-md-5">
                                 <label class="form-label text-light" for="complemento">Complemento</label>
-                                <input type="text" class="form-control neon-input" name="complemento" id="complemento" placeholder="Apartamento / Referência">
+                                <input type="text" class="form-control neon-input" name="complemento" id="complemento" placeholder="Apartamento / Referência" value="<?= htmlspecialchars($ultimoEndereco['complemento'] ?? '') ?>">
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label text-light" for="telefone">Telefone <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control neon-input" name="telefone" id="telefone" required placeholder="(00) 00000-0000" data-parsley-required-message="Informe o telefone">
+                                <input type="text" class="form-control neon-input" name="telefone" id="telefone" required placeholder="(00) 00000-0000" data-parsley-required-message="Informe o telefone" value="<?= htmlspecialchars($ultimoEndereco['telefone'] ?? '') ?>">
                             </div>
                             <div class="col-12">
                                 <label class="form-label text-light" for="observacoes">Observações</label>
-                                <textarea class="form-control neon-input" name="observacoes" id="observacoes" rows="3" placeholder="Alguma instrução adicional para a entrega?"></textarea>
+                                <textarea class="form-control neon-input" name="observacoes" id="observacoes" rows="3" placeholder="Alguma instrução adicional para a entrega?"><?= htmlspecialchars($ultimoEndereco['observacoes'] ?? '') ?></textarea>
                             </div>
                         </div>
 

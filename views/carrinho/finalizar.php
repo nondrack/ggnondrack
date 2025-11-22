@@ -23,16 +23,58 @@
     $returnBase = $paymentConfig['mercadopago']['return_base_url'] ?? null;
     $notificationUrl = $paymentConfig['mercadopago']['notification_url'] ?? null;
 
+    // Captura campos básicos enviados da tela de dados
     $nome = $_POST["nome"] ?? NULL;
     $email = $_POST["email"] ?? NULL;
+
+    // Capturar e persistir campos de endereço (evitar perda nos próximos POSTs)
+    $camposEndereco = ['cep','endereco','numero','bairro','cidade','estado','complemento','telefone','observacoes'];
+    $enderecoDados = [];
+    foreach ($camposEndereco as $c) {
+        if (array_key_exists($c, $_POST)) {
+            // Permitir campos vazios (serão salvos como string vazia) para evitar perder chaves
+            $enderecoDados[$c] = trim((string)$_POST[$c]);
+        }
+    }
+    // incluir nome e email no pacote
+    if ($nome) { $enderecoDados['nome'] = $nome; }
+    if ($email) { $enderecoDados['email'] = $email; }
+
+    if (!empty($enderecoDados)) {
+        // Mesclar se já existir sessão prévia
+        $_SESSION['endereco_checkout'] = array_merge($_SESSION['endereco_checkout'] ?? [], $enderecoDados);
+    }
+    // Fallback sempre: garante que $enderecoDados possui todas as chaves esperadas
+    if (isset($_SESSION['endereco_checkout'])) {
+        // Usar array_merge para garantir inclusão de todos campos (o operador + descartava duplicados e ignorava os de endereço)
+        foreach (array_merge(['nome','email'], $camposEndereco) as $c) {
+            if (!isset($enderecoDados[$c]) || $enderecoDados[$c] === '') {
+                if (isset($_SESSION['endereco_checkout'][$c])) {
+                    $enderecoDados[$c] = $_SESSION['endereco_checkout'][$c];
+                }
+            }
+        }
+    }
+    // Repopular variáveis principais
+    $nome = $enderecoDados['nome'] ?? $nome;
+    $email = $enderecoDados['email'] ?? $email;
+
+    // Log opcional para debug (ver em error_log)
+    if (!empty($_POST['debug_endereco']) || (isset($_GET['debug']) && $_GET['debug'] === 'endereco')) {
+        error_log('[FINALIZAR] POST endereco => ' . json_encode($_POST));
+        error_log('[FINALIZAR] SESSION endereco_checkout => ' . json_encode($_SESSION['endereco_checkout'] ?? []));
+        error_log('[FINALIZAR] Usado para salvar => ' . json_encode($enderecoDados));
+    }
 
     // Se o usuário clicou em "Simular Pagamento", criar venda local e limpar carrinho
     if (isset($_POST['simulate_payment']) && $_POST['simulate_payment'] == 1) {
         require_once __DIR__ . '/../../config/Conexao.php';
         require_once __DIR__ . '/../../models/Venda.php';
+        require_once __DIR__ . '/../../models/Endereco.php';
 
         $pdo = Conexao::conectar();
         $vendaModel = new Venda($pdo);
+        $enderecoModel = new Endereco($pdo);
 
         // Se usuário logado, usar id, caso contrário 0
         $usuarioId = $_SESSION['user']['id'] ?? 0;
@@ -43,7 +85,9 @@
         if (!empty($_SESSION['carrinho'])) {
             $vendaModel->salvarItens($vendaId, $_SESSION['carrinho']);
         }
-        // Aqui você poderia salvar itens da venda em tabela separada (venda_itens) se existir.
+        
+        // Salvar endereço vinculado à venda usando dados consolidados
+        $enderecoModel->salvarParaVenda($vendaId, $enderecoDados, $usuarioId);
 
         // Limpar carrinho
         unset($_SESSION['carrinho']);
@@ -56,9 +100,11 @@
     if (isset($_POST['generate_pix']) && $_POST['generate_pix'] == 1) {
         require_once __DIR__ . '/../../config/Conexao.php';
         require_once __DIR__ . '/../../models/Venda.php';
+        require_once __DIR__ . '/../../models/Endereco.php';
 
         $pdo = Conexao::conectar();
         $vendaModel = new Venda($pdo);
+        $enderecoModel = new Endereco($pdo);
         $usuarioId = $_SESSION['user']['id'] ?? 0;
         $pixVendaId = $vendaModel->criarVenda($usuarioId);
 
@@ -68,6 +114,9 @@
         if (!empty($_SESSION['carrinho'])) {
             $vendaModel->salvarItens($pixVendaId, $_SESSION['carrinho']);
         }
+        
+        // Salvar endereço vinculado à venda (dados da sessão ou POST inicial)
+        $enderecoModel->salvarParaVenda($pixVendaId, $enderecoDados, $usuarioId);
     }
 
     // Confirmar pagamento via PIX (simulado) - etapa 2
@@ -91,10 +140,13 @@
         exit;
     }
 
-    if (empty($nome)) {
-        echo "<script>alert('Preencha o nome!');history.back();</script>";
-    } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo "<script>alert('Digite um e-mail válido!');history.back();</script>";
+    // Validação mínima (somente na primeira chegada com os dados do formulário)
+    if (!isset($_POST['generate_pix']) && !isset($_POST['simulate_payment']) && !isset($_POST['confirm_pix']) && !isset($_POST['check_mp'])) {
+        if (empty($nome)) {
+            echo "<script>alert('Preencha o nome!');history.back();</script>";
+        } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo "<script>alert('Digite um e-mail válido!');history.back();</script>";
+        }
     }
 
     $itens = [];
@@ -250,8 +302,24 @@
             $payer = new MercadoPago\Payer();
             $payer->name = $nome;
             $payer->email = $email;
-
             $preference->payer = $payer;
+
+            // Criar venda e salvar itens + endereço antes de gerar preferência (fluxo padrão web)
+            require_once __DIR__ . '/../../config/Conexao.php';
+            require_once __DIR__ . '/../../models/Venda.php';
+            require_once __DIR__ . '/../../models/Endereco.php';
+            $pdoVenda = Conexao::conectar();
+            $vendaModelStd = new Venda($pdoVenda);
+            $enderecoModelStd = new Endereco($pdoVenda);
+            $usuarioIdStd = $_SESSION['user']['id'] ?? 0;
+            $webVendaId = $vendaModelStd->criarVenda($usuarioIdStd);
+            if (!empty($_SESSION['carrinho'])) {
+                $vendaModelStd->salvarItens($webVendaId, $_SESSION['carrinho']);
+            }
+            $enderecoModelStd->salvarParaVenda($webVendaId, $enderecoDados, $usuarioIdStd);
+
+            // Guardar referência se necessário
+            $generatedPixVendaId = $webVendaId;
 
             // URL de retorno após o pagamento (usar base configurada)
             $base = rtrim($returnBase, '/');
@@ -353,9 +421,11 @@
                                 <p class="small text-muted mt-2">A confirmação automática também pode chegar via webhook se você configurar a URL de notificação em `config/payment.php`.</p>
                             <?php else: ?>
                                 <form method="post" action="">
-                                    <input type="hidden" name="nome" value="<?= htmlspecialchars($nome) ?>">
-                                    <input type="hidden" name="email" value="<?= htmlspecialchars($email) ?>">
-                                    <button type="submit" name="generate_pix" value="1" class="btn btn-success">Gerar Código PIX (Mercado Pago)</button>
+                                    <input type="hidden" name="generate_pix" value="1">
+                                    <?php foreach ($enderecoDados as $k => $v): ?>
+                                        <input type="hidden" name="<?= htmlspecialchars($k) ?>" value="<?= htmlspecialchars($v) ?>">
+                                    <?php endforeach; ?>
+                                    <button type="submit" class="btn btn-success">Gerar Código PIX (Mercado Pago)</button>
                                 </form>
                                 <p class="small text-muted">Ao gerar o código, será criada uma venda pendente e você receberá o QR para pagamento via Mercado Pago.</p>
                             <?php endif; ?>
@@ -463,9 +533,11 @@
                         <?php else: ?>
                             <!-- Mercado Pago não configurado: mostrar botão de simulação local -->
                             <form method="post" action="">
-                                <input type="hidden" name="nome" value="<?= htmlspecialchars($nome) ?>">
-                                <input type="hidden" name="email" value="<?= htmlspecialchars($email) ?>">
-                                <button type="submit" name="simulate_payment" value="1" class="btn btn-success">Simular Pagamento (modo de teste)</button>
+                                <input type="hidden" name="simulate_payment" value="1">
+                                <?php foreach ($enderecoDados as $k => $v): ?>
+                                    <input type="hidden" name="<?= htmlspecialchars($k) ?>" value="<?= htmlspecialchars($v) ?>">
+                                <?php endforeach; ?>
+                                <button type="submit" class="btn btn-success">Simular Pagamento (modo de teste)</button>
                             </form>
                             <p class="small text-muted">Para ativar o Mercado Pago, configure `config/payment.php` com seu Access Token e instale o SDK via Composer (<code>composer require mercadopago/dx-php</code>).</p>
                         <?php endif; ?>

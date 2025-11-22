@@ -154,3 +154,48 @@ img[src$="logoFundoBranco.png"],
     text-shadow: none !important;
     -webkit-filter: none !important;
 }
+
+/* Setas do carrossel mais visíveis */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: invert(1) brightness(2) !important;
+    background-size: 60% !important;
+    width: 3rem !important;
+    height: 3rem !important;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 10% !important;
+    opacity: 0.8 !important;
+    background: linear-gradient(to right, rgba(0, 234, 255, 0.15), transparent) !important;
+}
+
+.carousel-control-next {
+    background: linear-gradient(to left, rgba(0, 234, 255, 0.15), transparent) !important;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    opacity: 1 !important;
+}
+
+.carousel-control-prev:hover .carousel-control-prev-icon,
+.carousel-control-next:hover .carousel-control-next-icon {
+    filter: invert(1) brightness(2.5) drop-shadow(0 0 10px rgba(0, 234, 255, 0.8)) !important;
+}
+
+/* Indicadores do carrossel */
+.carousel-indicators button {
+    background-color: rgba(0, 234, 255, 0.5) !important;
+    opacity: 0.6 !important;
+    width: 12px !important;
+    height: 12px !important;
+    border-radius: 50% !important;
+}
+
+.carousel-indicators button.active {
+    background-color: var(--color-neon) !important;
+    opacity: 1 !important;
+    box-shadow: 0 0 10px rgba(0, 234, 255, 0.8) !important;
+}

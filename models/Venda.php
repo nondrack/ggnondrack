@@ -40,6 +40,7 @@ class Venda {
             $ins = $this->pdo->prepare("INSERT INTO item_venda (venda_id, produto_id, quantidade, preco_unitario, subtotal) VALUES (:venda_id, :produto_id, :quantidade, :preco_unitario, :subtotal)");
             $updateEstoque = $this->pdo->prepare("UPDATE produto SET estoque = estoque - :quantidade WHERE id = :produto_id");
             $desativarProduto = $this->pdo->prepare("UPDATE produto SET ativo = 'N' WHERE id = :produto_id AND estoque <= 0");
+            $totalVenda = 0.0;
             
             foreach ($itens as $item) {
                 // suportar tanto formato indexado quanto associativo
@@ -66,9 +67,18 @@ class Venda {
                 
                 // Desativar produto se estoque chegou a 0 ou menos
                 $desativarProduto->execute([':produto_id' => $produtoId]);
+
+                $totalVenda += $subtotal;
             }
 
             $this->pdo->commit();
+            // Atualiza total da venda após commit dos itens
+            try {
+                $updTotal = $this->pdo->prepare("UPDATE venda SET valor_total = :total WHERE id = :id");
+                $updTotal->execute([':total' => $totalVenda, ':id' => $venda_id]);
+            } catch (PDOException $e) {
+                // silenciosamente ignorar, não crítico para fluxo
+            }
             return true;
         } catch (PDOException $e) {
             $this->pdo->rollBack();
