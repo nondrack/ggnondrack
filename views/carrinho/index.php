@@ -94,13 +94,31 @@ $totalFinal = $subtotal - $desconto;
 
                                                 <!-- QUANTIDADE -->
                                                 <div class="col-md-2 col-4">
+                                                    <?php
+                                                        // Buscar estoque real do produto
+                                                        require_once __DIR__ . '/../../models/Produto.php';
+                                                        require_once __DIR__ . '/../../config/Conexao.php';
+                                                        $pdoTemp = Conexao::conectar();
+                                                        $produtoTemp = new Produto($pdoTemp);
+                                                        $produtoEstoque = $produtoTemp->buscarPorId($id);
+                                                        $estoqueMax = (int)($produtoEstoque->estoque ?? 0);
+                                                    ?>
                                                     <form method="POST" action="index.php?param=carrinho/atualizar/<?= $id ?>" class="d-flex align-items-center justify-content-center">
                                                         <div class="btn-group qty-control" role="group" data-id="<?= $id ?>">
                                                             <button type="button" class="btn btn-sm btn-outline-info qty-minus" data-id="<?= $id ?>">−</button>
-                                                            <input type="number" name="quantidade" value="<?= $item['qtde'] ?>" class="form-control form-control-sm text-center qty-input" style="width: 50px;" min="1" max="999">
-                                                            <button type="button" class="btn btn-sm btn-outline-info qty-plus" data-id="<?= $id ?>">+</button>
+                                                            <input type="number" name="quantidade" value="<?= $item['qtde'] ?>" class="form-control form-control-sm text-center qty-input" style="width: 50px;" min="1" max="<?= $estoqueMax ?>" data-max="<?= $estoqueMax ?>">
+                                                            <button type="button" class="btn btn-sm btn-outline-info qty-plus" data-id="<?= $id ?>" data-max="<?= $estoqueMax ?>">+</button>
                                                         </div>
                                                     </form>
+                                                    <?php if ($estoqueMax > 0): ?>
+                                                        <small class="text-muted d-block text-center mt-1" style="font-size: 0.75rem;">
+                                                            <?php if ($estoqueMax <= 5): ?>
+                                                                <span class="text-warning"><i class="fas fa-exclamation-triangle"></i> Apenas <?= $estoqueMax ?> disponível</span>
+                                                            <?php else: ?>
+                                                                <span class="text-info"><?= $estoqueMax ?> disponível</span>
+                                                            <?php endif; ?>
+                                                        </small>
+                                                    <?php endif; ?>
                                                 </div>
 
                                                 <!-- SUBTOTAL -->
@@ -251,7 +269,22 @@ $totalFinal = $subtotal - $desconto;
         btn.addEventListener('click', function() {
             const form = this.closest('form');
             const input = form.querySelector('.qty-input');
-            input.value = parseInt(input.value) + 1;
+            const maxQty = parseInt(this.dataset.max || input.max);
+            const currentQty = parseInt(input.value);
+            
+            if (currentQty >= maxQty) {
+                Swal.fire({
+                    title: 'Estoque Máximo!',
+                    text: 'Você já tem a quantidade máxima disponível (' + maxQty + ' unidades).',
+                    icon: 'warning',
+                    confirmButtonColor: '#ffc107',
+                    background: '#111827',
+                    color: '#fff'
+                });
+                return;
+            }
+            
+            input.value = currentQty + 1;
             form.submit();
         });
     });

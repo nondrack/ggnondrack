@@ -35,11 +35,51 @@ class CarrinhoController {
             $_SESSION["carrinho"] = [];
         }
 
+        // Verificar estoque disponível
+        $estoqueDisponivel = (int)$produto->estoque;
+        
         // Verificar se o produto já está no carrinho
         if (isset($_SESSION["carrinho"][$id])) {
+            // Verificar se pode aumentar quantidade
+            $qtdeAtual = $_SESSION["carrinho"][$id]["qtde"];
+            
+            if ($qtdeAtual >= $estoqueDisponivel) {
+                echo "<script>
+                    Swal.fire({
+                        title: 'Estoque Insuficiente!',
+                        text: 'Você já tem a quantidade máxima disponível deste produto no carrinho (" . $estoqueDisponivel . " unidades).',
+                        icon: 'warning',
+                        confirmButtonColor: '#ffc107',
+                        background: '#111827',
+                        color: '#fff'
+                    }).then(() => {
+                        history.back();
+                    });
+                </script>";
+                return;
+            }
+            
             // Aumentar quantidade
             $_SESSION["carrinho"][$id]["qtde"]++;
+            $_SESSION["carrinho"][$id]["estoque"] = $estoqueDisponivel;
         } else {
+            // Verificar se tem estoque disponível
+            if ($estoqueDisponivel < 1) {
+                echo "<script>
+                    Swal.fire({
+                        title: 'Produto Indisponível!',
+                        text: 'Este produto está sem estoque no momento.',
+                        icon: 'error',
+                        confirmButtonColor: '#dc3545',
+                        background: '#111827',
+                        color: '#fff'
+                    }).then(() => {
+                        history.back();
+                    });
+                </script>";
+                return;
+            }
+            
             // Adicionar novo item (usar preco; manter 'valor' por compatibilidade)
             $preco = $produto->preco ?? $produto->valor ?? 0;
             $_SESSION["carrinho"][$id] = [
@@ -50,7 +90,8 @@ class CarrinhoController {
                 "valor"    => $preco,
                 "imagem"   => $produto->imagem,
                 "descricao"=> $produto->descricao ?? '',
-                "categoria"=> $produto->categoria_id
+                "categoria"=> $produto->categoria_id,
+                "estoque"  => $estoqueDisponivel
             ];
         }
 
@@ -149,7 +190,29 @@ class CarrinhoController {
         }
 
         if (isset($_SESSION["carrinho"][$id])) {
+            // Buscar estoque atual do produto
+            $produto = $this->produto->buscarPorId($id);
+            $estoqueDisponivel = (int)($produto->estoque ?? 0);
+            
+            // Verificar se a quantidade solicitada está disponível
+            if ($quantidade > $estoqueDisponivel) {
+                echo "<script>
+                    Swal.fire({
+                        title: 'Estoque Insuficiente!',
+                        text: 'Disponível apenas " . $estoqueDisponivel . " unidade(s) deste produto.',
+                        icon: 'warning',
+                        confirmButtonColor: '#ffc107',
+                        background: '#111827',
+                        color: '#fff'
+                    }).then(() => {
+                        location.href='index.php?param=carrinho/index';
+                    });
+                </script>";
+                return;
+            }
+            
             $_SESSION["carrinho"][$id]["qtde"] = (int)$quantidade;
+            $_SESSION["carrinho"][$id]["estoque"] = $estoqueDisponivel;
         }
 
         echo "<script>location.href='index.php?param=carrinho/index';</script>";
