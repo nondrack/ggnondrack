@@ -88,11 +88,13 @@ Siga os passos abaixo para ter uma cópia do projeto rodando em sua máquina loc
 Site semi finalizado c/melhorias
 ---
 
-## 👨‍💻 Autores
+## 👨‍💻 Autores e Contribuições
 
-| Nome | Contato |
-| :--- | :--- |
-| **Ronald** | [ronaldvernek1234@gmail.com] |
-| **Lucas Fernando** | [luckasfernando500@gmail.com] |
+Esta seção lista os principais desenvolvedores do projeto.
 
-*Desenvolvido para a disciplina Tech Academy do Centro Universitário Integrado.*
+| Nome | Função Principal | Contato |
+| :--- | :--- | :--- |
+| **Ronald** | Back-end (PHP/MySQL) & Administração | [ronaldvernek1234@gmail.com] / [GitHub](InsiraAquiSeuLinkDoGitHub) |
+| **Lucas Fernando** | Front-end (Bootstrap/jQuery) & UX | [luckasfernando500@gmail.com] / [LinkedIn](InsiraAquiSeuLinkDoLinkedIn) |
+
+*Desenvolvido em colaboração para a disciplina Tech Academy do Centro Universitário Integrado.*
