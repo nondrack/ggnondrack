@@ -76,6 +76,7 @@ Siga os passos abaixo para ter uma cópia do projeto rodando em sua máquina loc
 * **Data de Início:** 29/09/2025
 * **Prazo Final:** 27/11/2025
 
+Site semi finalizado c/melhorias
 ---
 
 ## 👨‍💻 Autores
