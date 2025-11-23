@@ -88,13 +88,13 @@ Siga os passos abaixo para ter uma cópia do projeto rodando em sua máquina loc
 Site semi finalizado c/melhorias
 ---
 
-## 👨‍💻 Autores e Contribuições
+## 👨‍💻 Autores do Projeto
 
-Esta seção lista os principais desenvolvedores do projeto.
+O desenvolvimento do **código principal** do e-commerce foi um esforço colaborativo entre os dois autores. Abaixo, detalhamos as áreas de foco e contribuições individuais:
 
-| Nome | Função Principal | Contato |
+| Nome | Foco Principal | Contato |
 | :--- | :--- | :--- |
-| **Ronald** | Back-end (PHP/MySQL) & Administração | [ronaldvernek1234@gmail.com] / [GitHub](InsiraAquiSeuLinkDoGitHub) |
-| **Lucas Fernando** | Front-end (Bootstrap/jQuery) & UX | [luckasfernando500@gmail.com] / [LinkedIn](InsiraAquiSeuLinkDoLinkedIn) |
+| **Ronald** | **Assets e Criação Visual (Imagens de IA)** | [ronaldvernek1234@gmail.com] / [GitHub](InsiraAquiSeuLinkDoGitHub) |
+| **Lucas Fernando** | **Modelagem de Dados e Banco de Dados (MySQL)** | [luckasfernando500@gmail.com] / [LinkedIn](InsiraAquiSeuLinkDoLinkedIn) |
 
-*Desenvolvido em colaboração para a disciplina Tech Academy do Centro Universitário Integrado.*
+*Projeto realizado para a disciplina Tech Academy do Centro Universitário Integrado.*
