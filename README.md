@@ -59,10 +59,10 @@ Siga os passos abaixo para ter uma cópia do projeto rodando em sua máquina loc
     git clone [https://github.com/nondrack/ggnondrack](https://github.com/nondrack/ggnondrack)
     ```
 
-2.  **Configurar o Servidor Local:**
+2.  **Configure o Servidor Local:**
     * Mova a pasta clonada (`ggnondrack`) para o diretório raiz do seu servidor web (ex: `htdocs` no XAMPP).
 
-3.  **Configurar o Banco de Dados:**
+3.  **Configure o Banco de Dados:**
     * Abra o Dump.sql no VScode, dentro da pasta `ggnondrack` e copie todo o código e execute-o dentro do DBeaver.
     * Atualize as credenciais de acesso ao DBeaver no arquivo configurado de acordo com sua preferência.
 
