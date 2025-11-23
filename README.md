@@ -6,9 +6,17 @@
 ![Tecnologia Principal](https://img.shields.io/badge/PHP-8.x-7778B8.svg?logo=php)
 ![Banco de Dados](https://img.shields.io/badge/MySQL-4479A1.svg?logo=mysql)
 
-## 📖 Sobre o Projeto
+## 📖 Sobre o Projeto ✨
 
-Este projeto é um sistema de vendas online que simula um e-commerce funcional, focando na implementação das principais arquiteturas e funcionalidades exigidas em um ambiente real de comércio eletrônico, como gestão de produtos, carrinho de compras e painel administrativo.
+Este é um **sistema de e-commerce completo** desenvolvido como projeto final para a disciplina **Tech Academy** do curso de TADS.
+
+O projeto demonstra a aplicação prática de conceitos de desenvolvimento *Full-Stack*, oferecendo uma loja virtual funcional que abrange:
+
+* **Gerenciamento de Produtos:** Listagem, busca e detalhes.
+* **Experiência do Usuário:** Carrinho de compras e processo de *checkout* (incluindo simulação de pagamento).
+* **Administração:** Um painel administrativo robusto para gerenciar produtos, categorias e pedidos.
+
+O objetivo principal foi criar uma solução estável, utilizando **PHP** no *backend* e bibliotecas como **Bootstrap** e **jQuery** no *frontend*, replicando as principais arquiteturas de vendas online.
 
 ---
 
