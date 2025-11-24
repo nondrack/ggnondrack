@@ -9,7 +9,7 @@
 
 ## 📖 Sobre o Projeto ✨
 
-Este é um **sistema de e-commerce completo** desenvolvido como projeto final para a disciplina **Tech Academy** do curso de TADS.
+Este é um **sistema de e-commerce** desenvolvido como projeto final para a disciplina **Tech Academy** do curso de TADS.
 
 O projeto demonstra a aplicação prática de conceitos de desenvolvimento *Full-Stack*, oferecendo uma loja virtual funcional que abrange:
 
