@@ -80,7 +80,7 @@ Siga os passos abaixo para ter uma cópia do projeto rodando em sua máquina loc
 
 ---
 
-## 📅 Cronograma de Desenvolvimento
+## 📅 Cronograma de Desenvolvimento (Próximos dias)
 
 * **Data de Início:** 29/09/2025
 * **Prazo Final:** 27/11/2025
