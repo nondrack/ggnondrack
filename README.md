@@ -1,6 +1,6 @@
 # 🛒 Projeto E-commerce - DualCore Tech 🚀
 
-> **Plataforma de e-commerce completa desenvolvida para a disciplina Tech Academy do curso de TADS.**
+> **Plataforma de e-commerce desenvolvida para a disciplina Tech Academy do curso de TADS.**
 
 ![Status do Projeto](https://img.shields.io/badge/Status-90%25%20Concluído-blue)
 ![Tecnologia Principal](https://img.shields.io/badge/PHP-8.x-7778B8.svg?logo=php)
