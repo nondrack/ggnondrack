@@ -23,7 +23,7 @@ O objetivo principal foi criar uma solução estável, utilizando **PHP** no *ba
 
 ## 🛠️ Tecnologias e Bibliotecas Utilizadas
 
-O projeto foi construído utilizando uma *stack* com foco em PHP e MySQL, e bibliotecas front-end populares para garantir um design responsivo.
+O projeto foi construído utilizando o foco em PHP e MySQL, e bibliotecas front-end para garantir um design responsivo.
 
 | Categoria | Tecnologia | Versão/Detalhe |
 | :--- | :--- | :--- |
