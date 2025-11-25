@@ -65,10 +65,12 @@ $categoriaIdsAtivas = array_map(function($c){ return $c->id; }, $categorias);
     </div>
 
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="carousel-nav-btn" aria-hidden="true"><i class="fas fa-chevron-left"></i></span>
+      <span class="visually-hidden">Anterior</span>
     </button>
     <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="carousel-nav-btn" aria-hidden="true"><i class="fas fa-chevron-right"></i></span>
+      <span class="visually-hidden">Próximo</span>
     </button>
   </div>
 </div>
@@ -233,3 +235,4 @@ document.getElementById('filtro-categoria').addEventListener('change', function(
   }
 });
 </script>
+<?php include __DIR__ . '/../footer/footer.php'; ?>
