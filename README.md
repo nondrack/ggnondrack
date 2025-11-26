@@ -29,9 +29,8 @@ O projeto foi construído utilizando o foco em PHP e MySQL, e bibliotecas front-
 | :--- | :--- | :--- |
 | **Back-end** | PHP | 8.x |
 | **Banco de Dados** | MySQL | Gerenciado via DBeaver |
-| **Gerenciamento** | Composer | Uso planejado para futuras dependências. |
 | **Framework CSS** | **Bootstrap** | Utilizado para *layout* responsivo e componentes de interface. |
-| **Biblioteca JS** | **jQuery** | Utilizado para manipular o DOM e adicionar interatividade. |
+| **Biblioteca JS** | **jQuery** | Utilizado para adicionar interatividade. |
 | **Assets** | **Webfonts** | Inclusão de fontes externas para aprimoramento visual. |
 
 ---
