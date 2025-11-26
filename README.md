@@ -72,7 +72,7 @@ Siga os passos abaixo para ter uma cópia do projeto rodando em sua máquina loc
 
 3.  **Configure o Banco de Dados:**
     * Abra o Dump.sql no VScode, dentro da pasta `ggnondrack` e copie todo o código e execute-o dentro do DBeaver.
-    * Atualize as credenciais de acesso ao DBeaver no arquivo configurado de acordo com sua preferência.
+    * Atualize as credenciais de acesso ao DBeaver no arquivo configurado da forma como está os arquivos.
 
 4.  **Acesse o Projeto:**
     * Abra o navegador e acesse: `http://localhost/ggnondrack/`
