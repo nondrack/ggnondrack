@@ -9,13 +9,13 @@
 
 ## 📖 Sobre o Projeto
 
-Este é um **sistema de e-commerce** desenvolvido como projeto final para a disciplina **Tech Academy 4** do curso de TADS.
+**sistema de e-commerce** desenvolvido como projeto final para a disciplina **Tech Academy 4** do curso de TADS.
 
 O projeto demonstra a aplicação prática de conceitos de desenvolvimento, oferecendo uma loja virtual funcional:
 
 * **Gerenciamento de Produtos:** Listagem, busca e detalhes.
 * **Experiência do Usuário:** Carrinho de compras (incluindo simulação de pagamento).
-* **Administração:** Um painel administrativo robusto para gerenciar produtos, categorias e pedidos.
+* **Administração:** Um painel administrativo para gerenciar produtos, categorias e vendas.
 
 O objetivo principal foi criar uma solução estável, utilizando **PHP** no *backend* e bibliotecas como **Bootstrap** e **jQuery** no *frontend*, replicando as principais arquiteturas de vendas online.
 
