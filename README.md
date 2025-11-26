@@ -7,14 +7,14 @@
 ![Banco de Dados](https://img.shields.io/badge/MySQL-4479A1.svg?logo=mysql)
 ![Frontend](https://img.shields.io/badge/JavaScript-F7DF1E.svg?logo=javascript&logoColor=black)
 
-## 📖 Sobre o Projeto ✨
+## 📖 Sobre o Projeto
 
 Este é um **sistema de e-commerce** desenvolvido como projeto final para a disciplina **Tech Academy 4** do curso de TADS.
 
 O projeto demonstra a aplicação prática de conceitos de desenvolvimento, oferecendo uma loja virtual funcional:
 
 * **Gerenciamento de Produtos:** Listagem, busca e detalhes.
-* **Experiência do Usuário:** Carrinho de compras e processo de *checkout* (incluindo simulação de pagamento).
+* **Experiência do Usuário:** Carrinho de compras (incluindo simulação de pagamento).
 * **Administração:** Um painel administrativo robusto para gerenciar produtos, categorias e pedidos.
 
 O objetivo principal foi criar uma solução estável, utilizando **PHP** no *backend* e bibliotecas como **Bootstrap** e **jQuery** no *frontend*, replicando as principais arquiteturas de vendas online.
