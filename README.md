@@ -1,8 +1,8 @@
-# 🛒 Projeto E-commerce - DualCore Tech 🚀
+# 🛒 Projeto E-commerce - DualCore Tech
 
 > **Projeto de e-commerce desenvolvida para a disciplina Tech Academy do curso de TADS.**
 
-![Status do Projeto](https://img.shields.io/badge/Status-90%25%20Concluído-blue)
+![Status do Projeto](https://img.shields.io/badge/Status-95%25%20Concluído-blue)
 ![Tecnologia Principal](https://img.shields.io/badge/PHP-8.x-7778B8.svg?logo=php)
 ![Banco de Dados](https://img.shields.io/badge/MySQL-4479A1.svg?logo=mysql)
 ![Frontend](https://img.shields.io/badge/JavaScript-F7DF1E.svg?logo=javascript&logoColor=black)
@@ -35,15 +35,15 @@ O projeto foi construído utilizando o foco em PHP e MySQL, e bibliotecas front-
 
 ---
 
-## 🎯 Funcionalidades Implementadas (90% Concluído)
+## 🎯 Funcionalidades Implementadas (95% Concluído)
 
 | Módulo | Funcionalidade | Status |
 | :--- | :--- | :--- |
 | **Módulo de Usuário** | Cadastro, Login e Autenticação de cliente | **[✅]** |
-| | Área do Cliente (pedidos e dados pessoais) | **[✅]** |
+| | Área do Cliente (pedidos) | **[✅]** |
 | **Módulo de Produtos** | Listagem com Paginação, Busca e Categorização | **[✅]** |
 | | Página de Detalhes do Produto | **[✅]** |
-| **Módulo de Carrinho e Compra** | Adicionar/Remover itens e Finalização de Pedido (Checkout) | **[✅]** |
+| **Módulo de Carrinho e Compra** | Adicionar/Remover itens e Finalização de Pedido  | **[✅]** |
 | | **Integração de Pagamento (Mercado Pago Simulado)** | **[✅]** |
 | **Módulo Administrativo** | CRUD de Produtos e Categorias | **[✅]** |
 | | Visualização e Gerenciamento de Pedidos | **[✅]** |
