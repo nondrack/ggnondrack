@@ -56,7 +56,7 @@ Siga os passos abaixo para ter uma cópia do projeto rodando em sua máquina loc
 
 ### 1. ⚙️ Pré-requisitos
 
-* Servidor Web Local (XAMPP, WAMP ou MAMP)
+* Servidor Web Local (XAMPP)
 * PHP 8.x
 * MySQL Server
 
