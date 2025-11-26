@@ -79,7 +79,7 @@ Siga os passos abaixo para ter uma cópia do projeto rodando em sua máquina loc
 
 ---
 
-## 📅 Cronograma de Desenvolvimento (Próximos dias)
+## 📅 Cronograma de Desenvolvimento (final)
 
 * **Data de Início:** 29/09/2025
 * **Prazo Final:** 27/11/2025
@@ -93,4 +93,4 @@ Siga os passos abaixo para ter uma cópia do projeto rodando em sua máquina loc
 | **Ronald** | [ronaldvernek1234@gmail.com] |
 | **Lucas Fernando** | [luckasfernando500@gmail.com] |
 
-*Desenvolvido para a disciplina Tech Academy do Centro Universitário Integrado.*
+*Desenvolvido para a disciplina Tech Academy 4 do Centro Universitário Integrado.*
